@@ -1,0 +1,50 @@
+.CardComponent {
+    width: 1100px;
+    height: 600px;
+    border: 1px black solid;
+    border-radius: 25px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .CardBody {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        border-top: 1px solid black;
+        border-left: 1px solid black;
+        border-top-left-radius: 60px;
+        width: 900px;
+        height: 525px;
+        text-align: center;
+    }
+
+    .CardSide {
+        float: left;
+        width: 200px;
+        height: 525px;
+
+        .SideButton {
+            &:first-child {
+                margin-top: 60px;
+            }
+            text-align: left;
+            padding-left: 20px;
+            display: block;
+            margin-bottom: 40px;
+            width: 200px;
+            height: 50px;
+            font-size: 20px;
+            background: none;
+            border: none;
+        }
+    }
+
+    .CardHeader {
+        width: 1100px;
+        height: 75px;
+        text-align: center;
+    }
+}
