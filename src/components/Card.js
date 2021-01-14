@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import Guide from './Guide';
 import SoundSetting from './SoundSetting';
 import TextSetting from './TextSetting';
@@ -12,14 +12,14 @@ function Card() {
     // 현재 선택 중인 메뉴 값
     const [menu, setMenu] = useState(0);
     // 선택가능한 메뉴 리스트
-    const menuList = ["가이드", "텍스트 설정", "소리 설정", "설정", ];
+    const menuList = useMemo(() => ["가이드", "텍스트 설정", "소리 설정", "설정", ], []);
     // login 여부
     // 지금은 리덕스 적용 전으로 간단하게 테스트용으로만 사용
     // 리덕스 적용 후에는 현 state에서 로그인이 되었는지 안 되었는지 판별하면 됨
     // 만약 props로 넘기는게 더 낫다고 판단되면 그대로 사용
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(true);
 
-    const renderMenu = () => {
+    const renderMenu = useCallback(() => {
         // 선택한 메뉴에 따라 다른 컴포넌트 렌더링
         switch(menu){
         case 0:
@@ -33,20 +33,20 @@ function Card() {
         default:
             return <Error/>
         }
-    }
+    }, [menu])
     
-    const selectMenu = (id) => {
+    const selectMenu = useCallback((id) => {
         // 메뉴 버튼 클릭 시 menu값 설정
         setMenu(id);
-    }
+    }, [setMenu])
 
-    const renderSideMenu = () => {
+    const renderSideMenu = useCallback(() => {
         // menuList의 항목을 button list로 전환
         return menuList.map((menu, i) => (<button id={i} 
                                             className='SideButton'
                                             onClick={() => selectMenu(i)
                                             }>{menu}</button>))
-    }
+    }, [menuList, selectMenu])
 
     // 로그인이 된 상태면 메인 화면을, 아니면 로그인 화면을 보여주기 위해
     // 메인 화면 렌더링을 따로 함수로 분리

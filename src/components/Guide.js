@@ -2,7 +2,7 @@ function Guide() {
 
   return (
     <div>
-        This is Guide!
+      This is Guide!
     </div>
   );
 }
