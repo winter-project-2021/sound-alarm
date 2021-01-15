@@ -19,6 +19,18 @@
         width: 900px;
         height: 525px;
         text-align: center;
+
+        .StartButton {
+            position: absolute;
+            right: 20px;
+            bottom: 20px;
+
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+            background: none;
+            outline: none;
+        }
     }
 
     .CardSide {

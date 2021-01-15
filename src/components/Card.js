@@ -39,7 +39,7 @@ function Card() {
         // 메뉴 버튼 클릭 시 menu값 설정
         setMenu(id);
     }, [setMenu])
-
+    
     const renderSideMenu = useCallback(() => {
         // menuList의 항목을 button list로 전환
         return menuList.map((menu, i) => (<button id={i} 
@@ -61,6 +61,7 @@ function Card() {
                 </div>
                 <div className='CardBody'>
                     {renderMenu()}
+                    <button className="StartButton">start</button>
                 </div>
             </>
         );

@@ -1,19 +1,33 @@
 import { useCallback, useState } from 'react';
-import '../style/SoundSetting.scss';
+import { useSelector, useDispatch } from 'react-redux';
+import { addItem, removeItem, updateItem } from '../modules/SoundList';
 import SoundListItem from './SoundListItem';
+import { FiUpload } from "react-icons/fi";
+import { MdAddBox } from "react-icons/md";
+import '../style/SoundSetting.scss';
 
 function SoundSetting() {
 
-    // testList, setTestList부분만 나중에 redux 구현하고 대체하면 됨
-    const [testList, setTestList] = useState(['초인종', '노크', '전화']);
-    const [item, setItem] = useState(-1);
-    const [update, setUpdate] = useState(false);
-    const [isDelete, setDelete] = useState(false); 
+    const DEFAULT_FILENAME = '파일 업로드';
+
+    // redux로 부터 소리파일이름 리스트를 가져옴
+    const soundList = useSelector(state => state.updateSoundList.soundList);
+    const dispatch = useDispatch();
+
+    const [item, setItem] = useState(-1); // 현재 클릭한 항목
+    const [update, setUpdate] = useState(false); // 현재 수정 중 인가
+    const [isDelete, setDelete] = useState(false); // 현재 삭제 중 인가
+    const [fileName, setFileName] = useState(DEFAULT_FILENAME); // 현재 업로드한 file name
+    const [alias, setAlias] = useState(''); // 현재 작성 중인 파일 alias
 
     const clickItem = useCallback((i) => {
+        
+        // update 혹은 delete 중이면 클릭 무시
         if(update || isDelete)
             return;
         
+        // 현재 클릭 중인 아이템 클릭 시 취소
+        // 그 이외는 그 항목을 선택
         if(i === item){
             setItem(-1);
         }
@@ -23,35 +37,69 @@ function SoundSetting() {
         
     }, [setItem, item, update, isDelete]);
 
-    const updateName = useCallback((i, name) => {
-        setTestList(testList => testList.map((ele, idx) => idx === i ? name : ele));
+    const updateName = useCallback((i, alias) => {
+        // 항목 업데이트 후 클릭 항목 초기화
+        const newItem = {id: i, name: alias};
+        dispatch(updateItem(newItem));
         setItem(-1);
-    }, [setTestList, setItem]);
+    }, [dispatch, setItem]);
 
     const deleteName = useCallback((i) => {
-        setTestList(testList => testList.filter((ele, idx) => idx !== i));
+        // 항목 삭제 후 클릭 항목 초기화
+        dispatch(removeItem(i));
         setItem(-1);
-    }, [setItem, setTestList]);
+    }, [setItem, dispatch]);
 
     const renderList = useCallback(() => {
-        return testList.map((ele, i) => <SoundListItem name={ele}
-                                                        clickItem={clickItem}
-                                                        order={i}
-                                                        isClick={i === item}
-                                                        updateName={updateName}
-                                                        deleteName={deleteName}
-                                                        setUpdate={setUpdate}
-                                                        setDelete={setDelete}/>)
-    }, [testList, item, clickItem, updateName, deleteName, setUpdate, setDelete]);
+        // soundList를 이용해 각 listItem 컴포넌트를 렌더링
+        return soundList.map(ele => <SoundListItem name={ele.name}
+                                                    clickItem={clickItem}
+                                                    order={ele.id}
+                                                    isClick={ele.id === item}
+                                                    updateName={updateName}
+                                                    deleteName={deleteName}
+                                                    setUpdate={setUpdate}
+                                                    setDelete={setDelete}/>)
+    }, [soundList, item, clickItem, updateName, deleteName, setUpdate, setDelete]);
+
+    const uploadAudio = useCallback((e) => {
+        // 로컬에서 오디오 파일 업로드
+        const selectFile = e.target.files[0];
+        setFileName(selectFile.name);
+        setAlias(selectFile.name);
+    }, [setFileName, setAlias]);
+
+    const writeName = useCallback((e) => {
+        // 파일 이름 변경
+        setAlias(e.target.value);
+    }, [setAlias]);
+
+    const addToList = useCallback(() => {
+        // 현재 파일이 업로드 되지 않았거나 이름이 비어있으면 무시
+        if(fileName === DEFAULT_FILENAME || alias === '')
+            return;
+        // 이미 있는 이름이면 무시
+        for(const sound of soundList){
+            if(sound.name === alias) return;
+        }
+        // 항목 추가
+        dispatch(addItem(alias));
+        setAlias('');
+        setFileName(DEFAULT_FILENAME);
+    }, [dispatch, setAlias, setFileName, fileName, alias, soundList]);
 
     return (
       <div className='SoundComponent'>
           <div className='SoundList'>
               {renderList()}
           </div>
-          <input type='file' name='audio'/>
-          <input type='text' name='alias'/>
-          <button name='submit'>추가</button>
+          <div className='FileUpload'>
+              <label className='UploadButton' for='audio'>{fileName} <FiUpload className='Icon'/></label>
+              <input type='file' id='audio' style={{display: 'none'}} onChange={uploadAudio}/>
+              <input type='text' name='alias' className='NameInput' 
+                     placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
+              <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
+          </div>
       </div>
     );
 }
