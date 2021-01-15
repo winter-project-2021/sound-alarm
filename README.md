@@ -1,3 +1,8 @@
+# main merge 상황
+  1. 소리 파일 설정 부분 서버 통신 제외한 기능 구현 후 merge
+  2. 기본적인 redux 세팅
+  3. Card.js 함수들 useCallback으로 최적화 및 start button 추가
+
 # Template 설명
 
 ## 프로젝트 구조
