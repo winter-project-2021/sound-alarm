@@ -7,6 +7,13 @@
         border: 1px solid black;
         border-radius: 25px;
         padding-left: 50px;
+
+        .Empty {
+            height: 340px;
+            line-height: 340px;
+            margin-right: 50px;
+        }
+
         .SoundListItem {
             width: 285px;
             height: 35px;
@@ -53,7 +60,7 @@
 
         .UploadButton {
             display: inline-block;
-            width: 260px;
+            width: 230px;
             height: 30px;
 
             vertical-align: middle;
