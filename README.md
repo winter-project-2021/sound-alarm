@@ -2,7 +2,27 @@
   1. 소리 파일 설정 부분 서버 통신 제외한 기능 구현 후 merge
   2. 기본적인 redux 세팅
   3. Card.js 함수들 useCallback으로 최적화 및 start button 추가
+  4. 사이드 탭 버튼 하이라이트 추가
+  5. modal component 추가
 
+## modal component 사용법
+  
+  import { useDispatch } from 'react-redux';  
+  import { setOpen } from '../modules/ModalResult';  
+  
+  const dispatch = useDispatch();
+  
+  // 팝업 객체  
+  const popup = {  
+       head: 팝업 제목,  
+       body: 팝업창 본문,  
+       callback: ok 버튼을 눌렀을 때 실행할 함수, 없으면 그냥 빈 함수(예를 들면 () => {}) 이렇게 넘기면 됨,  
+       // 추가적으로 취소버튼 눌렀을 때 callback이 필요하면 나한테 말하기, 필요시 추가구현할 예정  
+  };
+
+   // popup open  
+   dispatch(setOpen(popup));  
+  
 # Template 설명
 
 ## 프로젝트 구조
