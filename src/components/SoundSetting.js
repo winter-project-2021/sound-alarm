@@ -51,6 +51,12 @@ function SoundSetting() {
     }, [setItem, dispatch]);
 
     const renderList = useCallback(() => {
+        
+        // list가 비어 있으면 추가해 달라는 문구 출력
+        if(soundList.length === 0){
+            return <div className='Empty'>새로운 소리 파일을 추가해 주세요!</div>
+        }
+
         // soundList를 이용해 각 listItem 컴포넌트를 렌더링
         return soundList.map(ele => <SoundListItem name={ele.name}
                                                     clickItem={clickItem}
@@ -95,7 +101,7 @@ function SoundSetting() {
           </div>
           <div className='FileUpload'>
               <label className='UploadButton' for='audio'>{fileName} <FiUpload className='Icon'/></label>
-              <input type='file' id='audio' style={{display: 'none'}} onChange={uploadAudio}/>
+              <input type='file' id='audio' accept="audio/*" style={{display: 'none'}} onChange={uploadAudio}/>
               <input type='text' name='alias' className='NameInput' 
                      placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
               <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>

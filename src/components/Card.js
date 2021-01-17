@@ -42,11 +42,11 @@ function Card() {
     
     const renderSideMenu = useCallback(() => {
         // menuList의 항목을 button list로 전환
-        return menuList.map((menu, i) => (<button id={i} 
-                                            className='SideButton'
+        return menuList.map((item, i) => (<button id={i} 
+                                            className={'SideButton ' + (i === menu ? 'SelectedButton' : '')}
                                             onClick={() => selectMenu(i)
-                                            }>{menu}</button>))
-    }, [menuList, selectMenu])
+                                            }>{item}</button>))
+    }, [menuList, selectMenu, menu])
 
     // 로그인이 된 상태면 메인 화면을, 아니면 로그인 화면을 보여주기 위해
     // 메인 화면 렌더링을 따로 함수로 분리
