@@ -5,6 +5,7 @@ import TextSetting from './TextSetting';
 import Preference from './Preference';
 import Error from './Error';
 import Login from './Login';
+import Logout from './Logout';
 import '../style/Card.scss';
 
 function Card() {
@@ -17,7 +18,7 @@ function Card() {
     // 지금은 리덕스 적용 전으로 간단하게 테스트용으로만 사용
     // 리덕스 적용 후에는 현 state에서 로그인이 되었는지 안 되었는지 판별하면 됨
     // 만약 props로 넘기는게 더 낫다고 판단되면 그대로 사용
-    const [login, setLogin] = useState(true);
+    const [login, setLogin] = useState(false);
 
     const renderMenu = useCallback(() => {
         // 선택한 메뉴에 따라 다른 컴포넌트 렌더링
@@ -45,7 +46,7 @@ function Card() {
         return menuList.map((item, i) => (<button id={i} 
                                             className={'SideButton ' + (i === menu ? 'SelectedButton' : '')}
                                             onClick={() => selectMenu(i)
-                                            }>{item}</button>))
+                                            }>{item}</button>));
     }, [menuList, selectMenu, menu])
 
     // 로그인이 된 상태면 메인 화면을, 아니면 로그인 화면을 보여주기 위해
@@ -54,7 +55,7 @@ function Card() {
         return (
             <>
                 <div className='CardHeader'>
-                    Header
+                    Header <Logout setLogin={setLogin}/>
                 </div>
                 <div className='CardSide'>
                     {renderSideMenu()}
