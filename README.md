@@ -4,6 +4,9 @@
   3. Card.js 함수들 useCallback으로 최적화 및 start button 추가
   4. 사이드 탭 버튼 하이라이트 추가
   5. modal component 추가
+  ---------------------------- 2021.01.18 추가
+  6. google login,out 추가 및 이에 따른 login welcome 페이지 활성화
+  7. textlist 추가
 
 ## modal component 사용법
   
