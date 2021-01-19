@@ -4,6 +4,8 @@
   3. Card.js 함수들 useCallback으로 최적화 및 start button 추가
   4. 사이드 탭 버튼 하이라이트 추가
   5. modal component 추가
+  6. modal custom 추가
+  7. persist redux 추가 ( redux 사용 시의 차이점은 없음, store에만 처리를 해준거라서 사용하던대로 사용하면 됨, 이제 새로고침해도 redux 상태 유지됨)
 
 ## modal component 사용법
   
@@ -16,8 +18,9 @@
   const popup = {  
        head: 팝업 제목,  
        body: 팝업창 본문,  
-       callback: ok 버튼을 눌렀을 때 실행할 함수, 없으면 그냥 빈 함수(예를 들면 () => {}) 이렇게 넘기면 됨,  
-       // 추가적으로 취소버튼 눌렀을 때 callback이 필요하면 나한테 말하기, 필요시 추가구현할 예정  
+       callback: ok 버튼을 눌렀을 때 실행할 함수, 없으면 그냥 이 프로퍼티는 빼고 객체를 만들거나 빈 함수 넣어주면 됨,  
+       buttonNum: 버튼 개수, 1또는 2 넣어주면 됨, 만약 이 프로퍼티를 빼고 만들면 기본적으로 버튼 2개짜리 팝업이 만들어짐  
+       cancelCallback: 취소 버튼 눌렀을 때 실행할 함수, 없으면 이 프로퍼티는 빼고 객체를 만들거나 빈 함수 넣어주면 됨  
   };
 
    // popup open  
