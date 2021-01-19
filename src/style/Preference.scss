@@ -1,0 +1,40 @@
+.PreferenceBody {
+    margin: auto;
+    margin-top: 63px;
+    width: 800px;
+    height: 400px;
+
+    .PreferenceItem {
+        height: 60px;
+        line-height: 45px;
+        vertical-align: middle;
+        margin-right: 50px;
+        margin-top: 30px;
+
+        .ItemText {
+            display: inline;
+            vertical-align: middle;
+            font-size: 20px;
+            margin-right: 250px;
+        }
+
+        .ItemSwitch {
+            display: inline-block;
+            vertical-align: middle;
+            //border: 1px solid black;
+            padding-top: 15px;
+        }
+    }
+}
+
+.ApplyButton {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    background: none;
+    outline: none;
+}
