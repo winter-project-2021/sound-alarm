@@ -44,13 +44,17 @@
             bottom: 20px;
             left: 50%;
             transform: translate(-50%, 0%);
-            width: 300px;
+
             .Button {
                 width: 130px;
                 height: 30px;
                 margin-left: 10px;
                 margin-right: 10px;
             }
+        }
+
+        .DoubleBox {
+            width: 300px;
         }
     }
 }

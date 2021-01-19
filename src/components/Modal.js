@@ -5,7 +5,7 @@ import '../style/App.scss';
 
 function Modal() {
 
-    const {open, head, body, callback} = useSelector(state => state.setModal);
+    const {open, head, body, buttonNum, callback, cancelCallback} = useSelector(state => state.setModal);
     const dispatch = useDispatch();
 
     // ok 버튼 누르면 result를 true로 하고 callback 실행
@@ -16,19 +16,20 @@ function Modal() {
 
     // cancel 버튼 누르면 result false로
     const clickCancel = useCallback(() => {
+        cancelCallback();
         dispatch(setResult(false));
-    }, [dispatch]);
+    }, [dispatch, cancelCallback]);
 
     const renderModal = useCallback(() => {
         return (<div className='ModalBox'>
                     <div className='BoxHead'>{head}</div>
                     <div className='BoxBody'>{body}</div>
-                    <div className='BoxButton'>
-                        <button className='Button' onClick={clickOk}>Confirm</button>
-                        <button className='Button' onClick={clickCancel}>Cancel</button>
+                    <div className={'BoxButton ' + (buttonNum > 1 ? 'DoubleBox' : '')}>
+                        <button className='Button' onClick={clickOk}>확인</button>
+                        {buttonNum > 1 ? <button className='Button' onClick={clickCancel}>취소</button> : null}
                     </div>
                 </div>)
-    }, [clickOk, clickCancel, head, body]);
+    }, [clickOk, clickCancel, head, body, buttonNum]);
 
     return (
         <>

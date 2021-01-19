@@ -14,9 +14,11 @@ const initialState = {
     result: false,
     head: '',
     body: '',
+    buttonNum: 2,
     open: false,
     click: false,
-    callback: null,
+    callback: () => {},
+    cancelCallback: () => {},
 }
 
 const setModal = handleActions(
@@ -25,7 +27,9 @@ const setModal = handleActions(
             ...state,
             head: action.payload.head,
             body: action.payload.body,
-            callback: action.payload.callback,
+            buttonNum: action.payload.buttonNum || 2,
+            callback: action.payload.callback || (() => {}),
+            cancelCallback: action.payload.cancelCallback || (() => {}),
             open: true,
             click: false,
         }),
