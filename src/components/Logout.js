@@ -1,14 +1,13 @@
 import React from 'react';
 import { GoogleLogout } from 'react-google-login';
+import { updateLogin, updateLogout } from '../modules/LoginState';
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 
-const clientId = '198175746547-k85131r2cq580i67e2kbok9pb8u12gc2.apps.googleusercontent.com';
+const clientId = `${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`
 
 
 function Logout(props) {
-
-    const { setLogin } = props;
 
     const dispatch = useDispatch();
 
@@ -17,7 +16,7 @@ function Logout(props) {
         const popup = {
             head: '로그아웃 성공',
             body: `로그아웃에 성공하였습니다.`,
-            callback: () => setLogin(false),
+            callback: () => dispatch(updateLogout({})),
         };
         dispatch(setOpen(popup));
 
@@ -25,13 +24,11 @@ function Logout(props) {
     };
 
     return (
-        <div>
         <GoogleLogout
             clientId={clientId}
             buttonText="Logout"
             onLogoutSuccess={onSuccess} //성공시 실행
         ></GoogleLogout>
-        </div>
     );
 }
 

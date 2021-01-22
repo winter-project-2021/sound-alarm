@@ -8,8 +8,6 @@ import '../style/TextSetting.scss';
 
 function TextSetting() {
 
-    const DEFAULT_FILENAME = '파일 업로드';
-
     // redux로 부터 text이름 리스트를 가져옴
     const textList = useSelector(state => state.updateTextList.textList);
     const dispatch = useDispatch();

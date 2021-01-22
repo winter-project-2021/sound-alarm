@@ -10,6 +10,7 @@
     transform: translate(-50%, -50%);
     text-align: center;
 
+
     .CardBody {
         position: absolute;
         right: 0;
@@ -68,8 +69,46 @@
     .CardHeader {
         width: 1100px;
         height: 75px;
-        text-align: center;
-    }
+        display: table;
 
-    
+        .Header {
+            display:table-cell;
+            vertical-align: middle;
+            font-weight: bold;
+            font-size: 40px;
+            text-align: center;
+
+            .InfoBox {
+                position: absolute;
+                top: 15px;
+                left: 30px;
+                width: 200px;
+                line-height: 50px;
+                
+                .UserThumb {
+                    float: left;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 25px;
+                }
+
+                .UserInfo {
+                    width: 120px;
+                    padding-left: 20px;
+                    font-weight: normal;
+                    font-size: 20px;
+                    text-align: left;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+            }
+
+            .LogoutButton {
+                position: absolute;
+                right: 30px;
+                top: 2px;                
+            }
+        }
+    }
 }

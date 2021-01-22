@@ -1,3 +1,5 @@
+import Logout from './Logout';
+
 function Preference() {
 
   return (
