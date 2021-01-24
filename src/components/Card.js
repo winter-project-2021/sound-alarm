@@ -1,4 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
+// test for alarm method
+import { useSelector } from 'react-redux';
 import Guide from './Guide';
 import SoundSetting from './SoundSetting';
 import TextSetting from './TextSetting';
@@ -18,6 +20,25 @@ function Card() {
     // 리덕스 적용 후에는 현 state에서 로그인이 되었는지 안 되었는지 판별하면 됨
     // 만약 props로 넘기는게 더 낫다고 판단되면 그대로 사용
     const [login, setLogin] = useState(true);
+
+    const { sound, push } = useSelector(state => state.preferenceReducer);
+
+    const testAlarm = useCallback(() => {
+        if(sound){
+            const sound = document.getElementById('alarm');
+            sound.play();
+        }
+
+        if(push){
+            var options = {
+                body: "소리가 감지되었습니다!!!!!",
+                icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                dir: "ltr"
+            };
+            
+            new Notification("!알람!", options);
+        }
+    }, [push, sound]);
 
     const renderMenu = useCallback(() => {
         // 선택한 메뉴에 따라 다른 컴포넌트 렌더링
@@ -61,7 +82,7 @@ function Card() {
                 </div>
                 <div className='CardBody'>
                     {renderMenu()}
-                    <button className="StartButton">start</button>
+                    {menu !== 3 ? <button className="StartButton" onClick={testAlarm}>start</button> : null}
                 </div>
             </>
         );
@@ -70,6 +91,7 @@ function Card() {
     return (
         <div className='CardComponent'>
             {login ? renderMainScreen() : <Login setLogin={setLogin}/>}
+            <audio style={{display: 'none'}} src='/alarm.mp3' id='alarm'/>
         </div>
     );
 }
