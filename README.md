@@ -6,7 +6,9 @@
   5. modal component 추가
   6. modal custom 추가
   7. persist redux 추가 ( redux 사용 시의 차이점은 없음, store에만 처리를 해준거라서 사용하던대로 사용하면 됨, 이제 새로고침해도 redux 상태 유지됨)
-
+  8. preference tab 추가
+  9. 리스트 아이템 영역 밖 클릭 시 해제 추가
+  
 ## modal component 사용법
   
   import { useDispatch } from 'react-redux';  
