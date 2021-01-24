@@ -4,6 +4,8 @@
   3. Card.js 함수들 useCallback으로 최적화 및 start button 추가
   4. 사이드 탭 버튼 하이라이트 추가
   5. modal component 추가
+  6. preference tab 추가
+  7. 아이템 영역 밖 클릭 시 해제 기능 추가
 
 ## modal component 사용법
   
