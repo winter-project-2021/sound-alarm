@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, updateItem } from '../modules/SoundList';
 import SoundListItem from './SoundListItem';
@@ -19,6 +19,15 @@ function SoundSetting() {
     const [isDelete, setDelete] = useState(false); // 현재 삭제 중 인가
     const [fileName, setFileName] = useState(DEFAULT_FILENAME); // 현재 업로드한 file name
     const [alias, setAlias] = useState(''); // 현재 작성 중인 파일 alias
+
+    // 리스트 아이템 영역 밖을 클릭 시 선택 해제 하도록
+    useEffect(() => {
+        document.addEventListener('mouseup', e => {
+            if(e.target.className !== 'SoundListItem'){
+                setItem(-1);
+            }
+        });
+    }, [setItem]);
 
     const clickItem = useCallback((i) => {
         
