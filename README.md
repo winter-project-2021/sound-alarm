@@ -16,6 +16,7 @@
   14. 현재 로그인된 계정 정보 Header에 구현
   15. clientID 환경변수로 이동
   16. Logout버튼 Header에 추가
+  17. Login,out 버튼에 custom modal 적용
 
 ## modal component 사용법
   
