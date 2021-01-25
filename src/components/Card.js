@@ -18,7 +18,7 @@ function Card() {
     const menuList = useMemo(() => ["가이드", "텍스트 설정", "소리 설정", "설정", ], []);
 
     // login 여부
-    // 리덕스 적용 로그인 여부와 사용자 이름, 썸네일 이미지를 가져옴
+    // 로그인 여부와 사용자 이름, 썸네일 이미지를 리덕스에서 가져옴
     const login = useSelector(state => state.updateLoginState.login);
     const name = useSelector(state => state.updateLoginState.user.name);
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
@@ -72,10 +72,11 @@ function Card() {
     }, [menuList, selectMenu, menu])
 
     const renderHeader = useCallback(() => {
+        //Header 왼쪽에 유저 썸네일이랑 이름, 오른쪽에 로그아웃버튼
         return (
             <div className='Header'>
                 <div className='InfoBox'>
-                    <img class='UserThumb' src={imageURL}></img>
+                    <img class='UserThumb' src={imageURL} alt='userThumb'></img>
                         <div className='UserInfo'>
                             {name}
                         </div>                    
@@ -86,11 +87,11 @@ function Card() {
                 </div>
             </div>
         )
-    }, [imageURL, name, login])
+    }, [imageURL, name])
 
-    const renderLogin = useCallback(() => {
+    const renderLogin = () => {
         return <Login/>
-    }, [login])
+    }
 
     // 로그인이 된 상태면 메인 화면을, 아니면 로그인 화면을 보여주기 위해
     // 메인 화면 렌더링을 따로 함수로 분리

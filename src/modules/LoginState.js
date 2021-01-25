@@ -25,11 +25,11 @@ const updateLoginState = handleActions(
             }
         ),
 
-        [UPDATE_Logout]: (state, action) => (
+        [UPDATE_Logout]: (state) => (
             {
                 ...state,
                 login: false,
-                user: action.payload,
+                user: {name: '', imgURL: ''},
             }
         ),
     },
