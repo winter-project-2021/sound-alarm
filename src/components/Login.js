@@ -9,40 +9,38 @@ const clientId = `${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`
 
 
 function Login() {
-
-    // test용으로 props를 통해 setLogin을 Card로부터 받아옴
-    // 리덕스 적용 후에는 리덕스를 사용
-    // 만약 구현시 props가 더 낫다고 판단되면 props 써도 무방
-    //const { setLogin } = props;
-
+    //Modal 용도
     const dispatch = useDispatch();
     
-
-    const onSuccess = (res) => {
+    //로그인 성공시 실행
+    const onSuccess = useCallback((res) => {
         const userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl};
 
         const popup = {
             head: '로그인 성공',
-            body: `${res.profileObj.name}님 환영합니다. See console for full profile object.`,
+            body: `${res.profileObj.name}님 환영합니다. See_console_for_full_profile_object.`,
+            buttonNum: 1,
             callback: () => dispatch(updateLogin(userInfo)),
         };
         dispatch(setOpen(popup));
         refreshTokenSetup(res);
 
         console.log('Login Success: currentUser:', res.profileObj, res.tokenObj);
-    }
+    }, [dispatch]);
     
-    const onFailure = (res) => {
+    //로그인 실패시 실행
+    const onFailure = useCallback((res) => {
 
         const popup = {
             head: '로그인 실패',
             body: `로그인에 실패하였습니다. ${res.error}`,
-            callback: () => dispatch(updateLogout('')),
+            buttonNum: 1,
+            callback: () => dispatch(updateLogout()),
         };
         dispatch(setOpen(popup));
 
         console.log('Login failed: res:', res);
-    };
+    }, [dispatch]);
     
     //로그인후 1시간이 지나면 기존의 tokenId가 만료되기 때문에 token을 갱신.
     const refreshTokenSetup = (res) => {
@@ -79,7 +77,6 @@ function Login() {
                             onSuccess={onSuccess} // 성공시 실행
                             onFailure={onFailure} // 실패시 실행
                             cookiePolicy={'single_host_origin'}
-                            isSignedIn={false} //true일때 새로고침해도 로그인이 유지됨.(onSuccess callback)
                             />
                     </div>
                 </div>
