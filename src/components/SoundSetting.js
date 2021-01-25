@@ -20,14 +20,21 @@ function SoundSetting() {
     const [fileName, setFileName] = useState(DEFAULT_FILENAME); // 현재 업로드한 file name
     const [alias, setAlias] = useState(''); // 현재 작성 중인 파일 alias
 
+    const clickAway = useCallback((e) => {
+        const parent = e.target.parentNode;
+        if(!(parent.className === 'SoundListItem' || parent.className === 'ChangeButton' || 
+            (parent.parentNode !== null && parent.parentNode.className === 'ChangeButton'))){
+            setItem(-1);
+        }
+    }, [setItem])
+
     // 리스트 아이템 영역 밖을 클릭 시 선택 해제 하도록
     useEffect(() => {
-        document.addEventListener('mouseup', e => {
-            if(e.target.className !== 'SoundListItem'){
-                setItem(-1);
-            }
-        });
-    }, [setItem]);
+        if(update || isDelete) document.removeEventListener('mouseup', clickAway);
+        else{
+            document.addEventListener('mouseup', clickAway);
+        }
+    }, [clickAway, update, isDelete]);
 
     const clickItem = useCallback((i) => {
         
