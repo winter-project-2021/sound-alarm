@@ -7,6 +7,7 @@ import TextSetting from './TextSetting';
 import Preference from './Preference';
 import Error from './Error';
 import Login from './Login';
+import Logout from './Logout';
 import '../style/Card.scss';
 
 function Card() {
@@ -15,11 +16,12 @@ function Card() {
     const [menu, setMenu] = useState(0);
     // 선택가능한 메뉴 리스트
     const menuList = useMemo(() => ["가이드", "텍스트 설정", "소리 설정", "설정", ], []);
+
     // login 여부
-    // 지금은 리덕스 적용 전으로 간단하게 테스트용으로만 사용
-    // 리덕스 적용 후에는 현 state에서 로그인이 되었는지 안 되었는지 판별하면 됨
-    // 만약 props로 넘기는게 더 낫다고 판단되면 그대로 사용
-    const [login, setLogin] = useState(true);
+    // 리덕스 적용 로그인 여부와 사용자 이름, 썸네일 이미지를 가져옴
+    const login = useSelector(state => state.updateLoginState.login);
+    const name = useSelector(state => state.updateLoginState.user.name);
+    const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
     const { sound, push } = useSelector(state => state.preferenceReducer);
 
@@ -66,8 +68,29 @@ function Card() {
         return menuList.map((item, i) => (<button id={i} 
                                             className={'SideButton ' + (i === menu ? 'SelectedButton' : '')}
                                             onClick={() => selectMenu(i)
-                                            }>{item}</button>))
+                                            }>{item}</button>));
     }, [menuList, selectMenu, menu])
+
+    const renderHeader = useCallback(() => {
+        return (
+            <div className='Header'>
+                <div className='InfoBox'>
+                    <img class='UserThumb' src={imageURL}></img>
+                        <div className='UserInfo'>
+                            {name}
+                        </div>                    
+                </div>
+                Sound Alarm
+                <div className='LogoutButton'>
+                    <Logout/>
+                </div>
+            </div>
+        )
+    }, [imageURL, name, login])
+
+    const renderLogin = useCallback(() => {
+        return <Login/>
+    }, [login])
 
     // 로그인이 된 상태면 메인 화면을, 아니면 로그인 화면을 보여주기 위해
     // 메인 화면 렌더링을 따로 함수로 분리
@@ -75,7 +98,7 @@ function Card() {
         return (
             <>
                 <div className='CardHeader'>
-                    Header
+                    {renderHeader()}
                 </div>
                 <div className='CardSide'>
                     {renderSideMenu()}
@@ -90,7 +113,7 @@ function Card() {
 
     return (
         <div className='CardComponent'>
-            {login ? renderMainScreen() : <Login setLogin={setLogin}/>}
+            {login ? renderMainScreen() : renderLogin()}
             <audio style={{display: 'none'}} src='/alarm.mp3' id='alarm'/>
         </div>
     );

@@ -1,3 +1,4 @@
+
 # main merge 상황
   1. 소리 파일 설정 부분 서버 통신 제외한 기능 구현 후 merge
   2. 기본적인 redux 세팅
@@ -8,7 +9,13 @@
   7. persist redux 추가 ( redux 사용 시의 차이점은 없음, store에만 처리를 해준거라서 사용하던대로 사용하면 됨, 이제 새로고침해도 redux 상태 유지됨)
   8. preference tab 추가
   9. 리스트 아이템 영역 밖 클릭 시 해제 추가
-  
+  10. 로그인 페이지(welcome 페이지) 구현
+  11. 로그인 status에 redux 적용
+  12. clientID 환경변수로 이동
+  13. 현재 로그인된 계정 정보 Header에 구현
+  14. 구글 login,out 추가 및 login을 위한 welcome 페이지 활성화
+  15. Textlist 추가
+
 ## modal component 사용법
   
   import { useDispatch } from 'react-redux';  

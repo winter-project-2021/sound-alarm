@@ -1,2 +1,43 @@
 .LoginComponent {
+
+    .LoginBoxWrap {
+        float: left;
+        width: 529px;
+        height: 600px;
+        display: table;
+
+        .LoginBox {
+            display: table-cell;
+            vertical-align: middle;
+
+            .LoginText {
+                font-size: 20px;
+            }
+
+            .GoogleLoginButton {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    .IntroBoxWrap {
+        float: right;
+        width: 570px;
+        height: 600px;
+        border-left: 1px black solid;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+        display:table;
+
+        .IntroBox {
+            display: table-cell;
+            vertical-align: middle;
+
+            .IntroText {
+                font-size: 27px;
+                padding-left: 100px;
+                padding-right: 100px;
+            }
+        }
+    }
 }
