@@ -81,7 +81,7 @@ function Card() {
                             {name}
                         </div>                    
                 </div>
-                Sound Alarm
+                {/*Sound Alarm*/}
                 <div className='LogoutButton'>
                     <Logout/>
                 </div>
