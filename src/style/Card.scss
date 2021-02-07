@@ -34,6 +34,7 @@
             border-radius: 50px;
             background: none;
             outline: none;
+            cursor: pointer;
         }
     }
 
@@ -57,13 +58,31 @@
             border: none;
             outline: none;
             color: #d9d9d9;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .select {
+            animation-name: buttonFadein;
+            -moz-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
+
+        .deSelect {
+            animation-name: buttonFadeout;
+            -moz-animation-duration: 0.3s;
+            animation-duration: 0.3s;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
         }
 
         .SelectedButton {
             background-color: #ff9fbf;
             color: white;
             font-weight: bold;
-            border-radius: 25px;
+
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
                 0 6px 6px rgba(0, 0, 0, 0.23);
             text-shadow: -0px -0px 0 #000, 0px -0px 0 #000, -0px 0px 0 #000,
@@ -115,5 +134,49 @@
                 top: 2px;
             }
         }
+    }
+}
+
+@keyframes buttonFadein {
+    from {
+        color: #d9d9d9;
+        background: none;
+        border: none;
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: normal;
+    }
+
+    to {
+        background-color: #ff9fbf;
+        color: white;
+        font-weight: bold;
+        //border-radius: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+            0 6px 6px rgba(0, 0, 0, 0.23);
+        text-shadow: -0px -0px 0 #000, 0px -0px 0 #000, -0px 0px 0 #000,
+            1px 1px 0 #000;
+    }
+}
+
+@keyframes buttonFadeout {
+    to {
+        color: #d9d9d9;
+        background: none;
+        border: none;
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: normal;
+    }
+
+    from {
+        background-color: #ff9fbf;
+        color: white;
+        font-weight: bold;
+        //border-radius: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+            0 6px 6px rgba(0, 0, 0, 0.23);
+        text-shadow: -0px -0px 0 #000, 0px -0px 0 #000, -0px 0px 0 #000,
+            1px 1px 0 #000;
     }
 }

@@ -26,15 +26,19 @@
 
             .ItemName {
                 display: inline-block;
-                border: 1px solid black;
+                border: 1px solid #ada5a5;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                    0 3px 6px rgba(0, 0, 0, 0.23);
                 border-radius: 10px;
                 padding-left: 10px;
                 width: 200px;
+                cursor: pointer;
 
                 .EditInput {
                     height: 28px;
                     width: 180px;
                     font-size: 17px;
+                    border: 1px solid black;
                 }
             }
 
@@ -49,6 +53,7 @@
                     height: 30px;
                     margin-bottom: 5px;
                     margin-left: 5px;
+                    cursor: pointer;
                 }
             }
         }
@@ -60,7 +65,7 @@
 
         .UploadButton {
             display: inline-block;
-            width: 230px;
+            width: 200px;
             height: 30px;
 
             vertical-align: middle;
@@ -70,8 +75,11 @@
             padding-left: 15px;
             margin-right: 15px;
 
-            border: 1px solid black;
+            border: 1px solid #ada5a5;
             border-radius: 10px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                0 3px 6px rgba(0, 0, 0, 0.23);
+            cursor: pointer;
 
             .Icon {
                 float: right;
@@ -89,6 +97,7 @@
 
         .AddButton {
             vertical-align: middle;
+            cursor: pointer;
         }
     }
 }

@@ -1,15 +1,49 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { setPreference } from '../modules/PreferenceResult';
 import Switch from "react-switch";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Grid from '@material-ui/core/Grid';
+import Slider from '@material-ui/core/Slider';
+import Menu from '@material-ui/core/Menu';
 import '../style/Preference.scss';
 
 function Preference() {
 
     const currentPreference = useSelector(state => state.preferenceReducer);
     const [preference, setCurPreference] = useState({...currentPreference});
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const [volume, setVolume] = useState(preference.volume);
+    const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm.mp3", "2": "/alarm.mp3", "3": "/alarm.mp3", }), []);
+
+    const handleChange = useCallback((event, newValue) => {
+        setVolume(newValue);
+    }, [setVolume]);
+
+    const clickPlay = useCallback(() => {
+        const sound = document.getElementById('alarm');
+        // bell소리 선택에 따라 소스 설정
+        sound.src = bellTypes[preference.bell];
+        sound.volume = volume / 100;
+        sound.play();
+
+        // rollback
+        sound.src = bellTypes[currentPreference.bell];
+        sound.volume = currentPreference.volume / 100;
+    }, [volume, currentPreference, preference, bellTypes]);
+
+    const handleClick = useCallback((event) => {
+        if(!preference.sound) return;
+        setAnchorEl(event.currentTarget);
+    }, [setAnchorEl, preference]);
+
+    const handleClose = useCallback(() => {
+        setAnchorEl(null);
+        setCurPreference(prefer => ({...prefer, volume: volume}));
+    }, [setAnchorEl, volume]);
+
     const dispatch = useDispatch();
 
     // 소리, 푸쉬 알림 설정
@@ -30,10 +64,19 @@ function Preference() {
         setCurPreference(prefer => ({...prefer, lang: e.target.value}));
     }, [setCurPreference]);
 
+    // 벨 타입 설정
+    const setBell = useCallback((e) => {
+        setCurPreference(prefer => ({...prefer, bell: e.target.value}));
+    }, [setCurPreference]);
+
     // 최종 설정 값 적용
     const applyPreference = useCallback(() => {
         dispatch(setPreference(preference));
-    }, [dispatch, preference]);
+        const sound = document.getElementById('alarm');
+        sound.src = bellTypes[preference.bell];
+        sound.volume = preference.volume / 100;
+
+    }, [dispatch, preference, bellTypes]);
 
     return (
       <>
@@ -55,6 +98,63 @@ function Preference() {
                             height={20}
                             width={48}/>
                 </div>  
+
+                <div className='ItemDetail'>
+                    <button
+                        onClick={handleClick}
+                    >
+                        Detail
+                    </button>
+                    <Menu
+                        id="long-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                            style: {
+                                maxHeight: 48 * 4.5,
+                                width: '36ch',
+                            },
+                        }}
+                    >
+                        <MenuItem key='volume' disableRipple style={{backgroundColor: 'transparent'}}>
+                            <Grid container spacing={2} style={{marginTop: 5}}>
+                                <Grid item>
+                                    Down
+                                </Grid>
+                                <Grid item xs>
+                                    <Slider value={volume} onChange={handleChange} aria-labelledby="continuous-slider" />
+                                </Grid>
+                                <Grid item>
+                                    Up
+                                </Grid>
+                                
+                                <Grid item>
+                                    <button onClick={clickPlay}>Play!</button>
+                                </Grid>
+                            </Grid>
+                        </MenuItem>
+
+                        <MenuItem key='bellType' disableRipple style={{backgroundColor: 'transparent'}}>
+                            벨소리 설정
+                            <Select
+                                style={{minWidth: 100, marginLeft: 15}}
+                                value={preference.bell}
+                                onChange={setBell}
+                                inputProps={{
+                                    name: 'bell',
+                                    id: 'bell-type',
+                                }}
+                            >
+                                <MenuItem value={'0'}>알람 1</MenuItem>
+                                <MenuItem value={'1'}>알람 2</MenuItem>
+                                <MenuItem value={'2'}>알람 3</MenuItem>
+                            </Select>
+                            <button onClick={clickPlay} style={{marginLeft: 15}}>Play!</button>
+                        </MenuItem>
+                    </Menu>
+                </div> 
             </div>
 
             <div className='PreferenceItem'>
@@ -73,7 +173,8 @@ function Preference() {
                             activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
                             height={20}
                             width={48}/>
-                </div>  
+                </div> 
+                
             </div>
 
             <div className='PreferenceItem'>

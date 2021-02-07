@@ -9,6 +9,8 @@ const initialState = {
     sound: true,
     push: false,
     lang: 'ko',
+    volume: 50,
+    bell: '0',
 };
 
 const preferenceReducer = handleActions(
@@ -18,6 +20,8 @@ const preferenceReducer = handleActions(
             sound: action.payload.sound,
             push: action.payload.push,
             lang: action.payload.lang,
+            volume: action.payload.volume,
+            bell: action.payload.bell,
         }),
     },
 
