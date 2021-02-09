@@ -19,6 +19,7 @@ function SoundSetting() {
     const [isDelete, setDelete] = useState(false); // 현재 삭제 중 인가
     const [fileName, setFileName] = useState(DEFAULT_FILENAME); // 현재 업로드한 file name
     const [alias, setAlias] = useState(''); // 현재 작성 중인 파일 alias
+    const [blob, setBlob] = useState(null); // 현재 업로드하려는 파일
 
     const clickAway = useCallback((e) => {
         const parent = e.target.parentNode;
@@ -78,6 +79,7 @@ function SoundSetting() {
                                                     clickItem={clickItem}
                                                     order={ele.id}
                                                     isClick={ele.id === item}
+                                                    blob={ele.blob}
                                                     updateName={updateName}
                                                     deleteName={deleteName}
                                                     setUpdate={setUpdate}
@@ -87,9 +89,10 @@ function SoundSetting() {
     const uploadAudio = useCallback((e) => {
         // 로컬에서 오디오 파일 업로드
         const selectFile = e.target.files[0];
+        setBlob(selectFile);
         setFileName(selectFile.name);
         setAlias(selectFile.name);
-    }, [setFileName, setAlias]);
+    }, [setFileName, setAlias, setBlob]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
@@ -105,10 +108,12 @@ function SoundSetting() {
             if(sound.name === alias) return;
         }
         // 항목 추가
-        dispatch(addItem(alias));
+        const item = {name: alias, blob: blob};
+        dispatch(addItem(item));
         setAlias('');
         setFileName(DEFAULT_FILENAME);
-    }, [dispatch, setAlias, setFileName, fileName, alias, soundList]);
+        setBlob(null);
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob]);
 
     return (
       <div className='SoundComponent'>

@@ -1,3 +1,8 @@
+audio::-webkit-media-controls-panel {
+    background-color: #fff;
+    color: #fff;
+}
+
 .SoundComponent {
     .SoundList {
         margin: auto;
@@ -15,14 +20,14 @@
         }
 
         .SoundListItem {
-            width: 285px;
+            width: 520px;
             height: 35px;
             line-height: 35px;
             vertical-align: middle;
             text-align: left;
             float: left;
-            margin-top: 15px;
-            margin-left: 27px;
+            margin-top: 25px;
+            margin-left: 70px;
 
             .ItemName {
                 display: inline-block;
@@ -31,19 +36,43 @@
                     0 3px 6px rgba(0, 0, 0, 0.23);
                 border-radius: 10px;
                 padding-left: 10px;
-                width: 200px;
+                width: 430px;
+                height: 41px;
                 cursor: pointer;
 
+                .NameText {
+                    display: inline-block;
+                    margin-top: 3px;
+                }
+
                 .EditInput {
-                    height: 28px;
-                    width: 180px;
+                    margin-top: 1px;
+                    height: 35px;
+                    width: 170px;
                     font-size: 17px;
                     border: 1px solid black;
+                }
+
+                .Play {
+                    display: inline-block;
+                    float: right;
+                    vertical-align: middle;
+                    //line-height: 20px;
+                    margin-right: 2px;
+                    .Control {
+                        margin-top: 3px;
+                        height: 35px;
+                        width: 250px;
+                        background: none;
+                        background-color: white;
+                        outline: none;
+                    }
                 }
             }
 
             .ChangeButton {
                 height: 35px;
+                margin-top: 6px;
                 float: right;
                 .Button {
                     font-size: 0px;

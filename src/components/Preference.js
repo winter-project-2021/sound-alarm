@@ -1,6 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { setPreference } from '../modules/PreferenceResult';
+import { MdMoreVert, MdVolumeDown, MdVolumeUp, MdPlayCircleOutline } from "react-icons/md"
 import Switch from "react-switch";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -100,11 +101,7 @@ function Preference() {
                 </div>  
 
                 <div className='ItemDetail'>
-                    <button
-                        onClick={handleClick}
-                    >
-                        Detail
-                    </button>
+                    <MdMoreVert size={15} onClick={handleClick} className='DetailButton'/>
                     <Menu
                         id="long-menu"
                         anchorEl={anchorEl}
@@ -119,19 +116,20 @@ function Preference() {
                         }}
                     >
                         <MenuItem key='volume' disableRipple style={{backgroundColor: 'transparent'}}>
-                            <Grid container spacing={2} style={{marginTop: 5}}>
+                            <Grid container spacing={2}>
                                 <Grid item>
-                                    Down
+                                    <MdVolumeDown size={30}/>
                                 </Grid>
                                 <Grid item xs>
-                                    <Slider value={volume} onChange={handleChange} aria-labelledby="continuous-slider" />
+                                    <Slider value={volume} onChange={handleChange} aria-labelledby="continuous-slider"
+                                     style={{marginTop: 2}}/>
                                 </Grid>
                                 <Grid item>
-                                    Up
+                                    <MdVolumeUp size={30}/>
                                 </Grid>
                                 
                                 <Grid item>
-                                    <button onClick={clickPlay}>Play!</button>
+                                    <MdPlayCircleOutline onClick={clickPlay} size={30}/>
                                 </Grid>
                             </Grid>
                         </MenuItem>
@@ -151,7 +149,7 @@ function Preference() {
                                 <MenuItem value={'1'}>알람 2</MenuItem>
                                 <MenuItem value={'2'}>알람 3</MenuItem>
                             </Select>
-                            <button onClick={clickPlay} style={{marginLeft: 15}}>Play!</button>
+                            <MdPlayCircleOutline onClick={clickPlay} style={{marginLeft: 48}} size={30}/>
                         </MenuItem>
                     </Menu>
                 </div> 

@@ -1,12 +1,14 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
 import { MdDeleteForever, MdModeEdit, MdDone } from "react-icons/md"
 import '../style/SoundSetting.scss';
 
 function SoundListItem(props) {
 
-    const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate } = props;
+    const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate, blob } = props;
     const dispatch = useDispatch();
 
     // 항목 수정된 이름
@@ -14,12 +16,24 @@ function SoundListItem(props) {
 
     // 현재 수정/ 삭제 중 인지
     const [change, setChange] = useState(false);
-   
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = useCallback((e) => {
+        setAnchorEl(e.currentTarget);
+    }, [setAnchorEl]);
+
+    const handleClose = useCallback(() => {
+        setAnchorEl(null);
+    }, [setAnchorEl]);
+
     useEffect(() => {
         // 새롭게 리렌더링 될 때마다 항목의 수정 이름은
         // 본인의 기본 이름과 같도록 세팅 
         setInputName(name);
-    }, [name, setInputName]);
+        const buttons = document.getElementById('Change' + order);
+        buttons.style.display = isClick || change ? 'inline-block' : 'none';
+    }, [name, setInputName, isClick, order, change]);
 
     const renderName = useCallback((len) => {
         // 글자 수 len + 3 이상이면 자르고 ... 로 렌더링
@@ -52,7 +66,8 @@ function SoundListItem(props) {
         // 수정 시작
         setUpdate(true);
         setChange(true);
-    }, [setUpdate, setChange]);
+        handleClose();
+    }, [setUpdate, setChange, handleClose]);
 
     const updateItem = useCallback(() => {
         // 항목 수정 후 초기화
@@ -73,22 +88,40 @@ function SoundListItem(props) {
         clickItem(order);
     }, [clickItem, order]);
 
-    const renderButton = useCallback(() => {
-        // 수정/삭제 버튼 렌더링
-        // 수정버튼 클릭 시 아이콘 변경되는 것 적용
-        return (<div className='ChangeButton'>
-                    {change ? <MdDone className='Button' onClick={updateItem}/> :
-                    <MdModeEdit className='Button' onClick={clickUpdate}/>}
-                    <MdDeleteForever className='Button' onClick={deleteItem}/>
-                </div>)
-    }, [deleteItem, clickUpdate, updateItem, change]);
+    const renderPlay = useCallback(() => {
+        return (<div className='Play'>
+                    <audio className='Control' src={blob} controls controlsList="nodownload"/>
+                </div>);
+    }, [blob]);
 
     return (
         <div className='SoundListItem'>
             <div className='ItemName' onClick={onClick}>
-                {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> : renderName(10)}
+                {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> :
+                 <div className='NameText'>{renderName(10)}</div>}
+                {renderPlay()}
             </div>
-            {isClick ? renderButton() : null}
+            <div id={'Change' + order} className='ChangeButton' style={{display: 'none'}}>
+                {change ? <MdDone className='Button' onClick={updateItem}/> :
+                <MdModeEdit className='Button' onClick={handleClick}/>}
+                <Menu
+                        id="long-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                            style: {
+                                maxHeight: 48 * 4.5,
+                                width: '36ch',
+                            },
+                        }}
+                    >
+                        <MenuItem key='name' onClick={clickUpdate}>이름 변경</MenuItem>
+                        <MenuItem key='sensitivity'>민감도 변경</MenuItem>
+                </Menu>
+                <MdDeleteForever className='Button' onClick={deleteItem}/>
+            </div>
         </div>
     );
 }
