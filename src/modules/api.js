@@ -18,3 +18,11 @@ export const updateSoundItem = (item) => {
 export const updateSetting = (setting) => {
     axios.post(`${END_POINT}/setting`, setting);
 }
+
+export const updateSoundSensitivity = (sens) => {
+    axios.post(`${END_POINT}/audio/fp/test`, sens);
+}
+
+export const getScore = (blob) => {
+    axios.post(`${END_POINT}/audio/fp`, blob);
+}

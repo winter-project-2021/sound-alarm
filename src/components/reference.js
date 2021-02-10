@@ -24,6 +24,9 @@ function App() {
     recognition.onresult = (e) => {
       let texts = Array.from(e.results)
       .map(result => result[0].transcript).join("");
+      // 리덕스에 text 등록한거
+      // texts 안에 있는 원소중에 등록한게 있는지 
+      // 있으면 card.js 에 있는 함수 해서 알람 울리게
       setWords(texts);
     }
   }

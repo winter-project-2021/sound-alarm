@@ -1,6 +1,7 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, updateItem } from '../modules/SoundList';
+import { setOpenSensitivity } from '../modules/SensitivityResult';
 import SoundListItem from './SoundListItem';
 import { FiUpload } from "react-icons/fi";
 import { MdAddBox } from "react-icons/md";
@@ -80,6 +81,7 @@ function SoundSetting() {
                                                     order={ele.id}
                                                     isClick={ele.id === item}
                                                     blob={ele.blob}
+                                                    score={ele.score}
                                                     updateName={updateName}
                                                     deleteName={deleteName}
                                                     setUpdate={setUpdate}
@@ -90,7 +92,7 @@ function SoundSetting() {
         // 로컬에서 오디오 파일 업로드
         const selectFile = e.target.files[0];
         setBlob(selectFile);
-        setFileName(selectFile.name);
+        setFileName(String(selectFile.name));
         setAlias(selectFile.name);
     }, [setFileName, setAlias, setBlob]);
 
@@ -108,12 +110,13 @@ function SoundSetting() {
             if(sound.name === alias) return;
         }
         // 항목 추가
-        const item = {name: alias, blob: blob};
+        const item = {name: alias, blob: blob, score: 15};
         dispatch(addItem(item));
         setAlias('');
         setFileName(DEFAULT_FILENAME);
         setBlob(null);
-    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob]);
+        dispatch(setOpenSensitivity({id: null, name: alias, score: 15}));
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, setOpenSensitivity]);
 
     return (
       <div className='SoundComponent'>

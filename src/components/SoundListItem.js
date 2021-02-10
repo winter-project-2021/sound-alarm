@@ -1,6 +1,7 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
+import { setOpenSensitivity } from '../modules/SensitivityResult';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { MdDeleteForever, MdModeEdit, MdDone } from "react-icons/md"
@@ -8,7 +9,7 @@ import '../style/SoundSetting.scss';
 
 function SoundListItem(props) {
 
-    const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate, blob } = props;
+    const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate, blob, score } = props;
     const dispatch = useDispatch();
 
     // 항목 수정된 이름
@@ -37,8 +38,8 @@ function SoundListItem(props) {
 
     const renderName = useCallback((len) => {
         // 글자 수 len + 3 이상이면 자르고 ... 로 렌더링
-        if(name.length < len + 3) return name;
-        return name.substring(0, len) + "...";
+        if(String(name).length < len + 3) return name;
+        return String(name).substring(0, len) + "...";
     }, [name]);
 
     const deleteItem = useCallback(() => {
@@ -94,6 +95,17 @@ function SoundListItem(props) {
                 </div>);
     }, [blob]);
 
+    const clickSensitivity = useCallback(() => {
+        const popup = {
+            id: order,
+            name: renderName(10),
+            score: score,
+        };
+        // popup open
+        dispatch(setOpenSensitivity(popup));
+        handleClose();
+    }, [dispatch, order, deleteName, renderName, handleClose, score]);
+
     return (
         <div className='SoundListItem'>
             <div className='ItemName' onClick={onClick}>
@@ -118,7 +130,7 @@ function SoundListItem(props) {
                         }}
                     >
                         <MenuItem key='name' onClick={clickUpdate}>이름 변경</MenuItem>
-                        <MenuItem key='sensitivity'>민감도 변경</MenuItem>
+                        <MenuItem key='sensitivity' onClick={clickSensitivity}>민감도 변경</MenuItem>
                 </Menu>
                 <MdDeleteForever className='Button' onClick={deleteItem}/>
             </div>

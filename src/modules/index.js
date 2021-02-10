@@ -8,6 +8,7 @@ import preferenceReducer from './PreferenceResult';
 import updateTextList from './TextList';
 import updateLoginState from './LoginState';
 import loading from './loading';
+import setSensitivity from './SensitivityResult';
 
 const config = {
     key: 'root',
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
     updateTextList,
     updateLoginState,
     loading,
+    setSensitivity,
     // 추가 ...
 });
 
