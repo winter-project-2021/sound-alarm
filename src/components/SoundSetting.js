@@ -116,7 +116,7 @@ function SoundSetting() {
         setFileName(DEFAULT_FILENAME);
         setBlob(null);
         dispatch(setOpenSensitivity({id: null, name: alias, score: 15}));
-    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, setOpenSensitivity]);
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob]);
 
     return (
       <div className='SoundComponent'>

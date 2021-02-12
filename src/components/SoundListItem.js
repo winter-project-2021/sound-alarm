@@ -104,7 +104,7 @@ function SoundListItem(props) {
         // popup open
         dispatch(setOpenSensitivity(popup));
         handleClose();
-    }, [dispatch, order, deleteName, renderName, handleClose, score]);
+    }, [dispatch, order, renderName, handleClose, score]);
 
     return (
         <div className='SoundListItem'>
