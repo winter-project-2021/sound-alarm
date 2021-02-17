@@ -39,7 +39,7 @@ const updateItemSaga = createRequestSaga('SoundList', UPDATE_ITEM, updateSoundIt
 const updateSensitivitySaga = createRequestSaga('SoundList', UPDATE_SENSITIVITY, updateSoundSensitivity);
 
 // workers
-export function* soundSaga() {
+export function* soundSaga() { 
     yield takeLatest(ADD_ITEM, addItemSaga);
     yield takeLatest(REMOVE_ITEM, removeItemSaga);
     yield takeLatest(UPDATE_ITEM, updateItemSaga);

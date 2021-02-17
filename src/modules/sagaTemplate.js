@@ -8,11 +8,11 @@ export default function createRequestSaga (prefix, type, request) {
     return function* (action) {
         // 우선 로딩중에 true를 넘김
         yield put(startLoading(type));
+        
         try {
             // request를 이용해서 서버랑 통신
             const response = yield call(request, action.payload);
             // 정상적으로 성공하면 성공한 값을 redux로 넘김
-            
             yield put({
                 type: SUCCESS,
                 payload: response.data,
