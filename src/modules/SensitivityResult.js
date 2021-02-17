@@ -22,7 +22,7 @@ export function* sensitivitySaga() {
 const initialState = {
     result: false,
     id: 0,
-    score: 15,
+    score: 60,
     name: '',
     open: false,
     click: false,

@@ -4,13 +4,27 @@ import { setOpen } from '../modules/ModalResult';
 import { setOpenSensitivity } from '../modules/SensitivityResult';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import { MdDeleteForever, MdModeEdit, MdDone } from "react-icons/md"
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import Slider from '@material-ui/core/Slider';
+import { MdDeleteForever, MdModeEdit, MdDone, MdPlayCircleOutline, MdVolumeUp, MdVolumeDown } from "react-icons/md"
+import { FaRegStopCircle, FaVolumeDown } from 'react-icons/fa';
 import '../style/SoundSetting.scss';
 
 function SoundListItem(props) {
 
     const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate, blob, score } = props;
     const dispatch = useDispatch();
+
+    const LightTooltip = withStyles((theme) => ({
+        tooltip: {
+            backgroundColor: theme.palette.common.white,
+            color: 'rgba(0, 0, 0, 0.87)',
+            boxShadow: theme.shadows[2],
+            fontSize: 11,
+            margin: 5,
+        },
+    }))(Tooltip);
 
     // 항목 수정된 이름
     const [inputName, setInputName] = useState(name);
@@ -89,11 +103,52 @@ function SoundListItem(props) {
         clickItem(order);
     }, [clickItem, order]);
 
+    const onPlay = useCallback(() => {
+        const audio = document.getElementById(`audio${order}`);
+        const url = URL.createObjectURL(new Blob([new Uint8Array(JSON.parse(blob)).buffer]));
+        console.log(url);
+        audio.src = url;
+        audio.play();
+    }, [order, blob]);
+
+    const onStop = useCallback(() => {
+        const audio = document.getElementById(`audio${order}`);
+        audio.pause();
+        audio.src = blob;
+    }, [order, blob]);
+
+    const changeVolume = useCallback((e, newValue) => {
+        const audio = document.getElementById(`audio${order}`);
+        audio.volume = newValue / 100;
+    }, [order]);
+
+    const volumeSlider = useCallback(() => {
+        const audio = document.getElementById(`audio${order}`);
+        return (<div>
+                    <MdVolumeDown size={30}/>
+                    <Slider onChange={changeVolume}
+                         defaultValue={audio === null ? 100 : audio.volume * 100}
+                         aria-labelledby="continuous-slider" style={{width: 100, marginLeft: 3, marginRight: 3}}
+                         min={0}
+                         max={100}/>
+                    <MdVolumeUp size={30}/>
+                </div>)
+    }, [changeVolume, order]);
+
     const renderPlay = useCallback(() => {
+        //const url = URL.createObjectURL(blob);
+        //console.log(url);
         return (<div className='Play'>
-                    <audio className='Control' src={blob} controls controlsList="nodownload"/>
+                    <audio id={`audio${order}`} style={{display: 'none'}}/>
+                    <MdPlayCircleOutline className='start' size={35} onClick={onPlay}/>
+                    <FaRegStopCircle className='stop' size={30} onClick={onStop}/>
+                    <div className='volume'>
+                    <LightTooltip title={volumeSlider()} interactive placement="top" disableFocusListener disableTouchListener>
+                        <div style={{display: 'inline-block'}}><FaVolumeDown size={35}/></div>
+                    </LightTooltip>
+                    </div>
                 </div>);
-    }, [blob]);
+    }, [order, onPlay, onStop, volumeSlider]);
 
     const clickSensitivity = useCallback(() => {
         const popup = {
@@ -106,11 +161,15 @@ function SoundListItem(props) {
         handleClose();
     }, [dispatch, order, renderName, handleClose, score]);
 
+
     return (
         <div className='SoundListItem'>
             <div className='ItemName' onClick={onClick}>
                 {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> :
                  <div className='NameText'>{renderName(10)}</div>}
+                <div className='ItemScore'>
+                    민감도: {score}
+                </div>
                 {renderPlay()}
             </div>
             <div id={'Change' + order} className='ChangeButton' style={{display: 'none'}}>

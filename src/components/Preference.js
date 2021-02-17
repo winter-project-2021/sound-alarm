@@ -16,24 +16,20 @@ function Preference() {
     const [preference, setCurPreference] = useState({...currentPreference});
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const [volume, setVolume] = useState(preference.volume);
     const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm.mp3", "2": "/alarm.mp3", "3": "/alarm.mp3", }), []);
 
     const handleChange = useCallback((event, newValue) => {
-        setVolume(newValue);
-    }, [setVolume]);
+        const sound = document.getElementById('alarmTest');
+        sound.volume = (newValue / 100);
+    }, []);
 
     const clickPlay = useCallback(() => {
-        const sound = document.getElementById('alarm');
+        const sound = document.getElementById('alarmTest');
         // bell소리 선택에 따라 소스 설정
         sound.src = bellTypes[preference.bell];
-        sound.volume = volume / 100;
         sound.play();
 
-        // rollback
-        sound.src = bellTypes[currentPreference.bell];
-        sound.volume = currentPreference.volume / 100;
-    }, [volume, currentPreference, preference, bellTypes]);
+    }, [preference, bellTypes]);
 
     const handleClick = useCallback((event) => {
         if(!preference.sound) return;
@@ -42,8 +38,9 @@ function Preference() {
 
     const handleClose = useCallback(() => {
         setAnchorEl(null);
-        setCurPreference(prefer => ({...prefer, volume: volume}));
-    }, [setAnchorEl, volume]);
+        const sound = document.getElementById('alarmTest');
+        setCurPreference(prefer => ({...prefer, volume: sound.volume * 100}));
+    }, [setAnchorEl, setCurPreference]);
 
     const dispatch = useDispatch();
 
@@ -86,7 +83,7 @@ function Preference() {
                 <div className='ItemText'>
                     알림 소리 설정
                 </div>
-              
+                <audio id='alarmTest' style={{display: 'none'}}/>
                 <div className='ItemSwitch'>
                     <Switch onChange={(e) => setProperty(e, 'sound')} checked={preference.sound}
                             onColor="#86d3ff"
@@ -121,8 +118,11 @@ function Preference() {
                                     <MdVolumeDown size={30}/>
                                 </Grid>
                                 <Grid item xs>
-                                    <Slider value={volume} onChange={handleChange} aria-labelledby="continuous-slider"
-                                     style={{marginTop: 2}}/>
+                                    <Slider onChange={handleChange} aria-labelledby="continuous-slider"
+                                     defaultValue={currentPreference.volume}
+                                     style={{marginTop: 2}}
+                                     min={0}
+                                     max={100}/>
                                 </Grid>
                                 <Grid item>
                                     <MdVolumeUp size={30}/>

@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setResult, getScoreServer } from '../modules/SensitivityResult';
 import { updateSensitivity } from '../modules/SoundList';
-import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
+import { MdFiberManualRecord, MdStop } from "react-icons/md";
 import { FiCheckSquare } from 'react-icons/fi';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +16,7 @@ function SensitivityModal() {
     const [curScore, setCurScore] = useState(0);
     const [recorder, setRecorder] = useState(null);
     const [isRecord, setIsRecord] = useState(false);
-    const marks = useMemo(() => [{value: 0, label: '0'}, {value: 20, label: '20'}], []);
+    const marks = useMemo(() => [{value: 0, label: '0'}, {value: 100, label: '100'}], []);
     const dispatch = useDispatch();
 
     // ok 버튼 누르면 result를 true로 하고 callback 실행
@@ -114,7 +114,7 @@ function SensitivityModal() {
                     <div className='SensitivityHead'>{`<${name}> 의 민감도 설정`}</div>
                     <div className='SensitivityBoxBody'>
                         <button className='Mic' onClick={onMicClick}>
-                            {isRecord ? <FaMicrophoneAltSlash size={85}/> : <FaMicrophoneAlt size={85}/>}
+                            {isRecord ? <MdStop size={85}/> : <MdFiberManualRecord color='red' size={85}/>}
                         </button>
                         <div className='SensitivityDetail'>
                             <div className='ServerScore'>현재 점수: {scoreFromServer ? scoreFromServer : '측정 전 입니다.'}</div>
@@ -131,7 +131,7 @@ function SensitivityModal() {
                                     step={1}
                                     marks={marks}
                                     min={0}
-                                    max={20}
+                                    max={100}
                                 />
                             </div>
                         </div>

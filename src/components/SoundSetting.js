@@ -1,5 +1,6 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { setOpen } from '../modules/ModalResult';
 import { addItem, removeItem, updateItem } from '../modules/SoundList';
 import { setOpenSensitivity } from '../modules/SensitivityResult';
 import SoundListItem from './SoundListItem';
@@ -10,6 +11,7 @@ import '../style/SoundSetting.scss';
 function SoundSetting() {
 
     const DEFAULT_FILENAME = '파일 업로드';
+    const FILE_LIMIT = 300 * 1024; // 300kb
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -74,13 +76,14 @@ function SoundSetting() {
         if(soundList.length === 0){
             return <div className='Empty'>새로운 소리 파일을 추가해 주세요!</div>
         }
-
+        //console.log(soundList[0].blob);
+        //console.log(JSON.parse(soundList[0].blob));
         // soundList를 이용해 각 listItem 컴포넌트를 렌더링
         return soundList.map(ele => <SoundListItem name={ele.name}
                                                     clickItem={clickItem}
                                                     order={ele.id}
                                                     isClick={ele.id === item}
-                                                    blob={ele.blob}
+                                                    blob={(ele.blob)}
                                                     score={ele.score}
                                                     updateName={updateName}
                                                     deleteName={deleteName}
@@ -91,9 +94,30 @@ function SoundSetting() {
     const uploadAudio = useCallback((e) => {
         // 로컬에서 오디오 파일 업로드
         const selectFile = e.target.files[0];
-        setBlob(selectFile);
-        setFileName(String(selectFile.name));
-        setAlias(selectFile.name);
+        if(selectFile === null) return;
+        if(selectFile.size > FILE_LIMIT) {
+            const popup = {
+                head: '알림!',
+                body: '파일의 용량이 큽니다! 300kb 이하의 파일을 업로드하세요!',
+                buttonNum: 1,
+                callback: () => {},
+            };
+
+            // popup open
+            dispatch(setOpen(popup));
+            return;
+        }
+
+        const fileReader = new FileReader();
+        fileReader.onloadend = function(e) {
+            const arrayBuffer = e.target.result;
+            setBlob(JSON.stringify(Array.from(new Uint8Array(arrayBuffer))));
+            setFileName(String(selectFile.name));
+            setAlias(selectFile.name);
+        }
+        fileReader.readAsArrayBuffer(selectFile);
+        //setBlob(selectFile);
+        
     }, [setFileName, setAlias, setBlob]);
 
     const writeName = useCallback((e) => {
@@ -110,12 +134,12 @@ function SoundSetting() {
             if(sound.name === alias) return;
         }
         // 항목 추가
-        const item = {name: alias, blob: blob, score: 15};
+        const item = {name: alias, blob: blob, score: 60};
         dispatch(addItem(item));
         setAlias('');
         setFileName(DEFAULT_FILENAME);
         setBlob(null);
-        dispatch(setOpenSensitivity({id: null, name: alias, score: 15}));
+        dispatch(setOpenSensitivity({id: null, name: alias, score: 60}));
     }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob]);
 
     return (

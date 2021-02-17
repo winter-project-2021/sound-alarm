@@ -63,11 +63,12 @@ const initialState = {
 const updateSoundList = handleActions(
     {
         [ADD_ITEM]: (state, action) => {
+            
             // name을 추가하면 id값을 증가시키고 list에 추가
             const item = {
                 id: state.soundNextId,
                 name: action.payload.name,
-                blob: URL.createObjectURL(action.payload.blob),
+                blob: action.payload.blob,
                 score: action.payload.score,
             }
 
