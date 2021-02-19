@@ -14,6 +14,9 @@ function TextListItem(props) {
 
     // 현재 수정/ 삭제 중 인지
     const [change, setChange] = useState(false);
+
+
+    const [isHovered, setIsHovered] = useState(false);
    
     useEffect(() => {
         // 새롭게 리렌더링 될 때마다 항목의 수정 이름은
@@ -85,7 +88,10 @@ function TextListItem(props) {
 
     return (
         <div className='TextListItem'>
-            <div className='ItemName' onClick={onClick}>
+            <div className={isHovered ? 'ItemName Hover' : "ItemName"} 
+                    onClick={onClick} 
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}>
                 {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> : renderName(10)}
             </div>
             {isClick ? renderButton() : null}

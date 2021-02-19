@@ -1,6 +1,8 @@
 import { useState, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { setPreference } from '../modules/PreferenceResult';
+import { MdMoreVert, MdVolumeDown, MdVolumeUp, MdPlayCircleOutline } from "react-icons/md"
+import Logout from './Logout';
 import Switch from "react-switch";
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -93,6 +95,17 @@ function Preference() {
                   <MenuItem value={'en'}>English</MenuItem>
                 </Select>
             </div>
+
+            <div className='PreferenceItem'>
+                <div className='ItemText'>
+                    로그아웃
+                </div>
+                <div className='LogoutButton'>
+                    <Logout/>
+                </div>
+            </div>
+
+            
         </div>
         <button className="ApplyButton" onClick={applyPreference}>적용</button>
       </>

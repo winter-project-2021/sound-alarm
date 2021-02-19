@@ -14,7 +14,20 @@ function SoundListItem(props) {
 
     // 현재 수정/ 삭제 중 인지
     const [change, setChange] = useState(false);
-   
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+
+
+    const [isHovered, setIsHovered] = useState(false);
+
+    const handleClick = useCallback((e) => {
+        setAnchorEl(e.currentTarget);
+    }, [setAnchorEl]);
+
+    const handleClose = useCallback(() => {
+        setAnchorEl(null);
+    }, [setAnchorEl]);
+
     useEffect(() => {
         // 새롭게 리렌더링 될 때마다 항목의 수정 이름은
         // 본인의 기본 이름과 같도록 세팅 
@@ -85,8 +98,34 @@ function SoundListItem(props) {
 
     return (
         <div className='SoundListItem'>
-            <div className='ItemName' onClick={onClick}>
-                {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> : renderName(10)}
+            <div className={isHovered ? 'ItemName Hover' : 'ItemName'} 
+                    onClick={onClick} 
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}>
+                {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> :
+                 <div className='NameText'>{renderName(10)}</div>}
+                {renderPlay()}
+            </div>
+            <div id={'Change' + order} className='ChangeButton' style={{display: 'none'}}>
+                {change ? <MdDone className='Button' onClick={updateItem}/> :
+                <MdModeEdit className='Button' onClick={handleClick}/>}
+                <Menu
+                        id="long-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={open}
+                        onClose={handleClose}
+                        PaperProps={{
+                            style: {
+                                maxHeight: 48 * 4.5,
+                                width: '36ch',
+                            },
+                        }}
+                    >
+                        <MenuItem key='name' onClick={clickUpdate}>이름 변경</MenuItem>
+                        <MenuItem key='sensitivity' onClick={clickSensitivity}>민감도 변경</MenuItem>
+                </Menu>
+                <MdDeleteForever className='Button' onClick={deleteItem}/>
             </div>
             {isClick ? renderButton() : null}
         </div>

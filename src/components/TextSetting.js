@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, updateItem } from '../modules/TextList';
 import TextListItem from './TextListItem';
@@ -16,6 +16,22 @@ function TextSetting() {
     const [update, setUpdate] = useState(false); // 현재 수정 중 인가
     const [isDelete, setDelete] = useState(false); // 현재 삭제 중 인가
     const [alias, setAlias] = useState(''); // 현재 작성 중인 파일 alias
+
+    const clickAway = useCallback((e) => {
+        const parent = e.target.parentNode;
+        if(!(parent.className === 'TextListItem' || parent.className === 'ChangeButton' || 
+            (parent.parentNode !== null && parent.parentNode.className === 'ChangeButton'))){
+            setItem(-1);
+        }
+    }, [setItem])
+
+    // 리스트 아이템 영역 밖을 클릭 시 선택 해제 하도록
+    useEffect(() => {
+        if(update || isDelete) document.removeEventListener('mouseup', clickAway);
+        else{
+            document.addEventListener('mouseup', clickAway);
+        }
+    }, [clickAway, update, isDelete]);
 
     const clickItem = useCallback((i) => {
         
@@ -58,7 +74,7 @@ function TextSetting() {
         return textList.map(ele => <TextListItem name={ele.name}
                                                     clickItem={clickItem}
                                                     order={ele.id}
-                                                    isClick={ele.id === item}
+                                                    isClick={ele.id === item}                                                    
                                                     updateName={updateName}
                                                     deleteName={deleteName}
                                                     setUpdate={setUpdate}

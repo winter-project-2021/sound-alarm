@@ -54,6 +54,25 @@
             background: none;
             border: none;
             outline: none;
+            color: #d9d9d9;
+            border-radius: 25px;
+            cursor: pointer;
+        }
+
+        .select {
+            animation-name: buttonFadein;
+            -moz-animation-duration: 0.2s;
+            animation-duration: 0.2;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
+
+        .deSelect {
+            animation-name: buttonFadeout;
+            -moz-animation-duration: 0.2s;
+            animation-duration: 0.2s;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
         }
 
         .SelectedButton {

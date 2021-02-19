@@ -29,13 +29,37 @@
                 border: 1px solid black;
                 border-radius: 10px;
                 padding-left: 10px;
-                width: 200px;
+                width: 430px;
+                height: 41px;
+                cursor: pointer;
+            
+
+                .NameText {
+                    display: inline-block;
+                    margin-top: 3px;
+                }
 
                 .EditInput {
                     height: 28px;
                     width: 180px;
                     font-size: 17px;
                 }
+            }
+            
+            .Hover {
+                animation-name: buttonHover;
+                -moz-animation-duration: 0.3s;
+                animation-duration: 0.3s;
+                animation-timing-function: linear;
+                animation-fill-mode: forwards;
+            }
+    
+            .Leave {
+                animation-name: buttonLeave;
+                -moz-animation-duration: 0.3s;
+                animation-duration: 0.3s;
+                animation-timing-function: linear;
+                animation-fill-mode: forwards;
             }
 
             .ChangeButton {
@@ -89,5 +113,33 @@
         .AddButton {
             vertical-align: middle;
         }
+    }
+}
+
+@keyframes buttonHover {
+    from {
+        border: 1px solid #ada5a5;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+            0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    to {
+        border: 1px solid rgba(78, 154, 255, 0.63);
+        box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
+            0 3px 6px rgba(78, 154, 255, 0.63);
+    }
+}
+
+@keyframes buttonLeave {
+    to {
+        border: 1px solid #ada5a5;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+            0 3px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    from {
+        border: 1px solid rgba(78, 154, 255, 0.63);
+        box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
+            0 3px 6px rgba(78, 154, 255, 0.63);
     }
 }

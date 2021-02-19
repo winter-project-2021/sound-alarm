@@ -1,13 +1,13 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 // test for alarm method
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateLogout } from '../modules/LoginState';
 import Guide from './Guide';
 import SoundSetting from './SoundSetting';
 import TextSetting from './TextSetting';
 import Preference from './Preference';
 import Error from './Error';
 import Login from './Login';
-import Logout from './Logout';
 import '../style/Card.scss';
 
 function Card() {
@@ -24,6 +24,8 @@ function Card() {
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
     const { sound, push } = useSelector(state => state.preferenceReducer);
+
+    const dispatch = useDispatch();
 
     const testAlarm = useCallback(() => {
         if(sound){
@@ -71,8 +73,10 @@ function Card() {
                                             }>{item}</button>));
     }, [menuList, selectMenu, menu])
 
+    
+
     const renderHeader = useCallback(() => {
-        //Header 왼쪽에 유저 썸네일이랑 이름, 오른쪽에 로그아웃버튼
+        //Header 왼쪽에 유저 썸네일이랑 이름
         return (
             <div className='Header'>
                 <div className='InfoBox'>
@@ -81,10 +85,7 @@ function Card() {
                             {name}
                         </div>                    
                 </div>
-                Sound Alarm
-                <div className='LogoutButton'>
-                    <Logout/>
-                </div>
+                {/*Sound Alarm*/}
             </div>
         )
     }, [imageURL, name])
@@ -111,6 +112,14 @@ function Card() {
             </>
         );
     }
+
+
+    useEffect(() => {
+        console.log("Card component did mount with useEffect")
+        return () => {
+            dispatch(updateLogout());
+        }
+    }, []);
 
     return (
         <div className='CardComponent'>
