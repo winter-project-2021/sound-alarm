@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import toWav from 'audiobuffer-to-wav';
+import writeFileP from "write-file-p";
 
 function App() {
 
@@ -22,6 +24,9 @@ function App() {
     recognition.onresult = (e) => {
       let texts = Array.from(e.results)
       .map(result => result[0].transcript).join("");
+      // 리덕스에 text 등록한거
+      // texts 안에 있는 원소중에 등록한게 있는지 
+      // 있으면 card.js 에 있는 함수 해서 알람 울리게
       setWords(texts);
     }
   }
@@ -32,57 +37,60 @@ function App() {
 		}
 	}
 
-  const audioStart = (src, upload) => {
+  const audioStart = () => {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    var a = document.querySelector('.a')
+    var b = document.querySelector('.b');
 
-    const analyser = audioCtx.createAnalyser();
-    const compressor = audioCtx.createDynamicsCompressor();
-    const gain = audioCtx.createGain();
-
-    analyser.fftSize = 2048;
-    analyser.minDecibels = -100;
-    analyser.maxDecibels = -30;
-    gain.gain.value = 0;
-
-    setCompressorValueIfDefined(compressor, audioCtx, 'threshold', -50);
-		setCompressorValueIfDefined(compressor, audioCtx, 'knee', 40);
-		setCompressorValueIfDefined(compressor, audioCtx, 'ratio', 12);
-		setCompressorValueIfDefined(compressor, audioCtx, 'reduction', -20);
-		setCompressorValueIfDefined(compressor, audioCtx, 'attack', 0);
-		setCompressorValueIfDefined(compressor, audioCtx, 'release', .25);
-
-    if(upload){
-      const source = audioCtx.createMediaElementSource(src);
-      source.connect(compressor);
-      compressor.connect(analyser);
-      analyser.connect(gain);
-      gain.connect(audioCtx.destination);
-      src.play();  
-    }
-
-    else{
-      navigator.getUserMedia(
+    navigator.getUserMedia(
         {
           audio: true,
           video: false,
         },
   
         function(stream){
-          const source = audioCtx.createMediaStreamSource(stream);
-          source.connect(compressor);
-          compressor.connect(analyser);
-          analyser.connect(gain);
-          gain.connect(audioCtx.destination);
+          var source = audioCtx.createMediaStreamSource(stream);
+          var dest = audioCtx.createMediaStreamDestination();
+          var mediaRecorder = new MediaRecorder(dest.stream);
+          source.connect(dest);
+          let chunks = [];
+          mediaRecorder.ondataavailable = function(evt) {
+          // push each chunk (blobs) in an array
+            chunks.push(evt.data);
+            var blob = new Blob(chunks, { 'type' : 'audio/wav' });
+            blob.arrayBuffer().then(buffer => {
+              audioCtx.decodeAudioData(buffer, function(b){
+                let wav = toWav(b);
+                const fileData = JSON.stringify(wav);
+                const blob = new Blob([wav], {type: 'audio/wav'});
+                const url = URL.createObjectURL(blob);
+                //console.log(wav);
+                var link = document.querySelector('.link');
+                link.href = url;
+                link.download = 'test.wav';
+
+              })
+            })
+
+            chunks=[]
+          };
+
+          a.addEventListener('click', (e) => {
+            mediaRecorder.start();
+          })
+
+          b.addEventListener('click', (e) => {
+            mediaRecorder.stop();
+          })
+
         },
   
         function(err) {
           console.log('The following gUM error occured: ' + err);
         }
       );
-    }
-    
-    audioProcess(analyser, compressor, gain, upload);
   }
+
 
   const audioProcess = (analyser, compressor, gain, upload) => {
     const NFFT = analyser.fftSize;
@@ -139,7 +147,7 @@ function App() {
   }
 
   const startButton = () => {
-    startSTT();
+    //startSTT();
     audioStart(0, false);
   }
 
@@ -161,7 +169,9 @@ function App() {
                  id='sound' onEnded={clear} controls></audio>
           {check ? "감지되었습니다!" : ""}
           <button name="start" onClick={startButton}>Start!</button>
-          <button name="reset" onClick={reset}>Reset!</button>
+          <button className='a' name="reset">SSSSS</button>
+          <button className='b' name="reset">Reset!</button>
+          <a className='link'>!link!</a>
         </div>
     </div>
   );

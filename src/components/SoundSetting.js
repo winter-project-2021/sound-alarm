@@ -1,6 +1,8 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { setOpen } from '../modules/ModalResult';
 import { addItem, removeItem, updateItem } from '../modules/SoundList';
+import { setOpenSensitivity } from '../modules/SensitivityResult';
 import SoundListItem from './SoundListItem';
 import { FiUpload } from "react-icons/fi";
 import { MdAddBox } from "react-icons/md";
@@ -9,6 +11,7 @@ import '../style/SoundSetting.scss';
 function SoundSetting() {
 
     const DEFAULT_FILENAME = '파일 업로드';
+    const FILE_LIMIT = 300 * 1024; // 300kb
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -19,15 +22,23 @@ function SoundSetting() {
     const [isDelete, setDelete] = useState(false); // 현재 삭제 중 인가
     const [fileName, setFileName] = useState(DEFAULT_FILENAME); // 현재 업로드한 file name
     const [alias, setAlias] = useState(''); // 현재 작성 중인 파일 alias
+    const [blob, setBlob] = useState(null); // 현재 업로드하려는 파일
+
+    const clickAway = useCallback((e) => {
+        const parent = e.target.parentNode;
+        if(!(parent.className === 'SoundListItem' || parent.className === 'ChangeButton' || 
+            (parent.parentNode !== null && parent.parentNode.className === 'ChangeButton'))){
+            setItem(-1);
+        }
+    }, [setItem])
 
     // 리스트 아이템 영역 밖을 클릭 시 선택 해제 하도록
     useEffect(() => {
-        document.addEventListener('mouseup', e => {
-            if(e.target.className !== 'SoundListItem'){
-                setItem(-1);
-            }
-        });
-    }, [setItem]);
+        if(update || isDelete) document.removeEventListener('mouseup', clickAway);
+        else{
+            document.addEventListener('mouseup', clickAway);
+        }
+    }, [clickAway, update, isDelete]);
 
     const clickItem = useCallback((i) => {
         
@@ -65,12 +76,15 @@ function SoundSetting() {
         if(soundList.length === 0){
             return <div className='Empty'>새로운 소리 파일을 추가해 주세요!</div>
         }
-
+        //console.log(soundList[0].blob);
+        //console.log(JSON.parse(soundList[0].blob));
         // soundList를 이용해 각 listItem 컴포넌트를 렌더링
         return soundList.map(ele => <SoundListItem name={ele.name}
                                                     clickItem={clickItem}
                                                     order={ele.id}
                                                     isClick={ele.id === item}
+                                                    blob={(ele.blob)}
+                                                    score={ele.score}
                                                     updateName={updateName}
                                                     deleteName={deleteName}
                                                     setUpdate={setUpdate}
@@ -80,9 +94,31 @@ function SoundSetting() {
     const uploadAudio = useCallback((e) => {
         // 로컬에서 오디오 파일 업로드
         const selectFile = e.target.files[0];
-        setFileName(selectFile.name);
-        setAlias(selectFile.name);
-    }, [setFileName, setAlias]);
+        if(selectFile === null) return;
+        if(selectFile.size > FILE_LIMIT) {
+            const popup = {
+                head: '알림!',
+                body: '파일의 용량이 큽니다! 300kb 이하의 파일을 업로드하세요!',
+                buttonNum: 1,
+                callback: () => {},
+            };
+
+            // popup open
+            dispatch(setOpen(popup));
+            return;
+        }
+
+        const fileReader = new FileReader();
+        fileReader.onloadend = function(e) {
+            const arrayBuffer = e.target.result;
+            setBlob(JSON.stringify(Array.from(new Uint8Array(arrayBuffer))));
+            setFileName(String(selectFile.name));
+            setAlias(selectFile.name);
+        }
+        fileReader.readAsArrayBuffer(selectFile);
+        //setBlob(selectFile);
+        
+    }, [setFileName, setAlias, setBlob]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
@@ -98,10 +134,13 @@ function SoundSetting() {
             if(sound.name === alias) return;
         }
         // 항목 추가
-        dispatch(addItem(alias));
+        const item = {name: alias, blob: blob, score: 60};
+        dispatch(addItem(item));
         setAlias('');
         setFileName(DEFAULT_FILENAME);
-    }, [dispatch, setAlias, setFileName, fileName, alias, soundList]);
+        setBlob(null);
+        dispatch(setOpenSensitivity({id: null, name: alias, score: 60}));
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob]);
 
     return (
       <div className='SoundComponent'>

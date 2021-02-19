@@ -1,13 +1,30 @@
 import { useCallback, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
-import { MdDeleteForever, MdModeEdit, MdDone } from "react-icons/md"
+import { setOpenSensitivity } from '../modules/SensitivityResult';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import Tooltip from '@material-ui/core/Tooltip';
+import { withStyles } from '@material-ui/core/styles';
+import Slider from '@material-ui/core/Slider';
+import { MdDeleteForever, MdModeEdit, MdDone, MdPlayCircleOutline, MdVolumeUp, MdVolumeDown } from "react-icons/md"
+import { FaRegStopCircle, FaVolumeDown } from 'react-icons/fa';
 import '../style/SoundSetting.scss';
 
 function SoundListItem(props) {
 
-    const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate } = props;
+    const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate, blob, score } = props;
     const dispatch = useDispatch();
+
+    const LightTooltip = withStyles((theme) => ({
+        tooltip: {
+            backgroundColor: theme.palette.common.white,
+            color: 'rgba(0, 0, 0, 0.87)',
+            boxShadow: theme.shadows[2],
+            fontSize: 11,
+            margin: 5,
+        },
+    }))(Tooltip);
 
     // 항목 수정된 이름
     const [inputName, setInputName] = useState(name);
@@ -17,8 +34,6 @@ function SoundListItem(props) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-
-    const [isHovered, setIsHovered] = useState(false);
 
     const handleClick = useCallback((e) => {
         setAnchorEl(e.currentTarget);
@@ -32,12 +47,14 @@ function SoundListItem(props) {
         // 새롭게 리렌더링 될 때마다 항목의 수정 이름은
         // 본인의 기본 이름과 같도록 세팅 
         setInputName(name);
-    }, [name, setInputName]);
+        const buttons = document.getElementById('Change' + order);
+        buttons.style.display = isClick || change ? 'inline-block' : 'none';
+    }, [name, setInputName, isClick, order, change]);
 
     const renderName = useCallback((len) => {
         // 글자 수 len + 3 이상이면 자르고 ... 로 렌더링
-        if(name.length < len + 3) return name;
-        return name.substring(0, len) + "...";
+        if(String(name).length < len + 3) return name;
+        return String(name).substring(0, len) + "...";
     }, [name]);
 
     const deleteItem = useCallback(() => {
@@ -65,7 +82,8 @@ function SoundListItem(props) {
         // 수정 시작
         setUpdate(true);
         setChange(true);
-    }, [setUpdate, setChange]);
+        handleClose();
+    }, [setUpdate, setChange, handleClose]);
 
     const updateItem = useCallback(() => {
         // 항목 수정 후 초기화
@@ -86,24 +104,73 @@ function SoundListItem(props) {
         clickItem(order);
     }, [clickItem, order]);
 
-    const renderButton = useCallback(() => {
-        // 수정/삭제 버튼 렌더링
-        // 수정버튼 클릭 시 아이콘 변경되는 것 적용
-        return (<div className='ChangeButton'>
-                    {change ? <MdDone className='Button' onClick={updateItem}/> :
-                    <MdModeEdit className='Button' onClick={clickUpdate}/>}
-                    <MdDeleteForever className='Button' onClick={deleteItem}/>
+    const onPlay = useCallback(() => {
+        const audio = document.getElementById(`audio${order}`);
+        const url = URL.createObjectURL(new Blob([new Uint8Array(JSON.parse(blob)).buffer]));
+        console.log(url);
+        audio.src = url;
+        audio.play();
+    }, [order, blob]);
+
+    const onStop = useCallback(() => {
+        const audio = document.getElementById(`audio${order}`);
+        audio.pause();
+        audio.src = blob;
+    }, [order, blob]);
+
+    const changeVolume = useCallback((e, newValue) => {
+        const audio = document.getElementById(`audio${order}`);
+        audio.volume = newValue / 100;
+    }, [order]);
+
+    const volumeSlider = useCallback(() => {
+        const audio = document.getElementById(`audio${order}`);
+        return (<div>
+                    <MdVolumeDown size={30}/>
+                    <Slider onChange={changeVolume}
+                         defaultValue={audio === null ? 100 : audio.volume * 100}
+                         aria-labelledby="continuous-slider" style={{width: 100, marginLeft: 3, marginRight: 3}}
+                         min={0}
+                         max={100}/>
+                    <MdVolumeUp size={30}/>
                 </div>)
-    }, [deleteItem, clickUpdate, updateItem, change]);
+    }, [changeVolume, order]);
+
+    const renderPlay = useCallback(() => {
+        //const url = URL.createObjectURL(blob);
+        //console.log(url);
+        return (<div className='Play'>
+                    <audio id={`audio${order}`} style={{display: 'none'}}/>
+                    <MdPlayCircleOutline className='start' size={35} onClick={onPlay}/>
+                    <FaRegStopCircle className='stop' size={30} onClick={onStop}/>
+                    <div className='volume'>
+                    <LightTooltip title={volumeSlider()} interactive placement="top" disableFocusListener disableTouchListener>
+                        <div style={{display: 'inline-block'}}><FaVolumeDown size={35}/></div>
+                    </LightTooltip>
+                    </div>
+                </div>);
+    }, [order, onPlay, onStop, volumeSlider]);
+
+    const clickSensitivity = useCallback(() => {
+        const popup = {
+            id: order,
+            name: renderName(10),
+            score: score,
+        };
+        // popup open
+        dispatch(setOpenSensitivity(popup));
+        handleClose();
+    }, [dispatch, order, renderName, handleClose, score]);
+
 
     return (
         <div className='SoundListItem'>
-            <div className={isHovered ? 'ItemName Hover' : 'ItemName'} 
-                    onClick={onClick} 
-                    onMouseEnter={() => setIsHovered(true)}
-                    onMouseLeave={() => setIsHovered(false)}>
+            <div className='ItemName' onClick={onClick}>
                 {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> :
                  <div className='NameText'>{renderName(10)}</div>}
+                <div className='ItemScore'>
+                    민감도: {score}
+                </div>
                 {renderPlay()}
             </div>
             <div id={'Change' + order} className='ChangeButton' style={{display: 'none'}}>
@@ -127,7 +194,6 @@ function SoundListItem(props) {
                 </Menu>
                 <MdDeleteForever className='Button' onClick={deleteItem}/>
             </div>
-            {isClick ? renderButton() : null}
         </div>
     );
 }

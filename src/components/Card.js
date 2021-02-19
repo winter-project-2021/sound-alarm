@@ -16,6 +16,7 @@ function Card() {
     const [menu, setMenu] = useState(0);
     // 선택가능한 메뉴 리스트
     const menuList = useMemo(() => ["가이드", "텍스트 설정", "소리 설정", "설정", ], []);
+    const [classes, setClasses] = useState(['SideButton select', 'SideButton', 'SideButton', 'SideButton'])
 
     // login 여부
     // 로그인 여부와 사용자 이름, 썸네일 이미지를 리덕스에서 가져옴
@@ -62,16 +63,24 @@ function Card() {
     
     const selectMenu = useCallback((id) => {
         // 메뉴 버튼 클릭 시 menu값 설정
+        if(id === menu) return;
+        let newClasses = [];
+        for(let i = 0; i < 4; i++){
+            if(i === menu) newClasses.push('SideButton deSelect');
+            else if(i === id) newClasses.push('SideButton select');
+            else newClasses.push('SideButton');
+        }
+        setClasses(newClasses);
         setMenu(id);
-    }, [setMenu])
+    }, [setMenu, menu, setClasses])
     
     const renderSideMenu = useCallback(() => {
         // menuList의 항목을 button list로 전환
         return menuList.map((item, i) => (<button id={i} 
-                                            className={'SideButton ' + (i === menu ? 'SelectedButton' : '')}
+                                            className={classes[i]}
                                             onClick={() => selectMenu(i)
                                             }>{item}</button>));
-    }, [menuList, selectMenu, menu])
+    }, [menuList, selectMenu, classes])
 
     
 

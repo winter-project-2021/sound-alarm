@@ -1,0 +1,116 @@
+.Sensitivity {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+
+    .SensitivityBox {
+        width: 750px;
+        height: 400px;
+        background-color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 20px;
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+            0 10px 10px rgba(0, 0, 0, 0.22);
+
+        .SensitivityBoxBody {
+            margin-left: 130px;
+            display: inline-block;
+            height: 200px;
+            width: 480px;
+            .Mic {
+                width: 150px;
+                height: 150px;
+                border-radius: 50%;
+                outline: none;
+                display: inline-block;
+                margin-top: 25px;
+                cursor: pointer;
+            }
+
+            .SensitivityDetail {
+                display: inline-block;
+                width: 300px;
+                float: right;
+                margin-top: 46px;
+
+                .ServerScore {
+                    font-size: 18px;
+                    margin-bottom: 20px;
+                }
+
+                .SensitivitySlider {
+                    margin-top: 25px;
+                }
+            }
+        }
+
+        .Description {
+            margin-left: 20px;
+            margin-top: 20px;
+            width: 800px;
+            .DescriptionItem {
+                .Guide1 {
+                    height: 20px;
+                    float: right;
+                    margin-top: 2px;
+                    margin-right: 215px;
+                }
+
+                .Guide2 {
+                    height: 20px;
+                    float: right;
+                    margin-top: 2px;
+                    margin-right: 168px;
+                }
+
+                .Guide3 {
+                    height: 20px;
+                    float: right;
+                    margin-top: 2px;
+                    margin-right: 68px;
+                }
+            }
+        }
+
+        .SensitivityHead {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .SensitivityBody {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+
+        .SensitivityButton {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+
+            .Button {
+                width: 130px;
+                height: 30px;
+                margin-left: 10px;
+                margin-right: 10px;
+                cursor: pointer;
+            }
+        }
+
+        .SensitivityDoubleBox {
+            width: 300px;
+        }
+    }
+}

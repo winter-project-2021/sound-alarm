@@ -1,7 +1,6 @@
 .CardComponent {
     width: 1100px;
     height: 600px;
-    border: 1px black solid;
     border-radius: 25px;
 
     position: absolute;
@@ -9,18 +8,21 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-
+    background: linear-gradient(135deg, #00d6c2, #8694fc);
+    box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 
     .CardBody {
         position: absolute;
         right: 0;
         bottom: 0;
-        border-top: 1px solid black;
-        border-left: 1px solid black;
+        //border-top: 1px solid black;
+        //border-left: 1px solid black;
         border-top-left-radius: 60px;
+        border-bottom-right-radius: 25px;
         width: 900px;
         height: 525px;
         text-align: center;
+        background-color: white;
 
         .StartButton {
             position: absolute;
@@ -32,6 +34,7 @@
             border-radius: 50px;
             background: none;
             outline: none;
+            cursor: pointer;
         }
     }
 
@@ -44,12 +47,12 @@
             &:first-child {
                 margin-top: 60px;
             }
-            text-align: left;
-            padding-left: 20px;
+            margin: auto;
+            text-align: center;
             display: block;
-            margin-bottom: 40px;
-            width: 200px;
-            height: 50px;
+            margin-bottom: 20px;
+            width: 180px;
+            height: 60px;
             font-size: 20px;
             background: none;
             border: none;
@@ -61,27 +64,29 @@
 
         .select {
             animation-name: buttonFadein;
-            -moz-animation-duration: 0.2s;
-            animation-duration: 0.2;
+            -moz-animation-duration: 0.3s;
+            animation-duration: 0.3s;
             animation-timing-function: linear;
             animation-fill-mode: forwards;
         }
 
         .deSelect {
             animation-name: buttonFadeout;
-            -moz-animation-duration: 0.2s;
-            animation-duration: 0.2s;
+            -moz-animation-duration: 0.3s;
+            animation-duration: 0.3s;
             animation-timing-function: linear;
             animation-fill-mode: forwards;
         }
 
         .SelectedButton {
-            background-color: #e0817b;
+            background-color: #ff9fbf;
             color: white;
             font-weight: bold;
-            border-radius: 15px;
+
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
                 0 6px 6px rgba(0, 0, 0, 0.23);
+            text-shadow: -0px -0px 0 #000, 0px -0px 0 #000, -0px 0px 0 #000,
+                1px 1px 0 #000;
         }
     }
 
@@ -91,7 +96,7 @@
         display: table;
 
         .Header {
-            display:table-cell;
+            display: table-cell;
             vertical-align: middle;
             font-weight: bold;
             font-size: 40px;
@@ -103,7 +108,7 @@
                 left: 30px;
                 width: 200px;
                 line-height: 50px;
-                
+
                 .UserThumb {
                     float: left;
                     width: 50px;
@@ -126,8 +131,52 @@
             .LogoutButton {
                 position: absolute;
                 right: 30px;
-                top: 2px;                
+                top: 2px;
             }
         }
+    }
+}
+
+@keyframes buttonFadein {
+    from {
+        color: #d9d9d9;
+        background: none;
+        border: none;
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: normal;
+    }
+
+    to {
+        background-color: #ff9fbf;
+        color: white;
+        font-weight: bold;
+        //border-radius: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+            0 6px 6px rgba(0, 0, 0, 0.23);
+        text-shadow: -0px -0px 0 #000, 0px -0px 0 #000, -0px 0px 0 #000,
+            1px 1px 0 #000;
+    }
+}
+
+@keyframes buttonFadeout {
+    to {
+        color: #d9d9d9;
+        background: none;
+        border: none;
+        box-shadow: none;
+        text-shadow: none;
+        font-weight: normal;
+    }
+
+    from {
+        background-color: #ff9fbf;
+        color: white;
+        font-weight: bold;
+        //border-radius: 25px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19),
+            0 6px 6px rgba(0, 0, 0, 0.23);
+        text-shadow: -0px -0px 0 #000, 0px -0px 0 #000, -0px 0px 0 #000,
+            1px 1px 0 #000;
     }
 }
