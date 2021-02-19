@@ -26,3 +26,19 @@ export const updateSoundSensitivity = (sens) => {
 export const getScore = (blob) => {
     axios.post(`${END_POINT}/audio/fp`, blob);
 }
+
+export const getUserinfo = (username) => {
+    axios.post(`${END_POINT}/`, username)
+}
+
+export const addTextItem = (item) => {
+    axios.post(`${END_POINT}/`, item)
+}
+
+export const deleteTextItem = (item) => {
+    axios.delete(`${END_POINT}/`, item)
+}
+
+export const updateTextItem = (item) => {
+    axios.put(`${END_POINT}/`, item)
+}

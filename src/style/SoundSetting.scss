@@ -39,6 +39,7 @@ audio::-webkit-media-controls-panel {
                 width: 430px;
                 height: 41px;
                 cursor: pointer;
+                transition: all 0.2s;
 
                 .ItemScore {
                     display: inline-block;
@@ -78,6 +79,7 @@ audio::-webkit-media-controls-panel {
                     }
                 }
             }
+<<<<<<< Updated upstream
             
             .Hover {
                 animation-name: buttonHover;
@@ -93,6 +95,12 @@ audio::-webkit-media-controls-panel {
                 animation-duration: 0.3s;
                 animation-timing-function: linear;
                 animation-fill-mode: forwards;
+=======
+            .ItemName:hover{
+                border: 1px solid rgba(78, 154, 255, 0.63);
+                box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
+                            0 3px 6px rgba(78, 154, 255, 0.63);
+>>>>>>> Stashed changes
             }
 
             .ChangeButton {
@@ -134,12 +142,18 @@ audio::-webkit-media-controls-panel {
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
                 0 3px 6px rgba(0, 0, 0, 0.23);
             cursor: pointer;
+            transition: all 0.2s;
 
             .Icon {
                 float: right;
                 margin-right: 10px;
                 margin-top: 6px;
             }
+        }
+        .UploadButton:hover{
+            border: 1px solid rgba(78, 154, 255, 0.63);
+            box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
+                        0 3px 6px rgba(78, 154, 255, 0.63);
         }
 
         .NameInput {

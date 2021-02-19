@@ -52,7 +52,14 @@ function App() {
           var source = audioCtx.createMediaStreamSource(stream);
           var dest = audioCtx.createMediaStreamDestination();
           var mediaRecorder = new MediaRecorder(dest.stream);
-          source.connect(dest);
+          var biquadFilter = audioCtx.createBiquadFilter();
+
+          biquadFilter.type = "bandpass"
+          biquadFilter.frequency.setValueAtTime(100, audioCtx.currentTime);
+          biquadFilter.Q.setValueAtTime(10, audioCtx.currentTime);
+
+          source.connect(biquadFilter);
+          biquadFilter.connect(dest);
           let chunks = [];
           mediaRecorder.ondataavailable = function(evt) {
           // push each chunk (blobs) in an array

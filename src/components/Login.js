@@ -3,29 +3,39 @@ import { GoogleLogin } from 'react-google-login';
 import { updateLogin, updateLogout } from '../modules/LoginState';
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
+import axios from 'axios';
 import '../style/Login.scss';
 
 const clientId = `${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`
-
+const END_POINT = `${process.env.END_POINT}`;
 
 function Login() {
     //Modal 용도
     const dispatch = useDispatch();
-    
+
+
     //로그인 성공시 실행
     const onSuccess = useCallback((res) => {
-        const userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl};
+        const userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl, username: 'gildong'};
+        axios.post('/login',userInfo.username)
+        .then((response) => {
+            Object.assign(userInfo, response.data);
+            const popup = {
+                head: '로그인 성공',
+                body: `${res.profileObj.name}님 환영합니다. See_console_for_full_profile_object.`,
+                buttonNum: 1,
+                callback: () => dispatch(updateLogin(userInfo)),
+            };
+            dispatch(setOpen(popup));
+            refreshTokenSetup(res);
+    
+            
+    
+            console.log('Login Success: currentUser:', res.profileObj, userInfo);
+        })
 
-        const popup = {
-            head: '로그인 성공',
-            body: `${res.profileObj.name}님 환영합니다. See_console_for_full_profile_object.`,
-            buttonNum: 1,
-            callback: () => dispatch(updateLogin(userInfo)),
-        };
-        dispatch(setOpen(popup));
-        refreshTokenSetup(res);
+        
 
-        console.log('Login Success: currentUser:', res.profileObj, res.tokenObj);
     }, [dispatch]);
     
     //로그인 실패시 실행
@@ -62,6 +72,9 @@ function Login() {
         // Setup first refresh timer
         setTimeout(refreshToken, refreshTiming);
     };
+
+
+
 
     return (
         <div className='LoginComponent'>
