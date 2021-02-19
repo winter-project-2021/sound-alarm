@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { setPreference } from '../modules/PreferenceResult';
+import { postPreference } from '../modules/PreferenceResult';
 import { MdMoreVert, MdVolumeDown, MdVolumeUp, MdPlayCircleOutline } from "react-icons/md"
 import Switch from "react-switch";
 import Select from '@material-ui/core/Select';
@@ -69,7 +69,16 @@ function Preference() {
 
     // 최종 설정 값 적용
     const applyPreference = useCallback(() => {
-        dispatch(setPreference(preference));
+        const item = {
+            _id: '602dba230bde132a508034ad',
+            alarm: preference.sound,
+            alarmpush: preference.push,
+            language: preference.lang,
+            alarmvolume: preference.volume,
+            alarmsound: preference.bell,
+        };
+        
+        dispatch(postPreference(item));
         const sound = document.getElementById('alarm');
         sound.src = bellTypes[preference.bell];
         sound.volume = preference.volume / 100;

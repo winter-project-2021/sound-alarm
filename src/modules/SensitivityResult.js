@@ -39,12 +39,14 @@ const setSensitivity = handleActions(
             open: true,
             click: false,
             name: action.payload.name,
+            scoreFromServer: null,
             error: false,
         }),
 
         [SET_RESULT]: (state, action) => ({
             ...state,
             result: action.payload,
+            score: 0,
             open: false,
             click: true,
             error: false,
@@ -52,7 +54,7 @@ const setSensitivity = handleActions(
 
         [GET_SCORE_SERVER_SUCCESS]: (state, action) => ({
             ...state,
-            scoreFromServer: action.payload.score,
+            scoreFromServer: action.payload.accuracy,
             error: false,
         }),
 

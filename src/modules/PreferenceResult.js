@@ -33,21 +33,21 @@ const preferenceReducer = handleActions(
     {
         [SET_PREFERENCE]: (state, action) => ({
             ...state,
-            sound: action.payload.sound,
-            push: action.payload.push,
-            lang: action.payload.lang,
-            volume: action.payload.volume,
-            bell: action.payload.bell,
+            sound: action.payload.alarm,
+            push: action.payload.alarmpush,
+            lang: action.payload.language,
+            volume: action.payload.alarmvolume,
+            bell: action.payload.alarmsound,
             error: false,
         }),
 
         [POST_PREFERENCE_SUCCESS]: (state, action) => ({
             ...state,
-            sound: action.payload.sound,
-            push: action.payload.push,
-            lang: action.payload.lang,
-            volume: action.payload.volume,
-            bell: action.payload.bell,
+            sound: action.payload.alarm,
+            push: action.payload.alarmpush,
+            lang: action.payload.language,
+            volume: action.payload.alarmvolume,
+            bell: action.payload.alarmsound,
             error: false,
         }),
 

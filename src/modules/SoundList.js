@@ -48,12 +48,9 @@ export function* soundSaga() {
 
 // 초기 상태
 const initialState = {
-    soundList: [{id: 1, name: '초인종', blob: null, score: 15,}, 
-                {id: 2, name: '노크', blob: null, score: 15,},
-                {id: 3 , name: '전화', blob: null, score: 15,}],
+    soundList: [],
     // 원래는 서버에서 받아온 id를 넣어줘야되는데
     // 지금 클라에서 테스트하기 위한 용도의 변수값
-    soundNextId: 4,
     error: false, 
 }
 
@@ -62,48 +59,47 @@ const initialState = {
 // ADD_ITEM => ADD_ITEM_SUCCESS로, 지금은 서버 개발전 테스트를 위해 보류
 const updateSoundList = handleActions(
     {
-        [ADD_ITEM]: (state, action) => {
+        [ADD_ITEM_SUCCESS]: (state, action) => {
             
             // name을 추가하면 id값을 증가시키고 list에 추가
             const item = {
-                id: state.soundNextId,
+                id: action.payload._id,
                 name: action.payload.name,
-                blob: action.payload.blob,
-                score: action.payload.score,
+                blob: JSON.stringify(Array.from(new Uint8Array(action.payload.buffer.data))),
+                score: 60,
             }
 
             return {
                 ...state,
-                soundNextId: state.soundNextId + 1,
                 soundList: state.soundList.concat(item),
                 error: false,
             }
 
         },
 
-        [REMOVE_ITEM]: (state, action) => (
+        [REMOVE_ITEM_SUCCESS]: (state, action) => (
             // 해당 id의 원소 삭제
             {
                 ...state,
-                soundList: state.soundList.filter(item => item.id !== action.payload),
+                soundList: state.soundList.filter(item => item.id !== action.payload.audioid),
                 error: false,
             }
         ),
 
-        [UPDATE_ITEM]: (state, action) => (
+        [UPDATE_ITEM_SUCCESS]: (state, action) => (
             // 해당 item의 id값에 해당하는 name을 변경
             {
                 ...state,
-                soundList: state.soundList.map(item => item.id === action.payload.id ?
+                soundList: state.soundList.map(item => item.id === action.payload.audioid ?
                                                {...item, name: action.payload.name} : item),
                 error: false,
             }
         ),
         
-        [UPDATE_SENSITIVITY]: (state, action) => ({
+        [UPDATE_SENSITIVITY_SUCCESS]: (state, action) => ({
             ...state,
-            soundList: state.soundList.map(item => item.id === action.payload.id ?
-                                               {...item, score: action.payload.score} : item),
+            soundList: state.soundList.map(item => item.id === action.payload.audioid ?
+                                               {...item, score: action.payload.sensitivity} : item),
             error: false,
         }),
 

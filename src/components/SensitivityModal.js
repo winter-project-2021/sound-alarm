@@ -12,15 +12,16 @@ import '../style/Sensitivity.scss';
 function SensitivityModal() {
 
     const {open, id, score, name, scoreFromServer} = useSelector(state => state.setSensitivity);
+    const { loading } = useSelector(state => state.loading);
     const soundList = useSelector(state => state.updateSoundList.soundList);
     const [curScore, setCurScore] = useState(0);
     const [recorder, setRecorder] = useState(null);
     const [isRecord, setIsRecord] = useState(false);
+    const [preventLoad, setPrevent] = useState(false);
     const marks = useMemo(() => [{value: 0, label: '0'}, {value: 100, label: '100'}], []);
     const dispatch = useDispatch();
 
-    // ok 버튼 누르면 result를 true로 하고 callback 실행
-    const clickOk = useCallback(() => {
+    const findId = useCallback(() => {
         let itemId = id;
         if(itemId === null) {
             for(const item of soundList) {
@@ -30,9 +31,18 @@ function SensitivityModal() {
                 }
             }
         }
-        dispatch(updateSensitivity({id: itemId, score: curScore}));
+
+        return itemId;
+    }, [id, name, soundList]);
+
+    // ok 버튼 누르면 result를 true로 하고 callback 실행
+    const clickOk = useCallback(() => {
+        let itemId = findId();
+        setPrevent(false);
+        if(curScore === null || isNaN(curScore)) setCurScore(score);
+        dispatch(updateSensitivity({audioid: itemId, sensitivity: curScore, name: name, _id: '602dba230bde132a508034ad'}));
         dispatch(setResult(true));
-    }, [dispatch, id, curScore, soundList, name]);
+    }, [dispatch, findId, curScore, name, setPrevent,score, setCurScore]);
 
     // cancel 버튼 누르면 result false로
     const clickCancel = useCallback(() => {
@@ -45,7 +55,7 @@ function SensitivityModal() {
 
     useEffect(() => {
         setCurScore(score);
-    }, [score]);
+    }, [score, setCurScore]);
 
     const onChangeSlide = useCallback((e, newValue) => {
         setCurScore(newValue);
@@ -86,7 +96,13 @@ function SensitivityModal() {
                         let wav = toWav(b);
                         //const fileData = JSON.stringify(wav);
                         const blob = new Blob([wav], {type: 'audio/wav'});
-                        dispatch(getScoreServer({id: id, blob: blob}));
+                        const form = new FormData();
+                        form.append('data', blob);
+                        form.append('_id', '602dba230bde132a508034ad');
+                        form.append('audioid', String(findId()));
+                        form.append('mode', 'test');
+                        setPrevent(true);
+                        dispatch(getScoreServer(form));
                     })
                 })
 
@@ -102,7 +118,7 @@ function SensitivityModal() {
             console.log('The following gUM error occured: ' + err);
         }
         );
-    }, [dispatch, id, setRecorder, setIsRecord]);
+    }, [dispatch, setRecorder, setIsRecord, findId, setPrevent]);
 
     const onMicClick = useCallback(() => {
         if(isRecord) audioStop();
@@ -165,7 +181,7 @@ function SensitivityModal() {
 
     return (
         <>
-            {open ? (<div className='Sensitivity'>
+            {(open && (!loading || preventLoad)) ? (<div className='Sensitivity'>
                         {renderModal()}
                        </div>) : null}
         </>

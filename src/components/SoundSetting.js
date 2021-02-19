@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 import { addItem, removeItem, updateItem } from '../modules/SoundList';
@@ -10,8 +10,8 @@ import '../style/SoundSetting.scss';
 
 function SoundSetting() {
 
-    const DEFAULT_FILENAME = '파일 업로드';
-    const FILE_LIMIT = 300 * 1024; // 300kb
+    const DEFAULT_FILENAME = useMemo(() => '파일 업로드', []);
+    const FILE_LIMIT = useMemo(() => 300 * 1024, []); // 300kb
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -57,16 +57,17 @@ function SoundSetting() {
         
     }, [setItem, item, update, isDelete]);
 
-    const updateName = useCallback((i, alias) => {
+    const updateName = useCallback((i, alias, score) => {
         // 항목 업데이트 후 클릭 항목 초기화
-        const newItem = {id: i, name: alias};
+        const newItem = {_id: '602dba230bde132a508034ad', audioid: i, sensitivity: score, name: alias};
         dispatch(updateItem(newItem));
         setItem(-1);
     }, [dispatch, setItem]);
 
     const deleteName = useCallback((i) => {
         // 항목 삭제 후 클릭 항목 초기화
-        dispatch(removeItem(i));
+        const item = {data:{_id: '602dba230bde132a508034ad', audioid: i}};
+        dispatch(removeItem(item));
         setItem(-1);
     }, [setItem, dispatch]);
 
@@ -107,7 +108,7 @@ function SoundSetting() {
             dispatch(setOpen(popup));
             return;
         }
-
+        /*
         const fileReader = new FileReader();
         fileReader.onloadend = function(e) {
             const arrayBuffer = e.target.result;
@@ -115,10 +116,13 @@ function SoundSetting() {
             setFileName(String(selectFile.name));
             setAlias(selectFile.name);
         }
-        fileReader.readAsArrayBuffer(selectFile);
-        //setBlob(selectFile);
+        fileReader.readAsArrayBuffer(selectFile);*/
+
+        setBlob(selectFile);
+        setFileName(String(selectFile.name));
+        setAlias(String(selectFile.name));
         
-    }, [setFileName, setAlias, setBlob]);
+    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
@@ -134,13 +138,17 @@ function SoundSetting() {
             if(sound.name === alias) return;
         }
         // 항목 추가
-        const item = {name: alias, blob: blob, score: 60};
+        const item = new FormData();
+        item.append("name", alias);
+        item.append("_id", "602dba230bde132a508034ad");
+        item.append("data", blob);
+        //const item = {name: alias, blob: blob, score: 60};
         dispatch(addItem(item));
         setAlias('');
         setFileName(DEFAULT_FILENAME);
         setBlob(null);
         dispatch(setOpenSensitivity({id: null, name: alias, score: 60}));
-    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob]);
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, DEFAULT_FILENAME]);
 
     return (
       <div className='SoundComponent'>
