@@ -87,11 +87,11 @@ function SoundListItem(props) {
 
     const updateItem = useCallback(() => {
         // 항목 수정 후 초기화
-        updateName(order, inputName);
+        updateName(order, inputName, score);
         setUpdate(false);
         setChange(false);
         clickItem(-1);
-    }, [updateName, inputName, setUpdate, order, clickItem, setChange]);
+    }, [updateName, inputName, setUpdate, order, clickItem, score, setChange]);
 
     const changeInput = useCallback((e) => {
         // 항목 이름 수정값 받아오기

@@ -4,11 +4,11 @@ import { all } from 'redux-saga/effects';
 import storage from 'redux-persist/lib/storage';
 import updateSoundList, {soundSaga} from './SoundList';
 import setModal from './ModalResult';
-import preferenceReducer from './PreferenceResult';
+import preferenceReducer, { preferenceSaga } from './PreferenceResult';
 import updateTextList from './TextList';
 import updateLoginState from './LoginState';
 import loading from './loading';
-import setSensitivity from './SensitivityResult';
+import setSensitivity, { sensitivitySaga } from './SensitivityResult';
 
 const config = {
     key: 'root',
@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
 });
 
 export function* rootSaga() {
-    yield all([/*soundSaga()*/]);
+    yield all([soundSaga(), sensitivitySaga(), preferenceSaga()]);
 }
 
 export default persistReducer(config, rootReducer);

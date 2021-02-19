@@ -7,19 +7,21 @@ export const startLoading = createAction(START_LOADING, type => type);
 export const finishLoading = createAction(FINISH_LOADING, type => type);
 
 const initialState = {
-    
+    loading: false,
 };
 
 const loading = handleActions(
   {
       [START_LOADING]: (state, action) => ({
           ...state,
-          [action.payload]: true,
+          loading: true,
+          //[action.payload]: true,
       }),
 
       [FINISH_LOADING]: (state, action) => ({
           ...state,
-          [action.payload]: false,
+          loading: false,
+          //[action.payload]: false,
       }),
   },
   
