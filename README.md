@@ -17,6 +17,8 @@
 15. clientID 환경변수로 이동
 16. Logout버튼 Header에 추가
 17. Login,out 버튼에 custom modal 적용
+18. Login시 Server로부터 데이터 수신해서 redux 에 저장
+19. Text 서버와 연동, textlist, soundlist에 hover 효과 적용
 
 ## modal component 사용법
 
