@@ -13,6 +13,7 @@ function SoundSetting() {
     const DEFAULT_FILENAME = useMemo(() => '파일 업로드', []);
     const FILE_LIMIT = useMemo(() => 300 * 1024, []); // 300kb
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
+    const MAX_AUDIO = useMemo(() => 5, []);
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -97,6 +98,7 @@ function SoundSetting() {
         // 로컬에서 오디오 파일 업로드
         const selectFile = e.target.files[0];
         if(selectFile === null) return;
+
         if(selectFile.size > FILE_LIMIT) {
             const popup = {
                 head: '알림!',
@@ -109,21 +111,25 @@ function SoundSetting() {
             dispatch(setOpen(popup));
             return;
         }
-        /*
-        const fileReader = new FileReader();
-        fileReader.onloadend = function(e) {
-            const arrayBuffer = e.target.result;
-            setBlob(JSON.stringify(Array.from(new Uint8Array(arrayBuffer))));
-            setFileName(String(selectFile.name));
-            setAlias(selectFile.name);
+
+        if(soundList.length === MAX_AUDIO) {
+            const popup = {
+                head: '알림!',
+                body: `최대 ${MAX_AUDIO}개의 파일만 등록할 수 있습니다!`,
+                buttonNum: 1,
+                callback: () => {},
+            };
+
+            // popup open
+            dispatch(setOpen(popup));
+            return;
         }
-        fileReader.readAsArrayBuffer(selectFile);*/
 
         setBlob(selectFile);
         setFileName(String(selectFile.name));
         setAlias(String(selectFile.name));
         
-    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch]);
+    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch, soundList, MAX_AUDIO]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
