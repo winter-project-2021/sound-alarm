@@ -33,7 +33,7 @@
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
                     0 3px 6px rgba(0, 0, 0, 0.23);
                 cursor: pointer;
-                transition: all 0.2s;
+                transition: all 0.1s;
 
                 .EditInput {
                     height: 28px;
@@ -46,23 +46,6 @@
                 border: 1px solid rgba(78, 154, 255, 0.63);
                 box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
                             0 3px 6px rgba(78, 154, 255, 0.63);
-            }
-
-
-            .Hover {
-                animation-name: buttonHover;
-                -moz-animation-duration: 0.3s;
-                animation-duration: 0.3s;
-                animation-timing-function: linear;
-                animation-fill-mode: forwards;
-            }
-    
-            .Leave {
-                animation-name: buttonLeave;
-                -moz-animation-duration: 0.3s;
-                animation-duration: 0.3s;
-                animation-timing-function: linear;
-                animation-fill-mode: forwards;
             }
 
             .ChangeButton {

@@ -5,7 +5,7 @@ import storage from 'redux-persist/lib/storage';
 import updateSoundList, {soundSaga} from './SoundList';
 import setModal from './ModalResult';
 import preferenceReducer, { preferenceSaga } from './PreferenceResult';
-import updateTextList from './TextList';
+import updateTextList, { textSaga } from './TextList';
 import updateLoginState from './LoginState';
 import loading from './loading';
 import setSensitivity, { sensitivitySaga } from './SensitivityResult';
@@ -29,7 +29,7 @@ const rootReducer = combineReducers({
 });
 
 export function* rootSaga() {
-    yield all([soundSaga(), sensitivitySaga(), preferenceSaga()]);
+    yield all([soundSaga(), sensitivitySaga(), preferenceSaga(), textSaga()]);
 }
 
 export default persistReducer(config, rootReducer);

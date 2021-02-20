@@ -1,7 +1,7 @@
 import { createAction, handleActions } from 'redux-actions';
 import { takeLatest } from 'redux-saga/effects';
 import createRequestSaga from './sagaTemplate';
-import { addSoundItem, removeSoundItem, updateSoundItem , updateSoundSensitivity} from './api';
+import { addTextItem, removeTextItem, updateTextItem } from './api';
 /*
     설정한 text 파일 리스트를 위한 redux 모듈
 */
@@ -22,16 +22,16 @@ const SET_LIST = 'TextList/SET_LIST';
 const OP_FAILURE = 'TextList/FAILURE';
 
 // 각 action type에 대한 action 생성
-export const addItem = createAction(ADD_ITEM, name => name);
+export const addItem = createAction(ADD_ITEM, item => item);
 export const removeItem = createAction(REMOVE_ITEM, id => id);
 export const updateItem = createAction(UPDATE_ITEM, item => item);
-export const setList = createAction(SET_LIST, list => list);
+export const setTextList = createAction(SET_LIST, list => list);
 //export const operationFailed = createAction(OP_FAILURE, e => e);
 
 // 비동기 미들웨어 추가
-const addItemSaga = createRequestSaga('TextList', ADD_ITEM, addSoundItem);
-const removeItemSaga = createRequestSaga('TextList', REMOVE_ITEM, removeSoundItem);
-const updateItemSaga = createRequestSaga('TextList', UPDATE_ITEM, updateSoundItem);
+const addItemSaga = createRequestSaga('TextList', ADD_ITEM, addTextItem);
+const removeItemSaga = createRequestSaga('TextList', REMOVE_ITEM, removeTextItem);
+const updateItemSaga = createRequestSaga('TextList', UPDATE_ITEM, updateTextItem);
 
 // workers
 export function* textSaga() { 
@@ -42,44 +42,60 @@ export function* textSaga() {
 
 // 초기 상태
 const initialState = {
-    textList: [{id: 1, name: '카톡'}, {id: 2, name: '홍길동'}, {id:3 , name: '김철수'}],
-    textNextId: 4,
+    textList: [],
+    error: false,
 }
 
 // action을 위한 reducer
 const updateTextList = handleActions(
     {
-        [ADD_ITEM]: (state, action) => {
+        [ADD_ITEM_SUCCESS]: (state, action) => {
             // name을 추가하면 id값을 증가시키고 list에 추가
             const item = {
-                id: state.textNextId,
-                name: action.payload,
+                id: action.payload._id,
+                text: action.payload.text,
             }
 
             return {
                 ...state,
-                textNextId: state.textNextId + 1,
                 textList: state.textList.concat(item),
+                error: false,
             }
 
         },
 
-        [REMOVE_ITEM]: (state, action) => (
+        [REMOVE_ITEM_SUCCESS]: (state, action) => (
             // 해당 id의 원소 삭제
             {
                 ...state,
-                textList: state.textList.filter(item => item.id !== action.payload),
+                textList: state.textList.filter(item => item.id !== action.payload.textid),
+                error: false,
             }
         ),
 
-        [UPDATE_ITEM]: (state, action) => (
+        [UPDATE_ITEM_SUCCESS]: (state, action) => (
             // 해당 item의 id값에 해당하는 name을 변경
             {
                 ...state,
-                textList: state.textList.map(item => item.id === action.payload.id ?
-                                               {...item, name: action.payload.name} : item),
+                textList: state.textList.map(item => item.id === action.payload.textid ?
+                                               {...item, text: action.payload.text} : item),
+                error: false,
             }
         ),
+
+        // 맨 처음 로그인 시 통째로 받아올 때
+        [SET_LIST]: (state, action) => ({
+            textList: action.payload,
+            error: false,
+        }),
+
+        // 서버 요청이 실패했을 경우
+        [OP_FAILURE]: (state, action) => ({
+            ...state,
+            ...action.payload,
+            error: true,
+        })
+
     },
 
     initialState,

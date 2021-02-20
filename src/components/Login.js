@@ -3,6 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 import { updateLogin, updateLogout } from '../modules/LoginState';
 import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
+import { setList } from '../modules/SoundList';
+import { setTextList } from '../modules/TextList';
 import axios from 'axios';
 import '../style/Login.scss';
 
@@ -17,9 +19,34 @@ function Login() {
     //로그인 성공시 실행
     const onSuccess = useCallback((res) => {
         const userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl, username: 'gildong'};
-        axios.post('/login',userInfo.username)
+        axios.post('/login',{username: userInfo.username})
         .then((response) => {
             Object.assign(userInfo, response.data);
+            
+            const text = response.data.stt
+            let textList = []
+            for(const t of text) {
+                const item = {
+                    id : t._id,
+                    text : t.text
+                };
+                textList.push(item)
+            }
+            dispatch(setTextList(textList))
+
+            const audio = response.data.audio
+            let soundList = []
+            for(const a of audio) {
+                const item = {
+                    id: a._id,
+                    name: a.name,
+                    blob: JSON.stringify(Array.from(new Uint8Array(a.buffer.data))),
+                    score: a.sensitivity   
+                    };
+                soundList.push(item)
+            }
+            dispatch(setList(soundList))
+
             const popup = {
                 head: '로그인 성공',
                 body: `${res.profileObj.name}님 환영합니다. See_console_for_full_profile_object.`,
@@ -30,8 +57,9 @@ function Login() {
             refreshTokenSetup(res);
     
             
-    
-            console.log('Login Success: currentUser:', res.profileObj, userInfo);
+            
+            console.log('Login Success: currentUser:', res.profileObj);
+            console.log('User Info from Server :', userInfo);
         })
 
         

@@ -26,19 +26,22 @@ export const updateSoundSensitivity = (item) => {
 }
 
 export const getUserinfo = (username) => {
-    axios.post(`${END_POINT}/`, username)
+    return axios.post(`${END_POINT}/login`, username);
 }
 
 export const addTextItem = (item) => {
-    axios.post(`${END_POINT}/`, item)
-}
+    return axios.post(`${END_POINT}/text`, item, { headers: {
+        'Content-Type': 'multipart/form-data'
+    }});
+};
 
-export const deleteTextItem = (item) => {
-    axios.delete(`${END_POINT}/`, item)
+export const removeTextItem = (item) => {
+    return axios.delete(`${END_POINT}/text`, item);
 }
 
 export const updateTextItem = (item) => {
-    axios.put(`${END_POINT}/`, item)
+    return axios.put(`${END_POINT}/text`, item);
+}
 
 export const getScore = (item) => {
     return axios.post(`${END_POINT}/audio/test`, item);

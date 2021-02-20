@@ -105,7 +105,7 @@ const updateSoundList = handleActions(
 
         // 맨 처음 로그인 시 통째로 받아올 때
         [SET_LIST]: (state, action) => ({
-            ...action.payload,
+            soundList: action.payload,
             error: false,
         }),
 

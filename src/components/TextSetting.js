@@ -5,6 +5,7 @@ import TextListItem from './TextListItem';
 import { MdAddBox } from "react-icons/md";
 import '../style/TextSetting.scss';
 
+const USER_ID = '602dba230bde132a508034ad';
 
 function TextSetting() {
 
@@ -52,14 +53,15 @@ function TextSetting() {
 
     const updateName = useCallback((i, alias) => {
         // 항목 업데이트 후 클릭 항목 초기화
-        const newItem = {id: i, name: alias};
+        const newItem = {_id: '602dba230bde132a508034ad', text: alias, textid: i};
         dispatch(updateItem(newItem));
         setItem(-1);
     }, [dispatch, setItem]);
 
     const deleteName = useCallback((i) => {
         // 항목 삭제 후 클릭 항목 초기화
-        dispatch(removeItem(i));
+        const item = {data:{_id: '602dba230bde132a508034ad', textid: i}};
+        dispatch(removeItem(item));
         setItem(-1);
     }, [setItem, dispatch]);
 
@@ -71,7 +73,7 @@ function TextSetting() {
         }
 
         // textList를 이용해 각 listItem 컴포넌트를 렌더링
-        return textList.map(ele => <TextListItem name={ele.name}
+        return textList.map(ele => <TextListItem name={ele.text}
                                                     clickItem={clickItem}
                                                     order={ele.id}
                                                     isClick={ele.id === item}                                                    
@@ -87,15 +89,18 @@ function TextSetting() {
     }, [setAlias]);
 
     const addToList = useCallback(() => {
-        // 현재 파일이 업로드 되지 않았거나 이름이 비어있으면 무시
+        // 이름이 비어있으면 무시
         if(alias === '')
             return;
         // 이미 있는 이름이면 무시
         for(const text of textList){
-            if(text.name === alias) return;
+            if(text.text === alias) return;
         }
-        // 항목 추가
-        dispatch(addItem(alias));
+        // 항목 추가f
+        const item = new FormData();
+        item.append("_id", '602dba230bde132a508034ad');
+        item.append("text", alias);
+        dispatch(addItem(item));
         setAlias('');
     }, [dispatch, setAlias, alias, textList]);
 
