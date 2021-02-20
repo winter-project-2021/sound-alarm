@@ -5,12 +5,11 @@ import TextListItem from './TextListItem';
 import { MdAddBox } from "react-icons/md";
 import '../style/TextSetting.scss';
 
-const USER_ID = '602dba230bde132a508034ad';
-
 function TextSetting() {
 
     // redux로 부터 text이름 리스트를 가져옴
     const textList = useSelector(state => state.updateTextList.textList);
+    const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const dispatch = useDispatch();
 
     const [item, setItem] = useState(-1); // 현재 클릭한 항목
@@ -53,17 +52,17 @@ function TextSetting() {
 
     const updateName = useCallback((i, alias) => {
         // 항목 업데이트 후 클릭 항목 초기화
-        const newItem = {_id: '602dba230bde132a508034ad', text: alias, textid: i};
+        const newItem = {_id: USER_ID, text: alias, textid: i};
         dispatch(updateItem(newItem));
         setItem(-1);
-    }, [dispatch, setItem]);
+    }, [dispatch, setItem, USER_ID]);
 
     const deleteName = useCallback((i) => {
         // 항목 삭제 후 클릭 항목 초기화
-        const item = {data:{_id: '602dba230bde132a508034ad', textid: i}};
+        const item = {data:{_id: USER_ID, textid: i}};
         dispatch(removeItem(item));
         setItem(-1);
-    }, [setItem, dispatch]);
+    }, [setItem, dispatch, USER_ID]);
 
     const renderList = useCallback(() => {
         
@@ -98,11 +97,11 @@ function TextSetting() {
         }
         // 항목 추가f
         const item = new FormData();
-        item.append("_id", '602dba230bde132a508034ad');
+        item.append("_id", USER_ID);
         item.append("text", alias);
         dispatch(addItem(item));
         setAlias('');
-    }, [dispatch, setAlias, alias, textList]);
+    }, [dispatch, setAlias, alias, textList, USER_ID]);
 
     return (
       <div className='TextComponent'>

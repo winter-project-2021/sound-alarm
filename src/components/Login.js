@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 import { setList } from '../modules/SoundList';
 import { setTextList } from '../modules/TextList';
+import { setPreference } from '../modules/PreferenceResult';
+import { startLoading, finishLoading } from '../modules/loading';
 import axios from 'axios';
 import '../style/Login.scss';
 
@@ -18,11 +20,12 @@ function Login() {
 
     //로그인 성공시 실행
     const onSuccess = useCallback((res) => {
-        const userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl, username: 'gildong'};
+        let userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl, username: String(res.profileObj.googleId)};
+        dispatch(startLoading(null));
         axios.post('/login',{username: userInfo.username})
         .then((response) => {
-            Object.assign(userInfo, response.data);
-            
+            //Object.assign(userInfo, response.data);
+            userInfo = {...userInfo, _id: response.data._id}
             const text = response.data.stt
             let textList = []
             for(const t of text) {
@@ -46,6 +49,16 @@ function Login() {
                 soundList.push(item)
             }
             dispatch(setList(soundList))
+    
+            const pref = {
+                alarm: response.data.alarm,
+                alarmpush: response.data.alarmpush,
+                alarmsound: response.data.alarmsound,
+                alarmvolume: response.data.alarmvolume,
+                language: String(response.data.language).toLowerCase(),
+            }
+            dispatch(setPreference(pref));
+            dispatch(finishLoading(null));
 
             const popup = {
                 head: '로그인 성공',
@@ -55,8 +68,6 @@ function Login() {
             };
             dispatch(setOpen(popup));
             refreshTokenSetup(res);
-    
-            
             
             console.log('Login Success: currentUser:', res.profileObj);
             console.log('User Info from Server :', userInfo);

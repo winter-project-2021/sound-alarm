@@ -12,6 +12,7 @@ function SoundSetting() {
 
     const DEFAULT_FILENAME = useMemo(() => '파일 업로드', []);
     const FILE_LIMIT = useMemo(() => 300 * 1024, []); // 300kb
+    const USER_ID = useSelector(state => state.updateLoginState.user._id);
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -59,17 +60,17 @@ function SoundSetting() {
 
     const updateName = useCallback((i, alias, score) => {
         // 항목 업데이트 후 클릭 항목 초기화
-        const newItem = {_id: '602dba230bde132a508034ad', audioid: i, sensitivity: score, name: alias};
+        const newItem = {_id: USER_ID, audioid: i, sensitivity: score, name: alias};
         dispatch(updateItem(newItem));
         setItem(-1);
-    }, [dispatch, setItem]);
+    }, [dispatch, setItem, USER_ID]);
 
     const deleteName = useCallback((i) => {
         // 항목 삭제 후 클릭 항목 초기화
-        const item = {data:{_id: '602dba230bde132a508034ad', audioid: i}};
+        const item = {data:{_id: USER_ID, audioid: i}};
         dispatch(removeItem(item));
         setItem(-1);
-    }, [setItem, dispatch]);
+    }, [setItem, dispatch, USER_ID]);
 
     const renderList = useCallback(() => {
         
@@ -140,15 +141,15 @@ function SoundSetting() {
         // 항목 추가
         const item = new FormData();
         item.append("name", alias);
-        item.append("_id", "602dba230bde132a508034ad");
+        item.append("_id", USER_ID);
         item.append("data", blob);
-        //const item = {name: alias, blob: blob, score: 60};
+
         dispatch(addItem(item));
         setAlias('');
         setFileName(DEFAULT_FILENAME);
         setBlob(null);
         dispatch(setOpenSensitivity({id: null, name: alias, score: 60}));
-    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, DEFAULT_FILENAME]);
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, DEFAULT_FILENAME, USER_ID]);
 
     return (
       <div className='SoundComponent'>

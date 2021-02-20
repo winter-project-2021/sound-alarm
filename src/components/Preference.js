@@ -14,6 +14,7 @@ import '../style/Preference.scss';
 function Preference() {
 
     const currentPreference = useSelector(state => state.preferenceReducer);
+    const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const [preference, setCurPreference] = useState({...currentPreference});
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -71,7 +72,7 @@ function Preference() {
     // 최종 설정 값 적용
     const applyPreference = useCallback(() => {
         const item = {
-            _id: '602dba230bde132a508034ad',
+            _id: USER_ID,
             alarm: preference.sound,
             alarmpush: preference.push,
             language: preference.lang,
@@ -84,7 +85,7 @@ function Preference() {
         sound.src = bellTypes[preference.bell];
         sound.volume = preference.volume / 100;
 
-    }, [dispatch, preference, bellTypes]);
+    }, [dispatch, preference, bellTypes, USER_ID]);
 
     return (
       <>

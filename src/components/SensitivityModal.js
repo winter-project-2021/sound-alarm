@@ -12,6 +12,7 @@ import '../style/Sensitivity.scss';
 function SensitivityModal() {
 
     const {open, id, score, name, scoreFromServer} = useSelector(state => state.setSensitivity);
+    const USER_ID = useSelector(state => state.updateLoginState.user._id);    
     const { loading } = useSelector(state => state.loading);
     const soundList = useSelector(state => state.updateSoundList.soundList);
     const [curScore, setCurScore] = useState(0);
@@ -40,9 +41,9 @@ function SensitivityModal() {
         let itemId = findId();
         setPrevent(false);
         if(curScore === null || isNaN(curScore)) setCurScore(score);
-        dispatch(updateSensitivity({audioid: itemId, sensitivity: curScore, name: name, _id: '602dba230bde132a508034ad'}));
+        dispatch(updateSensitivity({audioid: itemId, sensitivity: curScore, name: name, _id: USER_ID}));
         dispatch(setResult(true));
-    }, [dispatch, findId, curScore, name, setPrevent,score, setCurScore]);
+    }, [dispatch, findId, curScore, name, setPrevent,score, setCurScore, USER_ID]);
 
     // cancel 버튼 누르면 result false로
     const clickCancel = useCallback(() => {
@@ -98,7 +99,7 @@ function SensitivityModal() {
                         const blob = new Blob([wav], {type: 'audio/wav'});
                         const form = new FormData();
                         form.append('data', blob);
-                        form.append('_id', '602dba230bde132a508034ad');
+                        form.append('_id', USER_ID);
                         form.append('audioid', String(findId()));
                         form.append('mode', 'test');
                         setPrevent(true);
@@ -118,7 +119,7 @@ function SensitivityModal() {
             console.log('The following gUM error occured: ' + err);
         }
         );
-    }, [dispatch, setRecorder, setIsRecord, findId, setPrevent]);
+    }, [dispatch, setRecorder, setIsRecord, findId, setPrevent, USER_ID]);
 
     const onMicClick = useCallback(() => {
         if(isRecord) audioStop();
