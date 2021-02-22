@@ -55,8 +55,8 @@ function App() {
           var biquadFilter = audioCtx.createBiquadFilter();
 
           biquadFilter.type = "bandpass"
-          biquadFilter.frequency.setValueAtTime(100, audioCtx.currentTime);
-          biquadFilter.Q.setValueAtTime(10, audioCtx.currentTime);
+          biquadFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+          biquadFilter.Q.setValueAtTime(5, audioCtx.currentTime);
 
           source.connect(biquadFilter);
           biquadFilter.connect(dest);
