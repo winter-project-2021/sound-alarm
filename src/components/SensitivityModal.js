@@ -85,7 +85,14 @@ function SensitivityModal() {
             const dest = audioCtx.createMediaStreamDestination();
             const mediaRecorder = new MediaRecorder(dest.stream);
             setRecorder({recorder: mediaRecorder, context: audioCtx, stream: stream.getTracks()});
-            source.connect(dest);
+            const biquadFilter = audioCtx.createBiquadFilter();
+
+            biquadFilter.type = "bandpass"
+            biquadFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            biquadFilter.Q.setValueAtTime(5, audioCtx.currentTime);
+
+            source.connect(biquadFilter);
+            biquadFilter.connect(dest);
             let chunks = [];
           
             mediaRecorder.ondataavailable = function(evt) {
