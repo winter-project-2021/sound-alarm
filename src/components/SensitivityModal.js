@@ -2,7 +2,6 @@ import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setResult, getScoreServer } from '../modules/SensitivityResult';
 import { updateSensitivity } from '../modules/SoundList';
-import { MdFiberManualRecord, MdStop } from "react-icons/md";
 import { FiCheckSquare } from 'react-icons/fi';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
@@ -126,12 +125,32 @@ function SensitivityModal() {
         else audioStart();
     }, [isRecord, audioStart, audioStop]);
 
+    const renderRecord = useCallback(() => {
+        return (
+            <div className='record'>
+                <div className='outerCircle'>
+                    <div className='innerCircle'></div>
+                </div>
+                <div className='recordText'>REC</div>
+            </div>
+        );
+    }, []);
+
+    const renderStop = useCallback(() => {
+        return (
+            <div className='stop'>
+                <div className='square'></div>
+                <div className='stopText'>STOP</div>
+            </div>
+        );
+    }, []);
+
     const renderModal = useCallback(() => {
         return (<div className='SensitivityBox'>
                     <div className='SensitivityHead'>{`<${name}> 의 민감도 설정`}</div>
                     <div className='SensitivityBoxBody'>
                         <button className='Mic' onClick={onMicClick}>
-                            {isRecord ? <MdStop size={85}/> : <MdFiberManualRecord color='red' size={85}/>}
+                            {isRecord ? renderStop() : renderRecord()}
                         </button>
                         <div className='SensitivityDetail'>
                             <div className='ServerScore'>현재 점수: {scoreFromServer ? scoreFromServer : '측정 전 입니다.'}</div>
@@ -157,19 +176,19 @@ function SensitivityModal() {
                         <div className='DescriptionItem'>
                             <FiCheckSquare size={25}/> 
                             <div className='Guide1'>
-                                마이크 버튼을 클릭하여 현재 기기를 통한 소리를 입력하고 녹음을 종료합니다
+                                녹음 버튼을 클릭하여 현재 마이크를 통해 소리를 입력하고 녹음을 종료합니다
                             </div>
                         </div> 
                         <div className='DescriptionItem'>
                             <FiCheckSquare size={25}/> 
                             <div className='Guide2'>
-                                민감도를 낮출수록 소리의 구분이 정확해지지만 인식되는 빈도가 낮아질 수 있습니다
+                                민감도를 높일수록 소리의 구분이 정확해지지만 인식되는 빈도가 낮아질 수 있습니다
                             </div>
                         </div> 
                         <div className='DescriptionItem'>
                             <FiCheckSquare size={25}/> 
                             <div className='Guide3'>
-                                만약 출력되는 점수가 15 이상이 반복된다면, 녹음 파일이나 현재 기기를 조정할 것을 추천드립니다
+                                만약 출력되는 점수가 60 이하가 반복된다면, 녹음 파일이나 현재 기기를 조정할 것을 추천드립니다
                             </div>
                         </div> 
                     </div>
@@ -178,7 +197,7 @@ function SensitivityModal() {
                         <button className='Button' onClick={clickCancel}>취소</button>
                     </div>
                 </div>)
-    }, [clickOk, clickCancel, curScore, onChangeSlide, valuetext, scoreFromServer, onMicClick, name, isRecord, marks]);
+    }, [clickOk, clickCancel, curScore, onChangeSlide, valuetext, scoreFromServer, onMicClick, name, isRecord, marks, renderRecord, renderStop]);
 
     return (
         <>

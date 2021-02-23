@@ -12,13 +12,60 @@ audio::-webkit-media-controls-panel {
         border: 1px solid black;
         border-radius: 25px;
         padding-left: 50px;
-
         .Empty {
-            height: 340px;
-            line-height: 340px;
+            height: 240px;
+            line-height: 240px;
             margin-right: 50px;
         }
 
+        .FileUpload {
+            //margin-top: 145px;
+            margin-right: 50px;
+            display: block;
+            .UploadButton {
+                display: inline-block;
+                width: 200px;
+                height: 30px;
+
+                vertical-align: middle;
+                text-align: left;
+                line-height: 30px;
+
+                padding-left: 15px;
+                margin-right: 15px;
+
+                border: 1px solid #ada5a5;
+                border-radius: 10px;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                    0 3px 6px rgba(0, 0, 0, 0.23);
+                cursor: pointer;
+
+                transition: all 0.1s;
+
+                .Icon {
+                    float: right;
+                    margin-right: 10px;
+                    margin-top: 6px;
+                }
+            }
+            .UploadButton:hover {
+                border: 1px solid rgba(78, 154, 255, 0.63);
+                box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
+                    0 3px 6px rgba(78, 154, 255, 0.63);
+            }
+
+            .NameInput {
+                width: 200px;
+                height: 25px;
+                vertical-align: middle;
+                border: 1px solid black;
+            }
+
+            .AddButton {
+                vertical-align: middle;
+                cursor: pointer;
+            }
+        }
         .SoundListItem {
             width: 520px;
             height: 35px;
@@ -79,10 +126,10 @@ audio::-webkit-media-controls-panel {
                     }
                 }
             }
-            .ItemName:hover{
+            .ItemName:hover {
                 border: 1px solid rgba(78, 154, 255, 0.63);
                 box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
-                            0 3px 6px rgba(78, 154, 255, 0.63);
+                    0 3px 6px rgba(78, 154, 255, 0.63);
             }
 
             .ChangeButton {
@@ -103,52 +150,24 @@ audio::-webkit-media-controls-panel {
         }
     }
 
-    .FileUpload {
-        margin-top: 30px;
-        display: block;
-
-        .UploadButton {
-            display: inline-block;
-            width: 200px;
-            height: 30px;
-
-            vertical-align: middle;
-            text-align: left;
-            line-height: 30px;
-
-            padding-left: 15px;
-            margin-right: 15px;
-
-            border: 1px solid #ada5a5;
-            border-radius: 10px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
-                0 3px 6px rgba(0, 0, 0, 0.23);
-            cursor: pointer;
-            
-            transition: all 0.1s;
-
-            .Icon {
+    .Notify {
+        margin-top: 20px;
+        .NotifyItem {
+            height: 35px;
+            width: 500px;
+            margin-left: 270px;
+            .Guide1 {
+                line-height: 22px;
+                font-size: 17px;
                 float: right;
-                margin-right: 10px;
-                margin-top: 6px;
+                margin-right: 150px;
             }
-        }
-        .UploadButton:hover{
-            border: 1px solid rgba(78, 154, 255, 0.63);
-            box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
-                        0 3px 6px rgba(78, 154, 255, 0.63);
-        }
-
-        .NameInput {
-            width: 200px;
-            height: 25px;
-            vertical-align: middle;
-            border: 1px solid black;
-        }
-
-        .AddButton {
-            vertical-align: middle;
-            cursor: pointer;
+            .Guide2 {
+                line-height: 22px;
+                font-size: 17px;
+                float: right;
+                margin-right: 172px;
+            }
         }
     }
 }
@@ -156,8 +175,7 @@ audio::-webkit-media-controls-panel {
 @keyframes buttonHover {
     from {
         border: 1px solid #ada5a5;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
-            0 3px 6px rgba(0, 0, 0, 0.23);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     to {
@@ -170,8 +188,7 @@ audio::-webkit-media-controls-panel {
 @keyframes buttonLeave {
     to {
         border: 1px solid #ada5a5;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
-            0 3px 6px rgba(0, 0, 0, 0.23);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     from {

@@ -4,7 +4,7 @@ import { setOpen } from '../modules/ModalResult';
 import { addItem, removeItem, updateItem } from '../modules/SoundList';
 import { setOpenSensitivity } from '../modules/SensitivityResult';
 import SoundListItem from './SoundListItem';
-import { FiUpload } from "react-icons/fi";
+import { FiUpload, FiCheckSquare } from "react-icons/fi";
 import { MdAddBox } from "react-icons/md";
 import '../style/SoundSetting.scss';
 
@@ -77,7 +77,7 @@ function SoundSetting() {
         
         // list가 비어 있으면 추가해 달라는 문구 출력
         if(soundList.length === 0){
-            return <div className='Empty'>새로운 소리 파일을 추가해 주세요!</div>
+            return null;
         }
         //console.log(soundList[0].blob);
         //console.log(JSON.parse(soundList[0].blob));
@@ -99,7 +99,7 @@ function SoundSetting() {
         const selectFile = e.target.files[0];
         if(selectFile === null) return;
 
-        if(selectFile.size > FILE_LIMIT) {
+        if(selectFile.hasOwnProperty("size") && selectFile.size > FILE_LIMIT) {
             const popup = {
                 head: '알림!',
                 body: '파일의 용량이 큽니다! 300kb 이하의 파일을 업로드하세요!',
@@ -128,6 +128,7 @@ function SoundSetting() {
         setBlob(selectFile);
         setFileName(String(selectFile.name));
         setAlias(String(selectFile.name));
+        e.target.value = "";
         
     }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch, soundList, MAX_AUDIO]);
 
@@ -142,7 +143,18 @@ function SoundSetting() {
             return;
         // 이미 있는 이름이면 무시
         for(const sound of soundList){
-            if(sound.name === alias) return;
+            if(sound.name === alias) {
+                const popup = {
+                    head: '알림!',
+                    body: '같은 이름으로 등록할 수 없습니다!',
+                    buttonNum: 1,
+                    callback: () => {},
+                };
+
+                // popup open
+                dispatch(setOpen(popup));
+                return;
+            }
         }
         // 항목 추가
         const item = new FormData();
@@ -158,18 +170,34 @@ function SoundSetting() {
     }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, DEFAULT_FILENAME, USER_ID]);
 
     return (
-      <div className='SoundComponent'>
-          <div className='SoundList'>
-              {renderList()}
-          </div>
-          <div className='FileUpload'>
-              <label className='UploadButton' for='audio'>{fileName} <FiUpload className='Icon'/></label>
-              <input type='file' id='audio' accept="audio/*" style={{display: 'none'}} onChange={uploadAudio}/>
-              <input type='text' name='alias' className='NameInput' 
-                     placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
-              <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
-          </div>
-      </div>
+        <div className='SoundComponent'>
+            <div className='SoundList'>
+                {renderList()}
+                {soundList.length < MAX_AUDIO ? (<div className='FileUpload' style={{marginTop: soundList.length * 60 + 25}}>
+                    <label className='UploadButton' for='audio'>{fileName} <FiUpload className='Icon'/></label>
+                    <input type='file' id='audio' accept="audio/*" style={{display: 'none'}} onChange={uploadAudio}/>
+                    <input type='text' name='alias' className='NameInput' 
+                        placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
+                    <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
+                </div>) : null}
+                {soundList.length === 0 ? (<div className='Empty'>새로운 소리 파일을 추가해 주세요!</div>) : null}
+            </div>
+          
+            <div className='Notify'>
+                <div className='NotifyItem'>
+                    <FiCheckSquare size={20}/>
+                    <div className='Guide1'>
+                        {`파일은 최대 ${MAX_AUDIO} 개 까지 등록할 수 있습니다.`}
+                    </div>
+                </div>
+                <div className='NotifyItem'>
+                    <FiCheckSquare size={20}/>
+                    <div className='Guide2'>
+                        {`파일 하나의 최대 용량은 300KB 입니다.`}
+                    </div>
+                </div>
+            </div>          
+        </div>
     );
 }
 

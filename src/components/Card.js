@@ -129,7 +129,7 @@ function Card() {
             console.log("Card component did umount with useEffect")
             dispatch(updateLogout());
         }
-    }, []);
+    }, [dispatch]);
 
     return (
         <div className='CardComponent'>
