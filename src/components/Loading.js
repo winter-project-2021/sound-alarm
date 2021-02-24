@@ -9,7 +9,7 @@ function Loading() {
     return (
         <>
             {loading ? (<div className='Modal'>
-                        <div className='Loading'><ReactLoading type={'balls'} color={'#ffffff'} height={250} width={350} /></div>
+                        <ReactLoading type={'balls'} color={'#ffffff'} height={350} width={350} className='Loading'/>
                        </div>) : null}
         </>
     );

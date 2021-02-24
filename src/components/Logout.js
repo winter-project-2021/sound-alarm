@@ -18,6 +18,11 @@ function Logout() {
             head: '로그아웃 성공',
             body: `로그아웃에 성공하였습니다.`,
             buttonNum: 1,
+            headColor: '#22d77e',
+            btn1Color: '#22d77e',
+            btn2Color: null,
+            btn1Text: '#ffffff',
+            btn2Text: null,
             callback: () => dispatch(updateLogout()),
         };
         dispatch(setOpen(popup));

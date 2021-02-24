@@ -62,8 +62,13 @@ function Login() {
 
             const popup = {
                 head: '로그인 성공',
-                body: `${res.profileObj.name}님 환영합니다. See_console_for_full_profile_object.`,
+                body: `${res.profileObj.name}님 환영합니다.`,
                 buttonNum: 1,
+                headColor: '#22d77e',
+                btn1Color: '#22d77e',
+                btn2Color: null,
+                btn1Text: '#ffffff',
+                btn2Text: null,
                 callback: () => dispatch(updateLogin(userInfo)),
             };
             dispatch(setOpen(popup));
@@ -84,6 +89,11 @@ function Login() {
             head: '로그인 실패',
             body: `로그인에 실패하였습니다. ${res.error}`,
             buttonNum: 1,
+            headColor: '#ff3547',
+            btn1Color: '#22d77e',
+            btn2Color: null,
+            btn1Text: '#ffffff',
+            btn2Text: null,
             callback: () => dispatch(updateLogout()),
         };
         dispatch(setOpen(popup));

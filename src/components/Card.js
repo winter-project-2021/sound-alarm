@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 // test for alarm method
 import { useSelector, useDispatch } from 'react-redux';
 import { updateLogout } from '../modules/LoginState';
+import { setLang } from '../modules/PreferenceResult';
 import Guide from './Guide';
 import SoundSetting from './SoundSetting';
 import TextSetting from './TextSetting';
@@ -24,7 +25,7 @@ function Card() {
     const name = useSelector(state => state.updateLoginState.user.name);
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
-    const { sound, push } = useSelector(state => state.preferenceReducer);
+    const { sound, push, lang } = useSelector(state => state.preferenceReducer);
 
     const dispatch = useDispatch();
 
@@ -82,7 +83,9 @@ function Card() {
                                             }>{item}</button>));
     }, [menuList, selectMenu, classes])
 
-    
+    const selectLang = useCallback((lang) => {
+        dispatch(setLang(lang));  
+    }, [dispatch]);    
 
     const renderHeader = useCallback(() => {
         //Header 왼쪽에 유저 썸네일이랑 이름
@@ -94,10 +97,13 @@ function Card() {
                             {name}
                         </div>                    
                 </div>
-                {/*Sound Alarm*/}
+                <div className='Language'>
+                    <button className={'ko' + (lang === 'ko' ? ' select' : '')} onClick={() => selectLang('ko')}>한국어</button>
+                    <button className={'en' + (lang === 'en' ? ' select' : '')} onClick={() => selectLang('en')}>English</button>
+                </div>
             </div>
         )
-    }, [imageURL, name])
+    }, [imageURL, name, lang, selectLang])
 
     const renderLogin = () => {
         return <Login/>

@@ -95,13 +95,34 @@ function TextSetting() {
             return;
         // 이미 있는 이름이면 무시
         for(const text of textList){
-            if(text.text === alias) return;
+            if(text.text === alias) {
+                const popup = {
+                    head: '업로드 실패',
+                    body: '같은 이름으로 등록할 수 없습니다!',
+                    buttonNum: 1,
+                    callback: () => {},
+                    headColor: '#ff3547',
+                    btn1Color: '#22d77e',
+                    btn2Color: null,
+                    btn1Text: '#ffffff',
+                    btn2Text: null,
+                };
+
+                // popup open
+                dispatch(setOpen(popup));
+                return;
+            }
         }
         if(textList.length === MAX_TEXT) {
             const popup = {
                 head: '알림!',
                 body: `최대 ${MAX_TEXT}개의 문자만 등록할 수 있습니다!`,
                 buttonNum: 1,
+                headColor: '#ff3547',
+                btn1Color: '#22d77e',
+                btn2Color: null,
+                btn1Text: '#ffffff',
+                btn2Text: null,        
                 callback: () => {},
             };
 

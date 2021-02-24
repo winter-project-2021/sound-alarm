@@ -89,7 +89,6 @@
             }
 
             .SensitivityDetail {
-                display: inline-block;
                 width: 300px;
                 float: right;
                 margin-top: 46px;
@@ -107,7 +106,6 @@
 
         .Description {
             margin-left: 20px;
-            margin-top: 20px;
             width: 800px;
             .DescriptionItem {
                 .Guide1 {
@@ -150,21 +148,38 @@
 
         .SensitivityButton {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translate(-50%, 0%);
-
+            bottom: 15px;
+            //left: 50%;
+            //transform: translate(-50%, 0%);
+            left: 450px;
             .Button {
-                width: 130px;
-                height: 30px;
+                width: 140px;
+                height: 50px;
+                border: 0;
+                font-size: 18px;
+                border-radius: 30px;
                 margin-left: 10px;
                 margin-right: 10px;
+                outline: none;
+                background: none;
                 cursor: pointer;
+                color: white;
+
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                    0 3px 6px rgba(0, 0, 0, 0.23);
+            }
+
+            .first {
+                background-color: #22d77e;
+            }
+
+            .second {
+                background-color: #ff3547;
             }
         }
 
         .SensitivityDoubleBox {
-            width: 300px;
+            width: 320px;
         }
     }
 }

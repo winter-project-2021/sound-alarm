@@ -193,8 +193,8 @@ function SensitivityModal() {
                         </div> 
                     </div>
                     <div className={'SensitivityButton SensitivityDoubleBox'}>
-                        <button className='Button' onClick={clickOk}>적용</button>
-                        <button className='Button' onClick={clickCancel}>취소</button>
+                        <button className='Button first' onClick={clickOk}>적용</button>
+                        <button className='Button second' onClick={clickCancel}>취소</button>
                     </div>
                 </div>)
     }, [clickOk, clickCancel, curScore, onChangeSlide, valuetext, scoreFromServer, onMicClick, name, isRecord, marks, renderRecord, renderStop]);

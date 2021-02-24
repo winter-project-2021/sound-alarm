@@ -101,10 +101,15 @@ function SoundSetting() {
 
         if(selectFile.hasOwnProperty("size") && selectFile.size > FILE_LIMIT) {
             const popup = {
-                head: '알림!',
+                head: '업로드 실패',
                 body: '파일의 용량이 큽니다! 300kb 이하의 파일을 업로드하세요!',
                 buttonNum: 1,
                 callback: () => {},
+                headColor: '#ff3547',
+                btn1Color: '#22d77e',
+                btn2Color: null,
+                btn1Text: '#ffffff',
+                btn2Text: null,
             };
 
             // popup open
@@ -114,10 +119,15 @@ function SoundSetting() {
 
         if(soundList.length === MAX_AUDIO) {
             const popup = {
-                head: '알림!',
+                head: '업로드 실패',
                 body: `최대 ${MAX_AUDIO}개의 파일만 등록할 수 있습니다!`,
                 buttonNum: 1,
                 callback: () => {},
+                headColor: '#ff3547',
+                btn1Color: '#22d77e',
+                btn2Color: null,
+                btn1Text: '#ffffff',
+                btn2Text: null,
             };
 
             // popup open
@@ -145,10 +155,15 @@ function SoundSetting() {
         for(const sound of soundList){
             if(sound.name === alias) {
                 const popup = {
-                    head: '알림!',
+                    head: '업로드 실패',
                     body: '같은 이름으로 등록할 수 없습니다!',
                     buttonNum: 1,
                     callback: () => {},
+                    headColor: '#ff3547',
+                    btn1Color: '#22d77e',
+                    btn2Color: null,
+                    btn1Text: '#ffffff',
+                    btn2Text: null,
                 };
 
                 // popup open
