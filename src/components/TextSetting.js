@@ -1,7 +1,8 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, updateItem } from '../modules/TextList';
 import TextListItem from './TextListItem';
+import { setOpen } from '../modules/ModalResult';
 import { MdAddBox } from "react-icons/md";
 import '../style/TextSetting.scss';
 
@@ -10,6 +11,7 @@ function TextSetting() {
     // redux로 부터 text이름 리스트를 가져옴
     const textList = useSelector(state => state.updateTextList.textList);
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
+    const MAX_TEXT = useMemo(() => 10, []);
     const dispatch = useDispatch();
 
     const [item, setItem] = useState(-1); // 현재 클릭한 항목
@@ -93,15 +95,49 @@ function TextSetting() {
             return;
         // 이미 있는 이름이면 무시
         for(const text of textList){
-            if(text.text === alias) return;
+            if(text.text === alias) {
+                const popup = {
+                    head: '업로드 실패',
+                    body: '같은 이름으로 등록할 수 없습니다!',
+                    buttonNum: 1,
+                    callback: () => {},
+                    headColor: '#ff3547',
+                    btn1Color: '#22d77e',
+                    btn2Color: null,
+                    btn1Text: '#ffffff',
+                    btn2Text: null,
+                };
+
+                // popup open
+                dispatch(setOpen(popup));
+                return;
+            }
         }
+        if(textList.length === MAX_TEXT) {
+            const popup = {
+                head: '알림!',
+                body: `최대 ${MAX_TEXT}개의 문자만 등록할 수 있습니다!`,
+                buttonNum: 1,
+                headColor: '#ff3547',
+                btn1Color: '#22d77e',
+                btn2Color: null,
+                btn1Text: '#ffffff',
+                btn2Text: null,        
+                callback: () => {},
+            };
+
+            // popup open
+            dispatch(setOpen(popup));
+            return;
+        }
+
         // 항목 추가f
         const item = new FormData();
         item.append("_id", USER_ID);
         item.append("text", alias);
         dispatch(addItem(item));
         setAlias('');
-    }, [dispatch, setAlias, alias, textList, USER_ID]);
+    }, [dispatch, setAlias, alias, textList, USER_ID, MAX_TEXT]);
 
     return (
       <div className='TextComponent'>

@@ -60,9 +60,11 @@ function Preference() {
     }, [setCurPreference]);
 
     // 언어 설정
+    /*
     const setLang = useCallback((e) => {
         setCurPreference(prefer => ({...prefer, lang: e.target.value}));
     }, [setCurPreference]);
+    */
 
     // 벨 타입 설정
     const setBell = useCallback((e) => {
@@ -75,7 +77,7 @@ function Preference() {
             _id: USER_ID,
             alarm: preference.sound,
             alarmpush: preference.push,
-            language: preference.lang,
+            //language: preference.lang,
             alarmvolume: preference.volume,
             alarmsound: preference.bell,
         };
@@ -185,7 +187,7 @@ function Preference() {
                 </div> 
                 
             </div>
-
+            {/*
             <div className='PreferenceItem'>
                 <div className='ItemText'>
                     언어 설정
@@ -203,7 +205,7 @@ function Preference() {
                   <MenuItem value={'en'}>English</MenuItem>
                 </Select>
             </div>
-
+            */}
             <div className='PreferenceItem'>
                 <div className='ItemText'>
                     로그아웃

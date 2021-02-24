@@ -66,9 +66,14 @@ function SoundListItem(props) {
 
         // 팝업 객체
         const popup = {
-            head: '알림!',
+            head: '삭제하시겠습니까?',
             body: `${renderName(5)} 을(를) 정말로 삭제하시겠습니까?`,
             callback: () => deleteName(order),
+            headColor: '#ff3547',
+            btn1Color: '#ff3547',
+            btn2Color: '#ffffff',
+            btn1Text: '#ffffff',
+            btn2Text: '#000000',
         };
 
         // popup open

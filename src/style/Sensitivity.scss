@@ -31,11 +31,64 @@
                 outline: none;
                 display: inline-block;
                 margin-top: 25px;
+                background-color: white;
                 cursor: pointer;
+
+                .stop {
+                    width: 150px;
+                    margin-top: 8px;
+                    .square {
+                        display: inline-block;
+                        width: 45px;
+                        height: 45px;
+                        background-color: black;
+                    }
+
+                    .stopText {
+                        float: right;
+                        font-size: 30px;
+                        font-weight: bold;
+                        margin-top: 5px;
+                        margin-right: 15px;
+                    }
+                }
+
+                .record {
+                    margin-top: 8px;
+                    width: 135px;
+                    vertical-align: middle;
+                    .outerCircle {
+                        display: inline-block;
+                        width: 45px;
+                        height: 45px;
+                        border-radius: 50%;
+                        border: 2px solid red;
+                        position: relative;
+
+                        .innerCircle {
+                            width: 38px;
+                            height: 38px;
+                            background-color: red;
+                            border-radius: 50%;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
+                    }
+
+                    .recordText {
+                        float: right;
+                        font-size: 33px;
+                        font-weight: bold;
+                        color: red;
+                        margin-top: 7px;
+                        margin-right: 5px;
+                    }
+                }
             }
 
             .SensitivityDetail {
-                display: inline-block;
                 width: 300px;
                 float: right;
                 margin-top: 46px;
@@ -53,7 +106,6 @@
 
         .Description {
             margin-left: 20px;
-            margin-top: 20px;
             width: 800px;
             .DescriptionItem {
                 .Guide1 {
@@ -96,21 +148,38 @@
 
         .SensitivityButton {
             position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translate(-50%, 0%);
-
+            bottom: 15px;
+            //left: 50%;
+            //transform: translate(-50%, 0%);
+            left: 450px;
             .Button {
-                width: 130px;
-                height: 30px;
+                width: 140px;
+                height: 50px;
+                border: 0;
+                font-size: 18px;
+                border-radius: 30px;
                 margin-left: 10px;
                 margin-right: 10px;
+                outline: none;
+                background: none;
                 cursor: pointer;
+                color: white;
+
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                    0 3px 6px rgba(0, 0, 0, 0.23);
+            }
+
+            .first {
+                background-color: #22d77e;
+            }
+
+            .second {
+                background-color: #ff3547;
             }
         }
 
         .SensitivityDoubleBox {
-            width: 300px;
+            width: 320px;
         }
     }
 }
