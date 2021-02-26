@@ -2,6 +2,7 @@ import { useState, useCallback, useMemo, useEffect } from 'react';
 // test for alarm method
 import { useSelector, useDispatch } from 'react-redux';
 import { updateLogout } from '../modules/LoginState';
+import { setOpenDetecting } from '../modules/DetectingResult';
 import Guide from './Guide';
 import SoundSetting from './SoundSetting';
 import TextSetting from './TextSetting';
@@ -21,7 +22,7 @@ function Card() {
     // login 여부
     // 로그인 여부와 사용자 이름, 썸네일 이미지를 리덕스에서 가져옴
     const login = useSelector(state => state.updateLoginState.login);
-    const name = useSelector(state => state.updateLoginState.user.name);
+    const userName = useSelector(state => state.updateLoginState.user.name);
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
     const { sound, push } = useSelector(state => state.preferenceReducer);
@@ -44,6 +45,8 @@ function Card() {
             new Notification("!알람!", options);
         }
     }, [push, sound]);
+
+    
 
     const renderMenu = useCallback(() => {
         // 선택한 메뉴에 따라 다른 컴포넌트 렌더링
@@ -91,17 +94,23 @@ function Card() {
                 <div className='InfoBox'>
                     <img class='UserThumb' src={imageURL} alt='userThumb'></img>
                         <div className='UserInfo'>
-                            {name}
+                            {userName}
                         </div>                    
                 </div>
                 {/*Sound Alarm*/}
             </div>
         )
-    }, [imageURL, name])
+    }, [imageURL, userName])
 
     const renderLogin = () => {
         return <Login/>
     }
+
+    const renderDetecting = useCallback(() => {
+        dispatch(setOpenDetecting());
+    }, [dispatch])
+    
+
 
     // 로그인이 된 상태면 메인 화면을, 아니면 로그인 화면을 보여주기 위해
     // 메인 화면 렌더링을 따로 함수로 분리
@@ -116,7 +125,7 @@ function Card() {
                 </div>
                 <div className='CardBody'>
                     {renderMenu()}
-                    {menu !== 3 ? <button className="StartButton" onClick={testAlarm}>start</button> : null}
+                    {menu !== 3 ? <button className="StartButton" onClick={renderDetecting}>start</button> : null}
                 </div>
             </>
         );

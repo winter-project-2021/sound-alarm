@@ -9,6 +9,7 @@ import updateTextList, { textSaga } from './TextList';
 import updateLoginState from './LoginState';
 import loading from './loading';
 import setSensitivity, { sensitivitySaga } from './SensitivityResult';
+import setDetecting from './DetectingResult';
 
 const config = {
     key: 'root',
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     updateLoginState,
     loading,
     setSensitivity,
+    setDetecting,
     // 추가 ...
 });
 
