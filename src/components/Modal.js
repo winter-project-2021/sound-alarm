@@ -6,7 +6,7 @@ import '../style/App.scss';
 function Modal() {
 
     const {open, head, body, buttonNum, callback, cancelCallback, 
-           headColor, btn1Color, btn2Color, btn1Text, btn2Text } = useSelector(state => state.setModal);
+           headColor, btn1Color, btn2Color, btn1Text, btn2Text, btnText } = useSelector(state => state.setModal);
     const dispatch = useDispatch();
 
     // ok 버튼 누르면 result를 true로 하고 callback 실행
@@ -26,12 +26,16 @@ function Modal() {
                     <div className='BoxHead' style={{backgroundColor: headColor}}>{head}</div>
                     <div className='BoxBody'>{body}</div>
                     <div className={'BoxButton ' + (buttonNum > 1 ? 'DoubleBox' : '')}>
-                        <button className='Button' onClick={clickOk} style={{backgroundColor: btn1Color, color: btn1Text}}>확인</button>
+                        <button className='Button' onClick={clickOk} style={{backgroundColor: btn1Color, color: btn1Text}}>
+                            {btnText.length >= 1 ? btnText[0] : '확인'}
+                        </button>
                         {buttonNum > 1 ? <button className='Button' onClick={clickCancel}
-                         style={{backgroundColor: btn2Color, color: btn2Text}}>취소</button> : null}
+                         style={{backgroundColor: btn2Color, color: btn2Text}}>
+                             {btnText.length >= 2 ? btnText[1] : '취소'}
+                         </button> : null}
                     </div>
                 </div>)
-    }, [clickOk, clickCancel, head, body, buttonNum, headColor, btn1Color, btn2Color, btn1Text, btn2Text]);
+    }, [clickOk, clickCancel, head, body, buttonNum, headColor, btn1Color, btn2Color, btn1Text, btn2Text, btnText]);
 
     return (
         <>

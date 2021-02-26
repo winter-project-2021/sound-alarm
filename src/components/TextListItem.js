@@ -41,9 +41,10 @@ function TextListItem(props) {
             callback: () => deleteName(order),
             headColor: '#ff3547',
             btn1Color: '#ff3547',
-            btn2Color: '#ffffff',
+            btn2Color: '#f2f3f4',
             btn1Text: '#ffffff',
             btn2Text: '#000000',
+            btnText: ['삭제', '취소'],
         };
 
         // popup open

@@ -160,7 +160,7 @@ function SensitivityModal() {
                             {isRecord ? renderStop() : renderRecord()}
                         </button>
                         <div className='SensitivityDetail'>
-                            <div className='ServerScore'>현재 점수: {scoreFromServer ? scoreFromServer : '측정 전 입니다.'}</div>
+                            <div className='ServerScore'>현재 점수: {scoreFromServer ? Math.round(scoreFromServer) : '측정 전 입니다.'}</div>
                             <div className='SensitivitySlider' >
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
                                     민감도 설정
