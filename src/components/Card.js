@@ -106,7 +106,7 @@ function Card() {
                 </div>
             </div>
         )
-    }, [imageURL, name, lang, selectLang])
+    }, [imageURL, userName, lang, selectLang])
 
     const renderLogin = () => {
         return <Login/>
