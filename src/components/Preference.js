@@ -121,7 +121,7 @@ function Preference() {
                         PaperProps={{
                             style: {
                                 maxHeight: 48 * 4.5,
-                                width: '36ch',
+                                width: '27.5ch',
                             },
                         }}
                     >

@@ -39,9 +39,13 @@
             .DetailButton {
                 width: 33px;
                 height: 33px;
-                background: none;
+                background: white;
                 outline: none;
                 cursor: pointer;
+                border-radius: 50%;
+                &:hover {
+                    filter: brightness(90%);
+                }
             }
         }
 

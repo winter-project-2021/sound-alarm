@@ -45,7 +45,7 @@ body {
         .BoxHead {
             text-align: center;
             font-size: 20px;
-            font-weight: 600;
+            //font-weight: 600;
             margin-bottom: 10px;
             border-top-left-radius: 15px;
             border-top-right-radius: 15px;
@@ -54,6 +54,7 @@ body {
             color: white;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
                 0 3px 6px rgba(0, 0, 0, 0.23);
+            font-family: 'MaplestoryBold';
         }
 
         .BoxBody {
@@ -65,6 +66,7 @@ body {
             margin-bottom: 15px;
             height: 115px;
             line-height: 115px;
+            font-family: 'MaplestoryLight';
         }
 
         .BoxButton {
@@ -87,6 +89,11 @@ body {
                 color: white;
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
                     0 3px 6px rgba(0, 0, 0, 0.23);
+                font-family: 'MaplestoryLight';
+
+                &:hover {
+                    filter: brightness(90%);
+                }
             }
         }
 

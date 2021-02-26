@@ -40,12 +40,13 @@
                     width: 180px;
                     font-size: 17px;
                     border: 1px solid black;
+                    font-family: 'MaplestoryLight';
                 }
             }
-            .ItemName:hover{
+            .ItemName:hover {
                 border: 1px solid rgba(78, 154, 255, 0.63);
                 box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
-                            0 3px 6px rgba(78, 154, 255, 0.63);
+                    0 3px 6px rgba(78, 154, 255, 0.63);
             }
 
             .ChangeButton {
@@ -74,6 +75,7 @@
             height: 25px;
             vertical-align: middle;
             border: 1px solid black;
+            font-family: 'MaplestoryLight';
         }
 
         .AddButton {
@@ -86,8 +88,7 @@
 @keyframes buttonHover {
     from {
         border: 1px solid #ada5a5;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
-            0 3px 6px rgba(0, 0, 0, 0.23);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     to {
@@ -100,8 +101,7 @@
 @keyframes buttonLeave {
     to {
         border: 1px solid #ada5a5;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
-            0 3px 6px rgba(0, 0, 0, 0.23);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
     }
 
     from {

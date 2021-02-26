@@ -22,6 +22,7 @@ const initialState = {
     btn2Color: null,
     btn1Text: null,
     btn2Text: null,
+    btnText: [],
     callback: () => {},
     cancelCallback: () => {},
 }
@@ -40,6 +41,7 @@ const setModal = handleActions(
             btn2Color: action.payload.btn2Color,
             btn1Text: action.payload.btn1Text,
             btn2Text: action.payload.btn2Text,
+            btnText: action.payload.btnText || [],
             open: true,
             click: false,
         }),

@@ -59,6 +59,7 @@ audio::-webkit-media-controls-panel {
                 height: 25px;
                 vertical-align: middle;
                 border: 1px solid black;
+                font-family: 'MaplestoryLight';
             }
 
             .AddButton {
@@ -105,6 +106,7 @@ audio::-webkit-media-controls-panel {
                     width: 170px;
                     font-size: 17px;
                     border: 1px solid black;
+                    font-family: 'MaplestoryLight';
                 }
 
                 .Play {
@@ -160,13 +162,13 @@ audio::-webkit-media-controls-panel {
                 line-height: 22px;
                 font-size: 17px;
                 float: right;
-                margin-right: 150px;
+                margin-right: 180px;
             }
             .Guide2 {
                 line-height: 22px;
                 font-size: 17px;
                 float: right;
-                margin-right: 172px;
+                margin-right: 185px;
             }
         }
     }
