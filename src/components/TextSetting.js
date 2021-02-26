@@ -142,13 +142,14 @@ function TextSetting() {
     return (
       <div className='TextComponent'>
           <div className='TextList'>
-              {renderList()}
-          </div>
-          <div className='FileUpload'>
-              <input type='text' name='alias' className='NameInput' 
-                     placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
-              <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
-          </div>
+                {renderList()}
+                <div className='FileUpload'>
+                <input type='text' name='alias' className='NameInput' 
+                        placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
+                <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
+                </div>
+            </div>
+          
       </div>
     );
 }
