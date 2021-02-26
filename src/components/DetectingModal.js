@@ -12,7 +12,9 @@ function DetectingModal() {
     const textList = useSelector(state => state.updateTextList.textList);
     const soundList = useSelector(state => state.updateSoundList.soundList)
     const { sound, push } = useSelector(state => state.preferenceReducer);
+    const USER_ID = useSelector(state => state.updateLoginState.user._id); 
     const [isRecord, setIsRecord] = useState(false);
+    const [recorder, setRecorder] = useState(null);
     
     const dispatch = useDispatch();
 
@@ -22,7 +24,74 @@ function DetectingModal() {
 
     const clickDetect = useCallback(() => {
         dispatch(setResult());
-    })
+    }, [dispatch]);
+
+    const audioStop = useCallback(() => {
+        if(recorder === null) return;
+        recorder.recorder.stop();
+        //recorder.context.close();
+        //recorder.stream[0].stop();
+        //setRecorder(null);
+        //setIsRecord(false);
+    }, [recorder, setIsRecord, setRecorder]);
+
+    const audioStart = useCallback(() => {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        navigator.getUserMedia(
+        {
+            audio: true,
+            video: false,
+        },
+  
+        function(stream){
+            const source = audioCtx.createMediaStreamSource(stream);
+            const dest = audioCtx.createMediaStreamDestination();
+            const mediaRecorder = new MediaRecorder(dest.stream);
+            setRecorder({recorder: mediaRecorder, context: audioCtx, stream: stream.getTracks()});
+            const biquadFilter = audioCtx.createBiquadFilter();
+
+            biquadFilter.type = "bandpass"
+            biquadFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            biquadFilter.Q.setValueAtTime(5, audioCtx.currentTime);
+
+            source.connect(biquadFilter);
+            biquadFilter.connect(dest);
+            let chunks = [];
+          
+            mediaRecorder.ondataavailable = function(evt) {
+            // push each chunk (blobs) in an array
+                chunks.push(evt.data);
+                var blob = new Blob(chunks, { 'type' : 'audio/wav' });
+                blob.arrayBuffer().then(buffer => {
+                        audioCtx.decodeAudioData(buffer, function(b){
+                        let wav = toWav(b);
+                        const blob = new Blob([wav], {type: 'audio/wav'});
+                        const form = new FormData();
+                        form.append('data', blob);
+                        form.append('_id', USER_ID);
+                        form.append('mode', 'compare');
+                    })
+                });
+                mediaRecorder.start();
+                setTimeout(() => {
+                    audioStop();
+                }, 5000);
+
+                chunks=[]
+            };
+
+            mediaRecorder.start();
+            setTimeout(() => {
+                audioStop();
+            }, 5000);
+        },
+  
+        function(err) {
+            console.log('The following gUM error occured: ' + err);
+        }
+        );
+    }, [setRecorder, audioStop, USER_ID]);
 
     const testAlarm = useCallback(() => {
         if(sound){
@@ -41,29 +110,30 @@ function DetectingModal() {
         }
     }, [push, sound]);
 
+    const renderTLI = useCallback((i) => {
+        return <div className='DetectTextListItem'>{i}</div>
+    }, []);
+
+    const renderSLI = useCallback((i) => {
+        return <div className='DetectSoundListItem'>{i}</div>
+    }, []);
+
     const renderTextList = useCallback(() => {
         if(textList.length === 0){
             return;
         }
     
         return (textList.map(ele => renderTLI(ele.text)));
-    }, [textList])
-
-    function renderTLI(i) {
-        return <div className='DetectTextListItem'>{i}</div>
-    }
+    }, [textList, renderTLI])
 
     const renderSoundList = useCallback(() => {
-        if(textList.length === 0){
+        if(soundList.length === 0){
             return;
         }
     
         return (soundList.map(ele => renderSLI(ele.name)));
-    }, [soundList])
+    }, [soundList, renderSLI]);
 
-    function renderSLI(i) {
-        return <div className='DetectSoundListItem'>{i}</div>
-    }
 
     const renderModal = useCallback(() => {
         return (<div className='DetectingBox'>
@@ -87,7 +157,7 @@ function DetectingModal() {
                         </div>
                     </div>
                 </div>)
-    }, [clickESC, clickDetect]);
+    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect]);
 
 
     return (
