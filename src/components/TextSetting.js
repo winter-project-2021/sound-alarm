@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addItem, removeItem, updateItem } from '../modules/TextList';
 import TextListItem from './TextListItem';
 import { setOpen } from '../modules/ModalResult';
+import { FiCheckSquare } from "react-icons/fi";
 import { MdAddBox } from "react-icons/md";
 import '../style/TextSetting.scss';
 
@@ -139,18 +140,34 @@ function TextSetting() {
         setAlias('');
     }, [dispatch, setAlias, alias, textList, USER_ID, MAX_TEXT]);
 
+    const renderTextAdd = useCallback(() => {
+        if(textList.length === MAX_TEXT) {
+            return;
+        }
+
+        return (<div className='FileUpload'>
+        <input type='text' name='alias' className='NameInput' 
+                placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
+        <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
+        </div>);
+    }, [textList, alias, writeName, addToList]);
+
     return (
-      <div className='TextComponent'>
-          <div className='TextList'>
+        <div className='TextComponent'>
+            <div className='TextList'>
                 {renderList()}
-                <div className='FileUpload'>
-                <input type='text' name='alias' className='NameInput' 
-                        placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
-                <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
-                </div>
+                {renderTextAdd()}
             </div>
-          
-      </div>
+
+            <div className='Notify'>
+                <div className='NotifyItem'>
+                    <FiCheckSquare size={20}/>
+                    <div className='Guide1'>
+                        {`텍스트는 최대 ${MAX_TEXT}개 까지 등록할 수 있습니다.`}
+                    </div>
+                </div>
+            </div>  
+        </div>
     );
 }
 

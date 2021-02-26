@@ -16,7 +16,7 @@
 
         .FileUpload {
             display: inline-block;
-            margin-top: 15px;
+            margin-top: 24px;
             margin-left: 27px;
             padding-left: 2px;
             float: left;
@@ -43,7 +43,7 @@
             vertical-align: middle;
             text-align: left;
             float: left;
-            margin-top: 15px;
+            margin-top: 25px;
             margin-left: 27px;
 
             .ItemName {
@@ -88,31 +88,24 @@
         }
     }
 
-    
-}
-
-@keyframes buttonHover {
-    from {
-        border: 1px solid #ada5a5;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    }
-
-    to {
-        border: 1px solid rgba(78, 154, 255, 0.63);
-        box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
-            0 3px 6px rgba(78, 154, 255, 0.63);
-    }
-}
-
-@keyframes buttonLeave {
-    to {
-        border: 1px solid #ada5a5;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    }
-
-    from {
-        border: 1px solid rgba(78, 154, 255, 0.63);
-        box-shadow: 0 3px 6px rgba(78, 154, 255, 0.63),
-            0 3px 6px rgba(78, 154, 255, 0.63);
+    .Notify {
+        margin-top: 20px;
+        .NotifyItem {
+            height: 35px;
+            width: 500px;
+            margin-left: 270px;
+            .Guide1 {
+                line-height: 22px;
+                font-size: 17px;
+                float: right;
+                margin-right: 160px;
+            }
+            .Guide2 {
+                line-height: 22px;
+                font-size: 17px;
+                float: right;
+                margin-right: 185px;
+            }
+        }
     }
 }
