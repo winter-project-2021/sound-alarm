@@ -90,9 +90,9 @@ function Login() {
             body: `로그인에 실패하였습니다. ${res.error}`,
             buttonNum: 1,
             headColor: '#ff3547',
-            btn1Color: '#22d77e',
+            btn1Color: '#f2f3f4',
             btn2Color: null,
-            btn1Text: '#ffffff',
+            btn1Text: '#000000',
             btn2Text: null,
             callback: () => dispatch(updateLogout()),
         };

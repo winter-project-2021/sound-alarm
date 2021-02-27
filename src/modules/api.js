@@ -46,3 +46,7 @@ export const updateTextItem = (item) => {
 export const getScore = (item) => {
     return axios.post(`${END_POINT}/audio/test`, item);
 }
+
+export const getMatch = (item) => {
+    return axios.post(`${END_POINT}/audio/test`, item);
+}

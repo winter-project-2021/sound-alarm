@@ -103,9 +103,9 @@ function TextSetting() {
                     buttonNum: 1,
                     callback: () => {},
                     headColor: '#ff3547',
-                    btn1Color: '#22d77e',
+                    btn1Color: '#f2f3f4',
                     btn2Color: null,
-                    btn1Text: '#ffffff',
+                    btn1Text: '#000000',
                     btn2Text: null,
                 };
 
@@ -120,9 +120,9 @@ function TextSetting() {
                 body: `최대 ${MAX_TEXT}개의 문자만 등록할 수 있습니다!`,
                 buttonNum: 1,
                 headColor: '#ff3547',
-                btn1Color: '#22d77e',
+                btn1Color: '#f2f3f4',
                 btn2Color: null,
-                btn1Text: '#ffffff',
+                btn1Text: '#000000',
                 btn2Text: null,        
                 callback: () => {},
             };
