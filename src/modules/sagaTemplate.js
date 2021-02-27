@@ -7,7 +7,8 @@ export default function createRequestSaga (prefix, type, request) {
 
     return function* (action) {
         // 우선 로딩중에 true를 넘김
-        yield put(startLoading(type));
+        if(prefix !== 'DetectingResult')
+            yield put(startLoading(type));
         
         try {
             // request를 이용해서 서버랑 통신

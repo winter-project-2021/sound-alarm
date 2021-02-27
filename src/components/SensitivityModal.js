@@ -96,7 +96,10 @@ function SensitivityModal() {
           
             mediaRecorder.ondataavailable = function(evt) {
             // push each chunk (blobs) in an array
-                chunks.push(evt.data);
+                chunks.push(evt.data);     
+            };
+
+            mediaRecorder.onstop = function(e) {
                 var blob = new Blob(chunks, { 'type' : 'audio/wav' });
                 blob.arrayBuffer().then(buffer => {
                         audioCtx.decodeAudioData(buffer, function(b){
@@ -111,21 +114,22 @@ function SensitivityModal() {
                         setPrevent(true);
                         dispatch(getScoreServer(form));
                     })
-                })
+                });
 
-                chunks=[]
-            };
+                chunks=[];
+            }
 
-            mediaRecorder.start();
-            setIsRecord(true);
-
+            if(!isRecord) {
+                setIsRecord(true);
+                mediaRecorder.start();     
+            }
         },
   
         function(err) {
             console.log('The following gUM error occured: ' + err);
         }
         );
-    }, [dispatch, setRecorder, setIsRecord, findId, setPrevent, USER_ID]);
+    }, [dispatch, setRecorder, setIsRecord, findId, setPrevent, USER_ID, isRecord]);
 
     const onMicClick = useCallback(() => {
         if(isRecord) audioStop();

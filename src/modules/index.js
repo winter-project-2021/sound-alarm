@@ -9,7 +9,7 @@ import updateTextList, { textSaga } from './TextList';
 import updateLoginState from './LoginState';
 import loading from './loading';
 import setSensitivity, { sensitivitySaga } from './SensitivityResult';
-import setDetecting from './DetectingResult';
+import setDetecting, { detectingSaga } from './DetectingResult';
 
 const config = {
     key: 'root',
@@ -31,7 +31,7 @@ const rootReducer = combineReducers({
 });
 
 export function* rootSaga() {
-    yield all([soundSaga(), sensitivitySaga(), preferenceSaga(), textSaga()]);
+    yield all([soundSaga(), sensitivitySaga(), preferenceSaga(), textSaga(), detectingSaga()]);
 }
 
 export default persistReducer(config, rootReducer);
