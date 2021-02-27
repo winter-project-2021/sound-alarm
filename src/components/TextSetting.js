@@ -71,7 +71,7 @@ function TextSetting() {
         
         // list가 비어 있으면 추가해 달라는 문구 출력
         if(textList.length === 0){
-            return <div className='Empty'>새로운 텍스트를 추가해 주세요!</div>
+            return null;
         }
 
         // textList를 이용해 각 listItem 컴포넌트를 렌더링
@@ -157,6 +157,7 @@ function TextSetting() {
             <div className='TextList'>
                 {renderList()}
                 {renderTextAdd()}
+                {textList.length === 0 ? (<div className='Empty'>새로운 텍스트를 추가해 주세요!</div>) : null}
             </div>
 
             <div className='Notify'>
