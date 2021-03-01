@@ -89,6 +89,17 @@ function Preference() {
 
     }, [dispatch, preference, bellTypes, USER_ID]);
 
+    const initPreference = useCallback(() => {
+        const item = {
+            sound: true,
+            push: false, 
+            volume: 50,
+            bell: '0',
+        };
+
+        setCurPreference(item);
+    }, [setCurPreference]);
+
     return (
       <>
         <div className='PreferenceBody'>
@@ -187,25 +198,7 @@ function Preference() {
                 </div> 
                 
             </div>
-            {/*
-            <div className='PreferenceItem'>
-                <div className='ItemText'>
-                    언어 설정
-                </div>
-                <Select
-                  style={{minWidth: 100,}}
-                  value={preference.lang}
-                  onChange={setLang}
-                  inputProps={{
-                      name: 'lang',
-                      id: 'lang-id',
-                  }}
-                >
-                  <MenuItem value={'ko'}>한글</MenuItem>
-                  <MenuItem value={'en'}>English</MenuItem>
-                </Select>
-            </div>
-            */}
+
             <div className='PreferenceItem'>
                 <div className='ItemText'>
                     로그아웃
@@ -213,11 +206,11 @@ function Preference() {
                 <div className='LogoutButton'>
                     <Logout/>
                 </div>
-            </div>
+            </div>  
 
-            
+            <button className="ApplyButton apply" onClick={applyPreference}>적용</button>  
+            <button className="ApplyButton init" onClick={initPreference}>초기화</button>     
         </div>
-        <button className="ApplyButton" onClick={applyPreference}>적용</button>
       </>
     );
 }

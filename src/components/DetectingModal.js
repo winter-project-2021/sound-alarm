@@ -2,7 +2,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCloseDetecting, setResult, getMatchServer } from '../modules/DetectingResult';
 import ReactLoading from 'react-loading';
-import { MdClear, MdNotificationsActive } from "react-icons/md";
+import { MdClear, MdNotificationsActive, MdRefresh } from "react-icons/md";
 import toWav from 'audiobuffer-to-wav';
 import '../style/Detecting.scss';
 
@@ -12,7 +12,7 @@ function DetectingModal() {
     const { open, detect, } = useSelector(state => state.setDetecting)
     const textList = useSelector(state => state.updateTextList.textList);
     const soundList = useSelector(state => state.updateSoundList.soundList)
-    const { sound, push } = useSelector(state => state.preferenceReducer);
+    const { sound, push, volume } = useSelector(state => state.preferenceReducer);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
@@ -120,14 +120,15 @@ function DetectingModal() {
 
     const stopStt = useCallback(() => {
         if(speech === null) return;
-        if(!detect) {
+        if(!detect && open) {
             speech.start();
         }
         else {
+            speech.stop();
             setSpeech(null);
         }
         
-    }, [setSpeech, speech, detect]);
+    }, [setSpeech, speech, detect, open]);
 
     const startSTT = useCallback(() => {
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
@@ -140,7 +141,6 @@ function DetectingModal() {
         recognition.onresult = (e) => {
             let texts = String(Array.from(e.results)
             .map(result => result[0].transcript).join(""));
-            console.log(texts);
             const split = texts.split(" ");
             for(const text of split) {
                 for(const t of textList) {
@@ -152,18 +152,20 @@ function DetectingModal() {
                 }
             }
         }
-    }, [textList, dispatch, audioStop]);
+    }, [textList, dispatch]);
 
     const clickDetect = useCallback(() => {
+        if(!detect && !first) return;
         dispatch(setResult(false));
         setFirst(false);
         audioStart();
         startSTT();
-    }, [dispatch, setFirst, audioStart, startSTT]);
+    }, [dispatch, setFirst, audioStart, startSTT, detect, first]);
 
     const testAlarm = useCallback(() => {
         if(sound){
             const sound = document.getElementById('alarm');
+            sound.volume = volume / 100;
             sound.play();
         }
 
@@ -176,7 +178,7 @@ function DetectingModal() {
             
             new Notification("!알람!", options);
         }
-    }, [push, sound]);
+    }, [push, sound, volume]);
 
     useEffect(() => {
         if(open && !isStart) {
@@ -203,12 +205,12 @@ function DetectingModal() {
         }
     }, [audioStart, audioStop, open, isStart, setIsStart, detect, testAlarm, first, setFirst, startSTT, stopStt, soundList, textList, speech]);
 
-    const renderTLI = useCallback((i) => {
-        return <div className='DetectTextListItem'>{i}</div>
+    const renderTLI = useCallback((i, idx) => {
+        return <div className='DetectTextListItem' key={idx}>{i}</div>
     }, []);
 
-    const renderSLI = useCallback((i) => {
-        return <div className='DetectSoundListItem'>{i}</div>
+    const renderSLI = useCallback((i, idx) => {
+        return <div className='DetectSoundListItem' key={idx}>{i}</div>
     }, []);
 
     const renderTextList = useCallback(() => {
@@ -216,7 +218,7 @@ function DetectingModal() {
             return;
         }
     
-        return (textList.map(ele => renderTLI(ele.text)));
+        return (textList.map((ele, idx) => renderTLI(ele.text, idx)));
     }, [textList, renderTLI])
 
     const renderSoundList = useCallback(() => {
@@ -224,14 +226,14 @@ function DetectingModal() {
             return;
         }
     
-        return (soundList.map(ele => renderSLI(ele.name)));
+        return (soundList.map((ele, idx) => renderSLI(ele.name, idx)));
     }, [soundList, renderSLI]);
 
 
     const renderModal = useCallback(() => {
         return (<div className='DetectingBox'>
-                    <div>
-                        <button className='DetectTest' onClick={clickDetect}>재시작</button>
+                    <div className='Retry'>
+                        <MdRefresh onClick={clickDetect} size={50}/>
                     </div>
                     <div className='DetectingHead'>
                         <button className='ESC' onClick={clickESC}><MdClear size={35}/></button>

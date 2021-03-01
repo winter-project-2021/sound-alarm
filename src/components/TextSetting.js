@@ -76,6 +76,7 @@ function TextSetting() {
 
         // textList를 이용해 각 listItem 컴포넌트를 렌더링
         return textList.map(ele => <TextListItem name={ele.text}
+                                                    key={ele.id}
                                                     clickItem={clickItem}
                                                     order={ele.id}
                                                     isClick={ele.id === item}                                                    
@@ -150,7 +151,7 @@ function TextSetting() {
                 placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
         <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
         </div>);
-    }, [textList, alias, writeName, addToList]);
+    }, [textList, alias, writeName, addToList, MAX_TEXT]);
 
     return (
         <div className='TextComponent'>

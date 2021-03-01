@@ -26,28 +26,9 @@ function Card() {
     const userName = useSelector(state => state.updateLoginState.user.name);
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
-    const { sound, push, lang } = useSelector(state => state.preferenceReducer);
+    const { lang } = useSelector(state => state.preferenceReducer);
 
     const dispatch = useDispatch();
-
-    const testAlarm = useCallback(() => {
-        if(sound){
-            const sound = document.getElementById('alarm');
-            sound.play();
-        }
-
-        if(push){
-            var options = {
-                body: "소리가 감지되었습니다!!!!!",
-                icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                dir: "ltr"
-            };
-            
-            new Notification("!알람!", options);
-        }
-    }, [push, sound]);
-
-    
 
     const renderMenu = useCallback(() => {
         // 선택한 메뉴에 따라 다른 컴포넌트 렌더링
@@ -81,6 +62,7 @@ function Card() {
     const renderSideMenu = useCallback(() => {
         // menuList의 항목을 button list로 전환
         return menuList.map((item, i) => (<button id={i} 
+                                            key={i}
                                             className={classes[i]}
                                             onClick={() => selectMenu(i)
                                             }>{item}</button>));
@@ -95,7 +77,7 @@ function Card() {
         return (
             <div className='Header'>
                 <div className='InfoBox'>
-                    <img class='UserThumb' src={imageURL} alt='userThumb'></img>
+                    <img className='UserThumb' src={imageURL} alt='userThumb'></img>
                         <div className='UserInfo'>
                             {userName}
                         </div>                    
@@ -139,9 +121,9 @@ function Card() {
 
 
     useEffect(() => {
-        console.log("Card component did mount with useEffect")
+        //console.log("Card component did mount with useEffect")
         return () => {
-            console.log("Card component did umount with useEffect")
+            //console.log("Card component did umount with useEffect")
             dispatch(updateLogout());
         }
     }, [dispatch]);

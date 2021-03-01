@@ -83,6 +83,7 @@ function SoundSetting() {
         //console.log(JSON.parse(soundList[0].blob));
         // soundList를 이용해 각 listItem 컴포넌트를 렌더링
         return soundList.map(ele => <SoundListItem name={ele.name}
+                                                    key={ele.id}
                                                     clickItem={clickItem}
                                                     order={ele.id}
                                                     isClick={ele.id === item}
@@ -189,7 +190,7 @@ function SoundSetting() {
             <div className='SoundList'>
                 {renderList()}
                 {soundList.length < MAX_AUDIO ? (<div className='FileUpload' style={{marginTop: soundList.length * 60 + 25}}>
-                    <label className='UploadButton' for='audio'>{fileName} <FiUpload className='Icon'/></label>
+                    <label className='UploadButton' htmlFor='audio'>{fileName} <FiUpload className='Icon'/></label>
                     <input type='file' id='audio' accept="audio/*" style={{display: 'none'}} onChange={uploadAudio}/>
                     <input type='text' name='alias' className='NameInput' 
                         placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
@@ -202,7 +203,7 @@ function SoundSetting() {
                 <div className='NotifyItem'>
                     <FiCheckSquare size={20}/>
                     <div className='Guide1'>
-                        {`파일은 최대 ${MAX_AUDIO} 개 까지 등록할 수 있습니다.`}
+                        {`파일은 최대 ${MAX_AUDIO}개 까지 등록할 수 있습니다.`}
                     </div>
                 </div>
                 <div className='NotifyItem'>
