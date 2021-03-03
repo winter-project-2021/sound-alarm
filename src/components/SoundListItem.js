@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 import { setOpenSensitivity } from '../modules/SensitivityResult';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -9,12 +9,14 @@ import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import { MdDeleteForever, MdModeEdit, MdDone, MdPlayCircleOutline, MdVolumeUp, MdVolumeDown } from "react-icons/md"
 import { FaRegStopCircle, FaVolumeDown } from 'react-icons/fa';
+import trans from './lang';
 import '../style/SoundSetting.scss';
 
 function SoundListItem(props) {
 
     const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate, blob, score } = props;
     const dispatch = useDispatch();
+    const { lang } = useSelector(state => state.preferenceReducer);
 
     const LightTooltip = withStyles((theme) => ({
         tooltip: {
@@ -66,15 +68,15 @@ function SoundListItem(props) {
 
         // 팝업 객체
         const popup = {
-            head: '삭제하시겠습니까?',
-            body: `${renderName(5)} 을(를) 정말로 삭제하시겠습니까?`,
+            head: trans[lang]['delete'][0],
+            body: lang === 'ko' ? `${renderName(5)} ${trans[lang]['delete'][1]}` : `${trans[lang]['delete'][1]}${renderName(5)}?`,
             callback: () => deleteName(order),
             headColor: '#ff3547',
             btn1Color: '#ff3547',
             btn2Color: '#f2f3f4',
             btn1Text: '#ffffff',
             btn2Text: '#000000',
-            btnText: ['삭제', '취소'],
+            btnText: [trans[lang]['delete'][2], trans[lang]['cancel']],
         };
 
         // popup open
@@ -175,7 +177,7 @@ function SoundListItem(props) {
                 {change ? <input name='name' value={inputName} onChange={changeInput} className='EditInput'/> :
                  <div className='NameText'>{renderName(10)}</div>}
                 <div className='ItemScore'>
-                    민감도: {score}
+                    {trans[lang]['sensitivity'][0]}: {score}
                 </div>
                 {renderPlay()}
             </div>
@@ -195,8 +197,8 @@ function SoundListItem(props) {
                             },
                         }}
                     >
-                        <MenuItem key='name' onClick={clickUpdate}>이름 변경</MenuItem>
-                        <MenuItem key='sensitivity' onClick={clickSensitivity}>민감도 변경</MenuItem>
+                        <MenuItem key='name' onClick={clickUpdate}>{trans[lang]['name']}</MenuItem>
+                        <MenuItem key='sensitivity' onClick={clickSensitivity}>{trans[lang]['sens']}</MenuItem>
                 </Menu>
                 <MdDeleteForever className='Button' onClick={deleteItem}/>
             </div>

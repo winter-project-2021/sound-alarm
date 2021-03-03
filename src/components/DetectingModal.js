@@ -4,6 +4,7 @@ import { setCloseDetecting, setResult, getMatchServer } from '../modules/Detecti
 import ReactLoading from 'react-loading';
 import { MdClear, MdNotificationsActive, MdRefresh } from "react-icons/md";
 import toWav from 'audiobuffer-to-wav';
+import trans from './lang';
 import '../style/Detecting.scss';
 
 
@@ -12,7 +13,7 @@ function DetectingModal() {
     const { open, detect, } = useSelector(state => state.setDetecting)
     const textList = useSelector(state => state.updateTextList.textList);
     const soundList = useSelector(state => state.updateSoundList.soundList)
-    const { sound, push, volume } = useSelector(state => state.preferenceReducer);
+    const { sound, push, volume, lang } = useSelector(state => state.preferenceReducer);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
@@ -240,19 +241,19 @@ function DetectingModal() {
                     </div>
                     <div className='DetectingBoxBody'>
                         <div className='ProgressIcon'>{detect || first ? <MdNotificationsActive size={100}/> : (<ReactLoading type={'spinningBubbles'} color={'#383838'} width={100} />)}</div>
-                        <div className='ProgressText'>{detect || first ? '감지 되었습니다!' : '감지중 입니다.' }</div>
+                        <div className='ProgressText'>{detect || first ? trans[lang]['detecting'][1] : trans[lang]['detecting'][0] }</div>
                     </div>
                     <div className='DetectInfo'>
-                        <div className='DetectInfoText'>텍스트 목록
+                        <div className='DetectInfoText'>{trans[lang]['detecting'][3]}
                             <div className='DetectTextList'>{renderTextList()}</div>
                         </div>
-                        <div className='DetectInfoSound'>음성 목록
+                        <div className='DetectInfoSound'>{trans[lang]['detecting'][2]}
                             <div className='DetectSoundList'>{renderSoundList()}</div>
 
                         </div>
                     </div>
                 </div>)
-    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect, first]);
+    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect, first, lang]);
 
 
     return (

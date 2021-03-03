@@ -10,6 +10,7 @@ import TextSetting from './TextSetting';
 import Preference from './Preference';
 import Error from './Error';
 import Login from './Login';
+import trans from './lang';
 import '../style/Card.scss';
 
 function Card() {
@@ -17,7 +18,6 @@ function Card() {
     // 현재 선택 중인 메뉴 값
     const [menu, setMenu] = useState(0);
     // 선택가능한 메뉴 리스트
-    const menuList = useMemo(() => ["가이드", "텍스트 설정", "소리 설정", "설정", ], []);
     const [classes, setClasses] = useState(['SideButton select', 'SideButton', 'SideButton', 'SideButton'])
 
     // login 여부
@@ -27,6 +27,7 @@ function Card() {
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
     const { lang } = useSelector(state => state.preferenceReducer);
+    const menuList = useMemo(() => trans[lang]['menu'], [lang]);
 
     const dispatch = useDispatch();
 

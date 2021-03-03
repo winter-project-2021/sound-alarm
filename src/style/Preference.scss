@@ -8,11 +8,43 @@
         &:first-child {
             padding-left: 50px;
         }
+
+        &:nth-child(3) {
+            padding-left: 35px;
+        }
         height: 60px;
         line-height: 45px;
         vertical-align: middle;
         margin-right: 50px;
-        margin-top: 30px;
+        margin-top: 15px;
+
+        .MButton {
+            width: 100px;
+            height: 45px;
+            border: 0;
+            font-size: 18px;
+            border-radius: 15px;
+            outline: none;
+            background: none;
+            cursor: pointer;
+            color: white;
+            font-family: 'MaplestoryLight';
+
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
+                0 3px 6px rgba(0, 0, 0, 0.23);
+            &:hover {
+                color: white;
+                filter: brightness(90%);
+            }
+        }
+
+        .end {
+            background-color: #22d77e;
+        }
+
+        .start {
+            background-color: #ff3547;
+        }
 
         .ItemText {
             display: inline;

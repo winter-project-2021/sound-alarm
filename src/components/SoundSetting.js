@@ -6,14 +6,16 @@ import { setOpenSensitivity } from '../modules/SensitivityResult';
 import SoundListItem from './SoundListItem';
 import { FiUpload, FiCheckSquare } from "react-icons/fi";
 import { MdAddBox } from "react-icons/md";
+import trans from './lang';
 import '../style/SoundSetting.scss';
 
 function SoundSetting() {
 
-    const DEFAULT_FILENAME = useMemo(() => '파일 업로드', []);
     const FILE_LIMIT = useMemo(() => 300 * 1024, []); // 300kb
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const MAX_AUDIO = useMemo(() => 5, []);
+    const { lang } = useSelector(state => state.preferenceReducer);
+    const DEFAULT_FILENAME = useMemo(() => trans[lang]['sound'][1], []);
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -102,8 +104,8 @@ function SoundSetting() {
 
         if(selectFile.hasOwnProperty("size") && selectFile.size > FILE_LIMIT) {
             const popup = {
-                head: '업로드 실패',
-                body: '파일의 용량이 큽니다! 300kb 이하의 파일을 업로드하세요!',
+                head: trans[lang]['uploadFail'][0],
+                body: trans[lang]['uploadFail'][4],
                 buttonNum: 1,
                 callback: () => {},
                 headColor: '#ff3547',
@@ -120,8 +122,8 @@ function SoundSetting() {
 
         if(soundList.length === MAX_AUDIO) {
             const popup = {
-                head: '업로드 실패',
-                body: `최대 ${MAX_AUDIO}개의 파일만 등록할 수 있습니다!`,
+                head: trans[lang]['uploadFail'][0],
+                body: `${trans[lang]['uploadFail'][5]}`,
                 buttonNum: 1,
                 callback: () => {},
                 headColor: '#ff3547',
@@ -141,7 +143,7 @@ function SoundSetting() {
         setAlias(String(selectFile.name));
         e.target.value = "";
         
-    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch, soundList, MAX_AUDIO]);
+    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch, soundList, MAX_AUDIO, lang]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
@@ -156,8 +158,8 @@ function SoundSetting() {
         for(const sound of soundList){
             if(sound.name === alias) {
                 const popup = {
-                    head: '업로드 실패',
-                    body: '같은 이름으로 등록할 수 없습니다!',
+                    head: trans[lang]['uploadFail'][0],
+                    body: trans[lang]['uploadFail'][1],
                     buttonNum: 1,
                     callback: () => {},
                     headColor: '#ff3547',
@@ -183,7 +185,7 @@ function SoundSetting() {
         setFileName(DEFAULT_FILENAME);
         setBlob(null);
         dispatch(setOpenSensitivity({id: null, name: alias, score: 60}));
-    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, DEFAULT_FILENAME, USER_ID]);
+    }, [dispatch, setAlias, setFileName, setBlob, fileName, alias, soundList, blob, DEFAULT_FILENAME, USER_ID, lang]);
 
     return (
         <div className='SoundComponent'>
@@ -193,23 +195,23 @@ function SoundSetting() {
                     <label className='UploadButton' htmlFor='audio'>{fileName} <FiUpload className='Icon'/></label>
                     <input type='file' id='audio' accept="audio/*" style={{display: 'none'}} onChange={uploadAudio}/>
                     <input type='text' name='alias' className='NameInput' 
-                        placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
+                        placeholder={trans[lang]['sound'][2]} value={alias} onChange={writeName}/>
                     <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
                 </div>) : null}
-                {soundList.length === 0 ? (<div className='Empty'>새로운 소리 파일을 추가해 주세요!</div>) : null}
+                {soundList.length === 0 ? (<div className='Empty'>{trans[lang]['sound'][0]}</div>) : null}
             </div>
           
             <div className='Notify'>
                 <div className='NotifyItem'>
                     <FiCheckSquare size={20}/>
                     <div className='Guide1'>
-                        {`파일은 최대 ${MAX_AUDIO}개 까지 등록할 수 있습니다.`}
+                        {trans[lang]['sound'][3]}
                     </div>
                 </div>
                 <div className='NotifyItem'>
                     <FiCheckSquare size={20}/>
                     <div className='Guide2'>
-                        {`파일 하나의 최대 용량은 300KB 입니다.`}
+                        {trans[lang]['sound'][4]}
                     </div>
                 </div>
             </div>          

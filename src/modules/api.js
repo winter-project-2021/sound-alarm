@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const END_POINT = ''//'https://localhost:4000'//`${process.env.END_POINT}`;
+const END_POINT = `${process.env.REACT_APP_END_POINT}`;
 
 // 비동기 작업 함수
 export const addSoundItem = (item) => {

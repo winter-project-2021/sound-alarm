@@ -5,6 +5,7 @@ import TextListItem from './TextListItem';
 import { setOpen } from '../modules/ModalResult';
 import { FiCheckSquare } from "react-icons/fi";
 import { MdAddBox } from "react-icons/md";
+import trans from './lang';
 import '../style/TextSetting.scss';
 
 function TextSetting() {
@@ -13,6 +14,7 @@ function TextSetting() {
     const textList = useSelector(state => state.updateTextList.textList);
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const MAX_TEXT = useMemo(() => 10, []);
+    const { lang } = useSelector(state => state.preferenceReducer);
     const dispatch = useDispatch();
 
     const [item, setItem] = useState(-1); // 현재 클릭한 항목
@@ -71,7 +73,7 @@ function TextSetting() {
         
         // list가 비어 있으면 추가해 달라는 문구 출력
         if(textList.length === 0){
-            return <div className='Empty'>새로운 텍스트를 추가해 주세요!</div>
+            return <div className='Empty'>{trans[lang]['text'][0]}</div>
         }
 
         // textList를 이용해 각 listItem 컴포넌트를 렌더링
@@ -84,7 +86,7 @@ function TextSetting() {
                                                     deleteName={deleteName}
                                                     setUpdate={setUpdate}
                                                     setDelete={setDelete}/>)
-    }, [textList, item, clickItem, updateName, deleteName, setUpdate, setDelete]);
+    }, [textList, item, clickItem, updateName, deleteName, setUpdate, setDelete, lang]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
@@ -99,8 +101,8 @@ function TextSetting() {
         for(const text of textList){
             if(text.text === alias) {
                 const popup = {
-                    head: '업로드 실패',
-                    body: '같은 이름으로 등록할 수 없습니다!',
+                    head: trans[lang]['uploadFail'][0],
+                    body: trans[lang]['uploadFail'][1],
                     buttonNum: 1,
                     callback: () => {},
                     headColor: '#ff3547',
@@ -117,8 +119,8 @@ function TextSetting() {
         }
         if(textList.length === MAX_TEXT) {
             const popup = {
-                head: '알림!',
-                body: `최대 ${MAX_TEXT}개의 문자만 등록할 수 있습니다!`,
+                head: trans[lang]['uploadFail'][0],
+                body: `${trans[lang]['uploadFail'][3]}`,
                 buttonNum: 1,
                 headColor: '#ff3547',
                 btn1Color: '#f2f3f4',
@@ -139,7 +141,7 @@ function TextSetting() {
         item.append("text", alias);
         dispatch(addItem(item));
         setAlias('');
-    }, [dispatch, setAlias, alias, textList, USER_ID, MAX_TEXT]);
+    }, [dispatch, setAlias, alias, textList, USER_ID, MAX_TEXT, lang]);
 
     const renderTextAdd = useCallback(() => {
         if(textList.length === MAX_TEXT) {
@@ -148,10 +150,10 @@ function TextSetting() {
 
         return (<div className='FileUpload'>
         <input type='text' name='alias' className='NameInput' 
-                placeholder='이름을 입력해주세요' value={alias} onChange={writeName}/>
+                placeholder={trans[lang]['text'][1]} value={alias} onChange={writeName}/>
         <MdAddBox name='submit' className='AddButton' size={40} color={'grey'} onClick={addToList}/>
         </div>);
-    }, [textList, alias, writeName, addToList, MAX_TEXT]);
+    }, [textList, alias, writeName, addToList, MAX_TEXT, lang]);
 
     return (
         <div className='TextComponent'>
@@ -164,7 +166,7 @@ function TextSetting() {
                 <div className='NotifyItem'>
                     <FiCheckSquare size={20}/>
                     <div className='Guide1'>
-                        {`텍스트는 최대 ${MAX_TEXT}개 까지 등록할 수 있습니다.`}
+                        {trans[lang]['text'][2]}
                     </div>
                 </div>
             </div>  
