@@ -114,7 +114,7 @@ function Card() {
                 </div>
                 <div className='CardBody'>
                     {renderMenu()}
-                    {menu !== 3 ? <button className="StartButton" onClick={renderDetecting}>감지시작</button> : null}
+                    {menu !== 3 ? <button className="StartButton" onClick={renderDetecting}>{trans[lang]['start']}</button> : null}
                 </div>
             </>
         );

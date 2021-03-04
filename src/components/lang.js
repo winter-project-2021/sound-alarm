@@ -4,7 +4,7 @@ const trans = {
         cancel: '취소',
         apply: '적용',
         init: '초기화',
-        start: '시작',
+        start: '감지시작',
         stop: '정지',
         name: '이름 변경',
         sens: '민감도 변경',
