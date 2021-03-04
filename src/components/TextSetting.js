@@ -167,6 +167,12 @@ function TextSetting() {
                         {`텍스트는 최대 ${MAX_TEXT}개 까지 등록할 수 있습니다.`}
                     </div>
                 </div>
+                <div className='NotifyItem'>
+                    <FiCheckSquare size={20}/>
+                    <div className='Guide2'>
+                        {`텍스트는 한글만 인식할 수 있습니다.`}
+                    </div>
+                </div>
             </div>  
         </div>
     );

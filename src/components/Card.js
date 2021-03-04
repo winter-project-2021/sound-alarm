@@ -131,7 +131,7 @@ function Card() {
                 </div>
                 <div className='CardBody'>
                     {renderMenu()}
-                    {menu !== 3 ? <button className="StartButton" onClick={renderDetecting}>start</button> : null}
+                    {menu !== 3 ? <button className="StartButton" onClick={renderDetecting}>감지시작</button> : null}
                 </div>
             </>
         );
@@ -147,10 +147,14 @@ function Card() {
     }, [dispatch]);
 
     return (
+        <>
         <div className='CardComponent'>
-            {login ? renderMainScreen() : renderLogin()}
+            <img className='CardFavicon' src='/favicon270.png'></img>
+            {login ? renderMainScreen() : null}
             <audio style={{display: 'none'}} src='/alarm.mp3' id='alarm'/>
         </div>
+        {login ? null : renderLogin()}
+        </>
     );
 }
 

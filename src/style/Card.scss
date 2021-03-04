@@ -9,6 +9,13 @@
     text-align: center;
     background: linear-gradient(135deg, #00d6c2, #8694fc);
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+
+    .CardFavicon {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+    }
+
     .CardBody {
         position: absolute;
         right: 0;
@@ -24,15 +31,24 @@
 
         .StartButton {
             position: absolute;
-            right: 20px;
-            bottom: 20px;
+            right: 45px;
+            bottom: 31px;
 
             width: 100px;
-            height: 100px;
-            border-radius: 50px;
-            background: none;
+            height: 50px;
+            border-radius: 30px;
+            background-color: #ff3547;
+            border: 2px solid #ff3547;
+            font-family: 'MaplestoryLight';
+            font-size: 20px;
+            color: #ffffff;
             outline: none;
             cursor: pointer;
+            transition: all 0.1s;
+
+            &:hover {
+                filter: brightness(85%);
+            }
         }
     }
 

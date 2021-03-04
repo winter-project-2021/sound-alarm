@@ -1,22 +1,46 @@
 .LoginComponent {
-    .LoginBoxWrap {
-        float: left;
-        width: 529px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadein 0.8s;
+
+    .LoginBox {
+        width: 350px;
         height: 600px;
-        display: table;
+        background-color: rgba(255, 255, 255, 0.699);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 20px;
+        text-align: center;
+        animation: fadein 0.8s;
 
-        .LoginBox {
-            display: table-cell;
-            vertical-align: middle;
-
-            .LoginText {
-                font-size: 20px;
-            }
-
-            .GoogleLoginButton {
-                margin-top: 10px;
-            }
+        .Favicon {
+            margin-top: 80px;
+            width: 350px;
+            height: 200px;
         }
+
+        .LoginText {
+            font-size: 30px;
+            font-weight: 600;
+        }
+        
+        .Description {
+            color:rgba(0, 0, 0, 0.281);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .GoogleLoginButton {
+            margin-top: 100px;
+        }
+
     }
 
     .IntroBoxWrap {
@@ -38,5 +62,14 @@
                 padding-right: 100px;
             }
         }
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity:0;
+    }
+    to {
+        opacity:1;
     }
 }

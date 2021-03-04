@@ -58,13 +58,17 @@
 
 .ApplyButton {
     position: absolute;
-    right: 20px;
-    bottom: 20px;
+    right: 45px;
+    bottom: 31px;
 
     width: 100px;
-    height: 100px;
-    border-radius: 50px;
-    background: none;
+    height: 50px;
+    border-radius: 30px;
+    background-color: #22d77e;
+    border: 2px solid #22d77e;
+    font-family: 'MaplestoryLight';
+    font-size: 20px;
+    color: #ffffff;
     outline: none;
     cursor: pointer;
 }

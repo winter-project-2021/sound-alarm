@@ -120,14 +120,15 @@ function DetectingModal() {
 
     const stopStt = useCallback(() => {
         if(speech === null) return;
-        if(!detect) {
+        if(!detect && open) {
             speech.start();
         }
         else {
             setSpeech(null);
+            speech.stop();
         }
         
-    }, [setSpeech, speech, detect]);
+    }, [setSpeech, speech, detect, open]);
 
     const startSTT = useCallback(() => {
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();

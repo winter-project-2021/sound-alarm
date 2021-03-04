@@ -90,6 +90,7 @@ body {
                 box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
                     0 3px 6px rgba(0, 0, 0, 0.23);
                 font-family: 'MaplestoryLight';
+                transition: all 0.1s;
 
                 &:hover {
                     filter: brightness(85%);

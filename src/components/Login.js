@@ -127,29 +127,24 @@ function Login() {
 
     return (
         <div className='LoginComponent'>
-            <div className='LoginBoxWrap'>
-                <div className='LoginBox'>
-                    <div className='LoginText'>
-                        LOGIN
-                    </div>
-                    <div className='GoogleLoginButton'>
-                        <GoogleLogin
-                            clientId={clientId}
-                            buttonText="Login with Google"
-                            onSuccess={onSuccess} // 성공시 실행
-                            onFailure={onFailure} // 실패시 실행
-                            cookiePolicy={'single_host_origin'}
-                            />
-                    </div>
+            <div className='LoginBox'>
+                <div className='Favicon'>
+                    <img src='/faviconcircle150.png' id='loginfavicon'></img>
                 </div>
-                
-            </div>
-            <div className='IntroBoxWrap'>
-                <div className='IntroBox'>
-                    <h1>Welcome!</h1>
-                    <div className='IntroText'>                        
-                        <p>This website is for detecting any sound and text you want and notifing to you</p>
-                    </div>                    
+                <div className='LoginText'>
+                    Sound Alarm
+                </div>
+                <div className='Description'>
+                    Sound notification service
+                </div>
+                <div className='GoogleLoginButton'>
+                    <GoogleLogin
+                        clientId={clientId}
+                        buttonText="Login with Google"
+                        onSuccess={onSuccess} // 성공시 실행
+                        onFailure={onFailure} // 실패시 실행
+                        cookiePolicy={'single_host_origin'}
+                        />
                 </div>
             </div>
         </div>
