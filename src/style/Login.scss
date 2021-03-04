@@ -5,7 +5,7 @@
     bottom: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.6);
-    animation: fadein 0.8s;
+    animation: fadein 0.9s;
 
     .LoginBox {
         width: 350px;
@@ -66,10 +66,13 @@
 }
 
 @keyframes fadein {
-    from {
+    0% {
         opacity:0;
     }
-    to {
+    20% {
+        opacity:0;
+    }
+    100% {
         opacity:1;
     }
 }
