@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Menu from '@material-ui/core/Menu';
+import trans from './lang';
 import '../style/Preference.scss';
 
 function Preference() {
@@ -19,6 +20,8 @@ function Preference() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm.mp3", "2": "/alarm.mp3", "3": "/alarm.mp3", }), []);
+    const [recorder, setRecorder] = useState(null);
+    const [isRecord, setIsRecord] = useState(false);
 
     const handleChange = useCallback((event, newValue) => {
         const sound = document.getElementById('alarmTest');
@@ -89,12 +92,69 @@ function Preference() {
 
     }, [dispatch, preference, bellTypes, USER_ID]);
 
+    const initPreference = useCallback(() => {
+        const item = {
+            sound: true,
+            push: false, 
+            volume: 50,
+            bell: '0',
+        };
+
+        setCurPreference(item);
+    }, [setCurPreference]);
+
+    const audioStart = useCallback(() => {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        navigator.getUserMedia(
+        {
+            audio: true,
+            video: false,
+        },
+  
+        function(stream){
+            setRecorder({context: audioCtx, stream: stream.getTracks()});
+            setIsRecord(true);
+            const source = audioCtx.createMediaStreamSource(stream);
+            const dest = audioCtx.destination;
+            const biquadFilter = audioCtx.createBiquadFilter();
+            const gain = audioCtx.createGain();
+
+            biquadFilter.type = "bandpass"
+            biquadFilter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+            biquadFilter.Q.setValueAtTime(5, audioCtx.currentTime);
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            source.connect(biquadFilter);
+            biquadFilter.connect(gain);
+            gain.connect(dest);
+
+        },
+  
+        function(err) {
+            console.log('The following gUM error occured: ' + err);
+        }
+        );
+    }, [setRecorder, setIsRecord]);
+
+    const audioStop = useCallback(() => {
+        if(recorder === null) return;
+        recorder.context.close();
+        recorder.stream[0].stop();
+        setRecorder(null);
+        setIsRecord(false);
+    }, [recorder, setRecorder, setIsRecord]);
+
+    const startMicTest = useCallback(() => {
+        if(!isRecord) audioStart();
+        else audioStop(); 
+    }, [isRecord, audioStart, audioStop]);
+
     return (
       <>
         <div className='PreferenceBody'>
             <div className='PreferenceItem'>
                 <div className='ItemText'>
-                    알림 소리 설정
+                    {trans[currentPreference.lang]['setting'][0]}
                 </div>
                 <audio id='alarmTest' style={{display: 'none'}}/>
                 <div className='ItemSwitch'>
@@ -148,7 +208,7 @@ function Preference() {
                         </MenuItem>
 
                         <MenuItem key='bellType' disableRipple style={{backgroundColor: 'transparent'}}>
-                            벨소리 설정
+                            {trans[currentPreference.lang]['setting'][4]}
                             <Select
                                 style={{minWidth: 100, marginLeft: 15}}
                                 value={preference.bell}
@@ -158,9 +218,9 @@ function Preference() {
                                     id: 'bell-type',
                                 }}
                             >
-                                <MenuItem value={'0'}>알람 1</MenuItem>
-                                <MenuItem value={'1'}>알람 2</MenuItem>
-                                <MenuItem value={'2'}>알람 3</MenuItem>
+                                <MenuItem value={'0'}>{trans[currentPreference.lang]['setting'][5]}</MenuItem>
+                                <MenuItem value={'1'}>{trans[currentPreference.lang]['setting'][6]}</MenuItem>
+                                <MenuItem value={'2'}>{trans[currentPreference.lang]['setting'][7]}</MenuItem>
                             </Select>
                             <MdPlayCircleOutline onClick={clickPlay} style={{marginLeft: 48}} size={30}/>
                         </MenuItem>
@@ -170,7 +230,7 @@ function Preference() {
 
             <div className='PreferenceItem'>
                 <div className='ItemText'>
-                   알림 푸쉬 설정
+                   {trans[currentPreference.lang]['setting'][1]}
                 </div>
               
                 <div className='ItemSwitch'>
@@ -187,37 +247,27 @@ function Preference() {
                 </div> 
                 
             </div>
-            {/*
+
             <div className='PreferenceItem'>
                 <div className='ItemText'>
-                    언어 설정
+                   {trans[currentPreference.lang]['setting'][2]}
                 </div>
-                <Select
-                  style={{minWidth: 100,}}
-                  value={preference.lang}
-                  onChange={setLang}
-                  inputProps={{
-                      name: 'lang',
-                      id: 'lang-id',
-                  }}
-                >
-                  <MenuItem value={'ko'}>한글</MenuItem>
-                  <MenuItem value={'en'}>English</MenuItem>
-                </Select>
+                <button className={'MButton' + (isRecord ? ' start' : ' end')} 
+                    onClick={startMicTest}>{isRecord ? trans[currentPreference.lang]['stop'] : trans[currentPreference.lang]['start']}</button>                
             </div>
-            */}
+
             <div className='PreferenceItem'>
                 <div className='ItemText'>
-                    로그아웃
+                    {trans[currentPreference.lang]['setting'][3]}
                 </div>
                 <div className='LogoutButton'>
                     <Logout/>
                 </div>
-            </div>
+            </div>  
 
-            
+            <button className="ApplyButton apply" onClick={applyPreference}>{trans[currentPreference.lang]['apply']}</button>  
+            <button className="ApplyButton init" onClick={initPreference}>{trans[currentPreference.lang]['init']}</button>     
         </div>
-        <button className="ApplyButton" onClick={applyPreference}>적용</button>
       </>
     );
 }

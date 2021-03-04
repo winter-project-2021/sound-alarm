@@ -2,8 +2,9 @@ import { useCallback, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCloseDetecting, setResult, getMatchServer } from '../modules/DetectingResult';
 import ReactLoading from 'react-loading';
-import { MdClear, MdNotificationsActive } from "react-icons/md";
+import { MdClear, MdNotificationsActive, MdRefresh } from "react-icons/md";
 import toWav from 'audiobuffer-to-wav';
+import trans from './lang';
 import '../style/Detecting.scss';
 
 
@@ -12,7 +13,7 @@ function DetectingModal() {
     const { open, detect, } = useSelector(state => state.setDetecting)
     const textList = useSelector(state => state.updateTextList.textList);
     const soundList = useSelector(state => state.updateSoundList.soundList)
-    const { sound, push } = useSelector(state => state.preferenceReducer);
+    const { sound, push, volume, lang } = useSelector(state => state.preferenceReducer);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
@@ -124,6 +125,7 @@ function DetectingModal() {
             speech.start();
         }
         else {
+            speech.stop();
             setSpeech(null);
             speech.stop();
         }
@@ -141,7 +143,6 @@ function DetectingModal() {
         recognition.onresult = (e) => {
             let texts = String(Array.from(e.results)
             .map(result => result[0].transcript).join(""));
-            console.log(texts);
             const split = texts.split(" ");
             for(const text of split) {
                 for(const t of textList) {
@@ -153,18 +154,20 @@ function DetectingModal() {
                 }
             }
         }
-    }, [textList, dispatch, audioStop]);
+    }, [textList, dispatch]);
 
     const clickDetect = useCallback(() => {
+        if(!detect && !first) return;
         dispatch(setResult(false));
         setFirst(false);
         audioStart();
         startSTT();
-    }, [dispatch, setFirst, audioStart, startSTT]);
+    }, [dispatch, setFirst, audioStart, startSTT, detect, first]);
 
     const testAlarm = useCallback(() => {
         if(sound){
             const sound = document.getElementById('alarm');
+            sound.volume = volume / 100;
             sound.play();
         }
 
@@ -177,7 +180,7 @@ function DetectingModal() {
             
             new Notification("!알람!", options);
         }
-    }, [push, sound]);
+    }, [push, sound, volume]);
 
     useEffect(() => {
         if(open && !isStart) {
@@ -204,12 +207,12 @@ function DetectingModal() {
         }
     }, [audioStart, audioStop, open, isStart, setIsStart, detect, testAlarm, first, setFirst, startSTT, stopStt, soundList, textList, speech]);
 
-    const renderTLI = useCallback((i) => {
-        return <div className='DetectTextListItem'>{i}</div>
+    const renderTLI = useCallback((i, idx) => {
+        return <div className='DetectTextListItem' key={idx}>{i}</div>
     }, []);
 
-    const renderSLI = useCallback((i) => {
-        return <div className='DetectSoundListItem'>{i}</div>
+    const renderSLI = useCallback((i, idx) => {
+        return <div className='DetectSoundListItem' key={idx}>{i}</div>
     }, []);
 
     const renderTextList = useCallback(() => {
@@ -217,7 +220,7 @@ function DetectingModal() {
             return;
         }
     
-        return (textList.map(ele => renderTLI(ele.text)));
+        return (textList.map((ele, idx) => renderTLI(ele.text, idx)));
     }, [textList, renderTLI])
 
     const renderSoundList = useCallback(() => {
@@ -225,33 +228,33 @@ function DetectingModal() {
             return;
         }
     
-        return (soundList.map(ele => renderSLI(ele.name)));
+        return (soundList.map((ele, idx) => renderSLI(ele.name, idx)));
     }, [soundList, renderSLI]);
 
 
     const renderModal = useCallback(() => {
         return (<div className='DetectingBox'>
-                    <div>
-                        <button className='DetectTest' onClick={clickDetect}>재시작</button>
+                    <div className='Retry'>
+                        <MdRefresh onClick={clickDetect} size={50}/>
                     </div>
                     <div className='DetectingHead'>
                         <button className='ESC' onClick={clickESC}><MdClear size={35}/></button>
                     </div>
                     <div className='DetectingBoxBody'>
                         <div className='ProgressIcon'>{detect || first ? <MdNotificationsActive size={100}/> : (<ReactLoading type={'spinningBubbles'} color={'#383838'} width={100} />)}</div>
-                        <div className='ProgressText'>{detect || first ? '감지 되었습니다!' : '감지중 입니다.' }</div>
+                        <div className='ProgressText'>{detect || first ? trans[lang]['detecting'][1] : trans[lang]['detecting'][0] }</div>
                     </div>
                     <div className='DetectInfo'>
-                        <div className='DetectInfoText'>텍스트 목록
+                        <div className='DetectInfoText'>{trans[lang]['detecting'][3]}
                             <div className='DetectTextList'>{renderTextList()}</div>
                         </div>
-                        <div className='DetectInfoSound'>음성 목록
+                        <div className='DetectInfoSound'>{trans[lang]['detecting'][2]}
                             <div className='DetectSoundList'>{renderSoundList()}</div>
 
                         </div>
                     </div>
                 </div>)
-    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect, first]);
+    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect, first, lang]);
 
 
     return (

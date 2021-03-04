@@ -8,11 +8,6 @@
     src: url('./style/font/Maplestory-Bold.ttf') format('truetype');
 }
 
-@font-face {
-    font-family: 'JalLight';
-    src: url('./style/font/Jal-Medium.ttf') format('truetype');
-}
-
 body {
     margin: 0;
     width: 100%;
@@ -26,6 +21,11 @@ body {
     font-family: 'MaplestoryLight';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    -ms-user-select: none;
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    user-select: none;
 }
 
 .root {

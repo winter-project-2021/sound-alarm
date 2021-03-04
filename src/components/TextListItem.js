@@ -1,12 +1,14 @@
 import { useCallback, useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 import { MdDeleteForever, MdModeEdit, MdDone } from "react-icons/md"
+import trans from './lang';
 import '../style/TextSetting.scss';
 
 function TextListItem(props) {
 
     const { name, order, clickItem, isClick, updateName, deleteName, setDelete, setUpdate } = props;
+    const { lang } = useSelector(state => state.preferenceReducer);
     const dispatch = useDispatch();
 
     // 항목 수정된 이름
@@ -36,15 +38,15 @@ function TextListItem(props) {
 
         // 팝업 객체
         const popup = {
-            head: '알림!',
-            body: `${renderName(5)} 을(를) 정말로 삭제하시겠습니까?`,
+            head: trans[lang]['delete'][0],
+            body: lang === 'ko' ? `${renderName(5)} ${trans[lang]['delete'][1]}` : `${trans[lang]['delete'][1]}${renderName(5)}?`,
             callback: () => deleteName(order),
             headColor: '#ff3547',
             btn1Color: '#ff3547',
             btn2Color: '#f2f3f4',
             btn1Text: '#ffffff',
             btn2Text: '#000000',
-            btnText: ['삭제', '취소'],
+            btnText: [trans[lang]['delete'][2], trans[lang]['cancel']],
         };
 
         // popup open
@@ -52,7 +54,7 @@ function TextListItem(props) {
         
         setDelete(false);
         clickItem(-1);
-    }, [deleteName, order, clickItem, setUpdate, setChange, setDelete, dispatch, renderName]);
+    }, [deleteName, order, clickItem, setUpdate, setChange, setDelete, dispatch, renderName, lang]);
 
     const clickUpdate = useCallback(() => {
         // 수정 시작

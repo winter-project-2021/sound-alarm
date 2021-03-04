@@ -6,11 +6,13 @@ import { FiCheckSquare } from 'react-icons/fi';
 import Slider from '@material-ui/core/Slider';
 import Typography from '@material-ui/core/Typography';
 import toWav from 'audiobuffer-to-wav';
+import trans from './lang';
 import '../style/Sensitivity.scss';
 
 function SensitivityModal() {
 
     const {open, id, score, name, scoreFromServer} = useSelector(state => state.setSensitivity);
+    const { lang } = useSelector(state => state.preferenceReducer);
     const USER_ID = useSelector(state => state.updateLoginState.user._id);    
     const { loading } = useSelector(state => state.loading);
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -158,16 +160,17 @@ function SensitivityModal() {
 
     const renderModal = useCallback(() => {
         return (<div className='SensitivityBox'>
-                    <div className='SensitivityHead'>{`<${name}> 의 민감도 설정`}</div>
+                    <div className='SensitivityHead'>{`<${name}> ${trans[lang]['sensitivity'][1]}`}</div>
                     <div className='SensitivityBoxBody'>
                         <button className='Mic' onClick={onMicClick}>
                             {isRecord ? renderStop() : renderRecord()}
                         </button>
                         <div className='SensitivityDetail'>
-                            <div className='ServerScore'>현재 점수: {scoreFromServer ? Math.round(scoreFromServer) : '측정 전 입니다.'}</div>
+                            <div className='ServerScore'>{trans[lang]['sensitivity'][2]}: {scoreFromServer ? Math.round(scoreFromServer) :
+                             trans[lang]['sensitivity'][3]}</div>
                             <div className='SensitivitySlider' >
                                 <Typography id="discrete-slider-small-steps" gutterBottom>
-                                    민감도 설정
+                                    {trans[lang]['sensitivity'][4]}
                                 </Typography>
                                 <Slider
                                     value={curScore}
@@ -187,25 +190,25 @@ function SensitivityModal() {
                         <div className='DescriptionItem'>
                             <FiCheckSquare size={25}/> 
                             <div className='Guide1'>
-                                녹음 버튼을 클릭하여 현재 마이크를 통해 소리를 입력하고 녹음을 종료합니다
+                                {trans[lang]['sensitivity'][5]}
                             </div>
                         </div> 
                         <div className='DescriptionItem'>
                             <FiCheckSquare size={25}/> 
                             <div className='Guide2'>
-                                민감도를 높일수록 소리의 구분이 정확해지지만 인식되는 빈도가 낮아질 수 있습니다
+                                {trans[lang]['sensitivity'][6]}
                             </div>
                         </div> 
                         <div className='DescriptionItem'>
                             <FiCheckSquare size={25}/> 
                             <div className='Guide3'>
-                                만약 출력되는 점수가 60 이하가 반복된다면, 녹음 파일이나 현재 기기를 조정할 것을 추천드립니다
+                                {trans[lang]['sensitivity'][7]}
                             </div>
                         </div> 
                     </div>
                     <div className={'SensitivityButton SensitivityDoubleBox'}>
-                        <button className='Button first' onClick={clickOk}>적용</button>
-                        <button className='Button second' onClick={clickCancel}>취소</button>
+                        <button className='Button first' onClick={clickOk}>{trans[lang]['apply']}</button>
+                        <button className='Button second' onClick={clickCancel}>{trans[lang]['cancel']}</button>
                     </div>
                 </div>)
     }, [clickOk, clickCancel, curScore, onChangeSlide, valuetext, scoreFromServer, onMicClick, name, isRecord, marks, renderRecord, renderStop]);

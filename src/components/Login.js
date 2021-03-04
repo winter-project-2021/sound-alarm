@@ -1,28 +1,28 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { updateLogin, updateLogout } from '../modules/LoginState';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 import { setList } from '../modules/SoundList';
 import { setTextList } from '../modules/TextList';
 import { setPreference } from '../modules/PreferenceResult';
 import { startLoading, finishLoading } from '../modules/loading';
 import axios from 'axios';
+import trans from './lang';
 import '../style/Login.scss';
-
-const clientId = `${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`
-const END_POINT = `${process.env.END_POINT}`;
 
 function Login() {
     //Modal 용도
     const dispatch = useDispatch();
-
+    const clientId = useMemo(() => `${process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID}`, []);
+    const END_POINT = useMemo(() => `${process.env.REACT_APP_END_POINT}`, []);
+    const { lang } = useSelector(state => state.preferenceReducer);
 
     //로그인 성공시 실행
     const onSuccess = useCallback((res) => {
         let userInfo = {name: res.profileObj.name, imgURL: res.profileObj.imageUrl, username: String(res.profileObj.googleId)};
         dispatch(startLoading(null));
-        axios.post('/login',{username: userInfo.username})
+        axios.post(`${END_POINT}/login`,{username: userInfo.username})
         .then((response) => {
             //Object.assign(userInfo, response.data);
             userInfo = {...userInfo, _id: response.data._id}
@@ -61,8 +61,8 @@ function Login() {
             dispatch(finishLoading(null));
 
             const popup = {
-                head: '로그인 성공',
-                body: `${res.profileObj.name}님 환영합니다.`,
+                head: trans[lang]['loginSuccess'][0],
+                body: `${trans[lang]['loginSuccess'][1]}${res.profileObj.name}${trans[lang]['loginSuccess'][2]}`,
                 buttonNum: 1,
                 headColor: '#22d77e',
                 btn1Color: '#22d77e',
@@ -73,21 +73,18 @@ function Login() {
             };
             dispatch(setOpen(popup));
             refreshTokenSetup(res);
-            
-            console.log('Login Success: currentUser:', res.profileObj);
-            console.log('User Info from Server :', userInfo);
         })
 
         
 
-    }, [dispatch]);
+    }, [dispatch, END_POINT, lang]);
     
     //로그인 실패시 실행
     const onFailure = useCallback((res) => {
 
         const popup = {
-            head: '로그인 실패',
-            body: `로그인에 실패하였습니다. ${res.error}`,
+            head: trans[lang]['loginFail'][0],
+            body: trans[lang]['loginFail'][1],
             buttonNum: 1,
             headColor: '#ff3547',
             btn1Color: '#f2f3f4',
@@ -99,7 +96,7 @@ function Login() {
         dispatch(setOpen(popup));
 
         console.log('Login failed: res:', res);
-    }, [dispatch]);
+    }, [dispatch, lang]);
     
     //로그인후 1시간이 지나면 기존의 tokenId가 만료되기 때문에 token을 갱신.
     const refreshTokenSetup = (res) => {

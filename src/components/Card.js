@@ -10,6 +10,7 @@ import TextSetting from './TextSetting';
 import Preference from './Preference';
 import Error from './Error';
 import Login from './Login';
+import trans from './lang';
 import '../style/Card.scss';
 
 function Card() {
@@ -17,7 +18,6 @@ function Card() {
     // 현재 선택 중인 메뉴 값
     const [menu, setMenu] = useState(0);
     // 선택가능한 메뉴 리스트
-    const menuList = useMemo(() => ["가이드", "텍스트 설정", "소리 설정", "설정", ], []);
     const [classes, setClasses] = useState(['SideButton select', 'SideButton', 'SideButton', 'SideButton'])
 
     // login 여부
@@ -26,28 +26,10 @@ function Card() {
     const userName = useSelector(state => state.updateLoginState.user.name);
     const imageURL = useSelector(state => state.updateLoginState.user.imgURL);
 
-    const { sound, push, lang } = useSelector(state => state.preferenceReducer);
+    const { lang } = useSelector(state => state.preferenceReducer);
+    const menuList = useMemo(() => trans[lang]['menu'], [lang]);
 
     const dispatch = useDispatch();
-
-    const testAlarm = useCallback(() => {
-        if(sound){
-            const sound = document.getElementById('alarm');
-            sound.play();
-        }
-
-        if(push){
-            var options = {
-                body: "소리가 감지되었습니다!!!!!",
-                icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                dir: "ltr"
-            };
-            
-            new Notification("!알람!", options);
-        }
-    }, [push, sound]);
-
-    
 
     const renderMenu = useCallback(() => {
         // 선택한 메뉴에 따라 다른 컴포넌트 렌더링
@@ -81,6 +63,7 @@ function Card() {
     const renderSideMenu = useCallback(() => {
         // menuList의 항목을 button list로 전환
         return menuList.map((item, i) => (<button id={i} 
+                                            key={i}
                                             className={classes[i]}
                                             onClick={() => selectMenu(i)
                                             }>{item}</button>));
@@ -95,7 +78,7 @@ function Card() {
         return (
             <div className='Header'>
                 <div className='InfoBox'>
-                    <img class='UserThumb' src={imageURL} alt='userThumb'></img>
+                    <img className='UserThumb' src={imageURL} alt='userThumb'></img>
                         <div className='UserInfo'>
                             {userName}
                         </div>                    
@@ -139,10 +122,10 @@ function Card() {
 
 
     useEffect(() => {
-        console.log("Card component did mount with useEffect")
+        //console.log("Card component did mount with useEffect")
         return () => {
-            console.log("Card component did umount with useEffect")
-            //dispatch(updateLogout());
+            //console.log("Card component did umount with useEffect")
+            dispatch(updateLogout());
         }
     }, [dispatch]);
 
