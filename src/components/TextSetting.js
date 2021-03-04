@@ -165,15 +165,19 @@ function TextSetting() {
 
             <div className='Notify'>
                 <div className='NotifyItem'>
-                    <FiCheckSquare size={20}/>
+                    <div className='GuideIcon'>
+                        <FiCheckSquare size={20}/>
+                    </div>
                     <div className='Guide1'>
                         {trans[lang]['text'][2]}
                     </div>
                 </div>
                 <div className='NotifyItem'>
-                    <FiCheckSquare size={20}/>
+                    <div className='GuideIcon'>
+                        <FiCheckSquare size={20}/>
+                    </div>
                     <div className='Guide2'>
-                        {`텍스트는 한글만 인식할 수 있습니다.`}
+                    {trans[lang]['text'][3]}
                     </div>
                 </div>
             </div>  

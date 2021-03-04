@@ -1,33 +1,51 @@
+import { useSelector } from 'react-redux';
+import trans from './lang';
+import '../style/Guide.scss';
+
 function Guide() {
 
+
+  const { lang } = useSelector(state => state.preferenceReducer);
+
+
     return (
-      <div>
-          {'Sound Alarm은 미리 등록한 소리와 단어를 마이크를 통해 감지를 해서 알림을 보내주는 서비스입니다.'}
+      <div className='Guide'>
+          {trans[lang]['guide'][0]}
           <div className='Text'>
-            {'텍스트 등록 방법'}
+            {trans[lang]['guide'][1]}
             <div className='TextGuide'>
-              {'감지되길 원하는 단어를 한글로 입력하고 추가버튼을 눌러 등록합니다.'}
+              {trans[lang]['guide'][2]}
               <br/>
-              {'숫자나 영어는 인식이 불가능합니다.'}
+              {trans[lang]['guide'][3]}
             </div>
           </div>
           
           <div className='Sound'>
-            {'사운드 등록 방법'}
+            {trans[lang]['guide'][4]}
             <div className='SoundGuide'>
-            {'1. 원하시는 사운드를 스마트폰등을 이용하여 녹음을 합니다.'}
+            {trans[lang]['guide'][5]}
             <br/>
-            {'인식 정확도를 높이기 위해서는 최대한 잡음 없이 녹음이 되어야 합니다.'}
+            {trans[lang]['guide'][6]}
             <br/>
-            {'2. 녹음된 파일을 "파일 업로드" 버튼을 눌러서 선택합니다.'}
+            {trans[lang]['guide'][7]}
             <br/>
-            {'3. "파일 업로드" 오른쪽에 있는 입력창을 통해 등록하고자 하는 이름으로 변경을 하신뒤 추가버튼을 누릅니다.'}
+            {trans[lang]['guide'][8]}
             <br/>
-            {'4. 마이크가 최대한 밖의 소리를 수음할 수 있도록 세팅을 미리 하신뒤 민감도 설정의 녹음버튼을 누릅니다.'}
+            {trans[lang]['guide'][9]}
             <br/>
-            {'5. 평소의 소음을 3초이상 녹음한 뒤 정지버튼을 누릅니다.'}
+            {trans[lang]['guide'][10]}
             <br/>
-            {'6. 측정된 현재 점수'}
+            {trans[lang]['guide'][11]}
+            <br/>
+            {trans[lang]['guide'][12]}
+            <br/>
+            {trans[lang]['guide'][13]}
+            <br/>
+            {trans[lang]['guide'][14]}
+            <br/>
+            {trans[lang]['guide'][15]}
+            <br/>
+            {trans[lang]['guide'][16]}
             </div>
             
           </div>

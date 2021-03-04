@@ -203,13 +203,17 @@ function SoundSetting() {
           
             <div className='Notify'>
                 <div className='NotifyItem'>
-                    <FiCheckSquare size={20}/>
+                    <div className='GuideIcon'>
+                        <FiCheckSquare size={20}/>
+                    </div>
                     <div className='Guide1'>
                         {trans[lang]['sound'][3]}
                     </div>
                 </div>
                 <div className='NotifyItem'>
-                    <FiCheckSquare size={20}/>
+                    <div className='GuideIcon'>
+                        <FiCheckSquare size={20}/>
+                    </div>
                     <div className='Guide2'>
                         {trans[lang]['sound'][4]}
                     </div>

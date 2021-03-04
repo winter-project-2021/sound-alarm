@@ -95,17 +95,21 @@
             height: 35px;
             width: 500px;
             margin-left: 270px;
+
+            .GuideIcon {
+                float: left;
+                margin-right: 15px;
+            }
+
             .Guide1 {
                 line-height: 22px;
-                font-size: 17px;
-                float: right;
-                margin-right: 160px;
+                font-size: 17px;                        
+                text-align: left;
             }
             .Guide2 {
                 line-height: 22px;
                 font-size: 17px;
-                float: right;
-                margin-right: 217px;
+                text-align: left;
             }
         }
     }

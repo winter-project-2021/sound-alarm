@@ -158,17 +158,21 @@ audio::-webkit-media-controls-panel {
             height: 35px;
             width: 500px;
             margin-left: 270px;
+
+            .GuideIcon {
+                float: left;
+                margin-right: 15px;
+            }
+
             .Guide1 {
                 line-height: 22px;
-                font-size: 17px;
-                float: right;
-                margin-right: 185px;
+                font-size: 17px;                        
+                text-align: left;
             }
             .Guide2 {
                 line-height: 22px;
                 font-size: 17px;
-                float: right;
-                margin-right: 185px;
+                text-align: left;
             }
         }
     }
