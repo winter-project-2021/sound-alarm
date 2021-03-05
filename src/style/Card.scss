@@ -125,13 +125,62 @@
                 margin-bottom: 5px;
                 margin-right: 20px;
 
+                .buttonbackground {
+                    background-color: white;
+                    left: 870px;
+                    top: 18px;
+                    position: absolute;
+                    width: 196px;
+                    height: 31px;
+                    border-top-left-radius: 17px;
+                    border-bottom-left-radius: 17px;
+                    border-top-right-radius: 17px;
+                    border-bottom-right-radius: 17px;
+                    border: 2px solid #ff3547;
+                }
+
+                .selectedbackgroundleft {
+                    background-color: #ff3547;
+                    left: 870px;
+                    top: 18px;
+                    position: absolute;
+                    width: 100px;
+                    height: 31px;
+                    border-top-left-radius: 17px;
+                    border-bottom-left-radius: 17px;
+                    border-top-right-radius: 17px;
+                    border-bottom-right-radius: 17px;
+                    border: 2px solid #ff3547;
+                    animation: slideleft 0.3s;
+                }
+
+                .selectedbackgroundright {
+                    background-color: #ff3547;
+                    left: 966px;
+                    top: 18px;
+                    position: absolute;
+                    width: 100px;
+                    height: 31px;
+                    border-top-left-radius: 17px;
+                    border-bottom-left-radius: 17px;
+                    border-top-right-radius: 17px;
+                    border-bottom-right-radius: 17px;
+                    border: 2px solid #ff3547;
+                    animation: slideright 0.3s;
+                }
+
+
                 .ko {
-                    display: inline-block;
+                    background-color: transparent;
+                    left: 870px;
+                    top: 18px;
+                    position: absolute;
                     width: 100px;
                     height: 35px;
                     border: none;
                     outline: none;
                     border: 2px solid #ff3547;
+                    border-right: none;
                     vertical-align: middle;
                     border-top-left-radius: 17px;
                     border-bottom-left-radius: 17px;
@@ -139,27 +188,35 @@
                     font-size: 16px;
                     cursor: pointer;
                     font-family: 'MaplestoryLight';
+                    animation: deselected 0.2s;
                 }
 
                 .en {
-                    display: inline-block;
+                    background-color: transparent;
+                    left: 970px;
+                    top: 18px;
+                    position: absolute;
                     width: 100px;
                     height: 35px;
                     border: none;
                     outline: none;
                     border: 2px solid #ff3547;
+                    border-left: none;
                     vertical-align: middle;
+                    
                     border-top-right-radius: 17px;
                     border-bottom-right-radius: 17px;
                     color: #ff3547;
                     font-size: 16px;
                     cursor: pointer;
                     font-family: 'MaplestoryLight';
+                    animation: deselected 0.2s;
                 }
 
                 .select {
-                    background-color: #ff3547;
+                    background-color: transparent;
                     color: white;
+                    animation: selected 0.2s;
                 }
             }
 
@@ -195,6 +252,50 @@
                 top: 2px;
             }
         }
+    }
+}
+
+@keyframes slideleft {
+    100% {
+        left: 870px;
+    }
+    
+    0% {
+        left: 966px;
+    }
+}
+
+@keyframes slideright {
+    0% {
+        left: 870px;
+    }
+    
+    100% {
+        left: 966px;
+    }
+}
+
+@keyframes selected {
+    100% {
+        //background-color: #ff3547;
+        color: white;
+    }
+    
+    0% {
+        //background-color: white;
+        color: #ff3547;
+    }
+}
+
+@keyframes deselected {
+    0% {
+        //background-color: #ff3547;
+        color: white;
+    }
+    
+    100% {
+        //background-color: white;
+        color: #ff3547;
     }
 }
 
