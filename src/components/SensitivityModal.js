@@ -37,19 +37,30 @@ function SensitivityModal() {
         return itemId;
     }, [id, name, soundList]);
 
+    const audioStop = useCallback(() => {
+        if(recorder === null) return;
+        recorder.recorder.stop();
+        recorder.context.close();
+        recorder.stream[0].stop();
+        setRecorder(null);
+        setIsRecord(false);
+    }, [recorder, setIsRecord, setRecorder]);
+
     // ok 버튼 누르면 result를 true로 하고 callback 실행
     const clickOk = useCallback(() => {
         let itemId = findId();
         setPrevent(false);
+        audioStop();
         if(curScore === null || isNaN(curScore)) setCurScore(score);
         dispatch(updateSensitivity({audioid: itemId, sensitivity: curScore, name: name, _id: USER_ID}));
         dispatch(setResult(true));
-    }, [dispatch, findId, curScore, name, setPrevent,score, setCurScore, USER_ID]);
+    }, [dispatch, findId, curScore, name, setPrevent,score, setCurScore, USER_ID, audioStop]);
 
     // cancel 버튼 누르면 result false로
     const clickCancel = useCallback(() => {
         dispatch(setResult(false));
-    }, [dispatch]);
+        audioStop();
+    }, [dispatch, audioStop]);
 
     const valuetext = useCallback((value) => {
         return `${value}`;
@@ -62,15 +73,6 @@ function SensitivityModal() {
     const onChangeSlide = useCallback((e, newValue) => {
         setCurScore(newValue);
     }, [setCurScore]);
-
-    const audioStop = useCallback(() => {
-        if(recorder === null) return;
-        recorder.recorder.stop();
-        recorder.context.close();
-        recorder.stream[0].stop();
-        setRecorder(null);
-        setIsRecord(false);
-    }, [recorder, setIsRecord, setRecorder]);
 
     const audioStart = useCallback(() => {
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -188,19 +190,25 @@ function SensitivityModal() {
                     </div>
                     <div className='Description'>
                         <div className='DescriptionItem'>
-                            <FiCheckSquare size={25}/> 
+                            <div className='GuideIcon'>
+                                <FiCheckSquare size={25}/> 
+                            </div>
                             <div className='Guide1'>
                                 {trans[lang]['sensitivity'][5]}
                             </div>
                         </div> 
                         <div className='DescriptionItem'>
-                            <FiCheckSquare size={25}/> 
+                            <div className='GuideIcon'>
+                                <FiCheckSquare size={25}/> 
+                            </div> 
                             <div className='Guide2'>
                                 {trans[lang]['sensitivity'][6]}
                             </div>
                         </div> 
                         <div className='DescriptionItem'>
-                            <FiCheckSquare size={25}/> 
+                            <div className='GuideIcon'>
+                                <FiCheckSquare size={25}/> 
+                            </div>
                             <div className='Guide3'>
                                 {trans[lang]['sensitivity'][7]}
                             </div>
@@ -211,7 +219,8 @@ function SensitivityModal() {
                         <button className='Button second' onClick={clickCancel}>{trans[lang]['cancel']}</button>
                     </div>
                 </div>)
-    }, [clickOk, clickCancel, curScore, onChangeSlide, valuetext, scoreFromServer, onMicClick, name, isRecord, marks, renderRecord, renderStop]);
+    }, [clickOk, clickCancel, curScore, onChangeSlide, valuetext, scoreFromServer, onMicClick, name, isRecord, marks, renderRecord, renderStop, 
+        lang]);
 
     return (
         <>

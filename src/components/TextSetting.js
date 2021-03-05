@@ -57,10 +57,29 @@ function TextSetting() {
 
     const updateName = useCallback((i, alias) => {
         // 항목 업데이트 후 클릭 항목 초기화
+        for(const text of textList){
+            if(text.textid !== i && text.text === alias) {
+                const popup = {
+                    head: trans[lang]['uploadFail'][0],
+                    body: trans[lang]['uploadFail'][1],
+                    buttonNum: 1,
+                    callback: () => {},
+                    headColor: '#ff3547',
+                    btn1Color: '#f2f3f4',
+                    btn2Color: null,
+                    btn1Text: '#000000',
+                    btn2Text: null,
+                };
+
+                // popup open
+                dispatch(setOpen(popup));
+                return;
+            }
+        }
         const newItem = {_id: USER_ID, text: alias, textid: i};
         dispatch(updateItem(newItem));
         setItem(-1);
-    }, [dispatch, setItem, USER_ID]);
+    }, [dispatch, setItem, USER_ID, textList, lang]);
 
     const deleteName = useCallback((i) => {
         // 항목 삭제 후 클릭 항목 초기화
@@ -73,7 +92,7 @@ function TextSetting() {
         
         // list가 비어 있으면 추가해 달라는 문구 출력
         if(textList.length === 0){
-            return <div className='Empty'>{trans[lang]['text'][0]}</div>
+            return null;
         }
 
         // textList를 이용해 각 listItem 컴포넌트를 렌더링
@@ -86,7 +105,7 @@ function TextSetting() {
                                                     deleteName={deleteName}
                                                     setUpdate={setUpdate}
                                                     setDelete={setDelete}/>)
-    }, [textList, item, clickItem, updateName, deleteName, setUpdate, setDelete, lang]);
+    }, [textList, item, clickItem, updateName, deleteName, setUpdate, setDelete]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
@@ -160,7 +179,7 @@ function TextSetting() {
             <div className='TextList'>
                 {renderList()}
                 {renderTextAdd()}
-                {textList.length === 0 ? (<div className='Empty'>새로운 텍스트를 추가해 주세요!</div>) : null}
+                {textList.length === 0 ? (<div className='Empty'>{trans[lang]['text'][0]}</div>) : null}
             </div>
 
             <div className='Notify'>

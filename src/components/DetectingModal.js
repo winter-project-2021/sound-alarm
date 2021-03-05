@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCloseDetecting, setResult, getMatchServer } from '../modules/DetectingResult';
 import ReactLoading from 'react-loading';
@@ -10,10 +10,11 @@ import '../style/Detecting.scss';
 
 function DetectingModal() { 
 
-    const { open, detect, } = useSelector(state => state.setDetecting)
+    const { open, detect, name, } = useSelector(state => state.setDetecting)
     const textList = useSelector(state => state.updateTextList.textList);
     const soundList = useSelector(state => state.updateSoundList.soundList)
-    const { sound, push, volume, lang } = useSelector(state => state.preferenceReducer);
+    const { sound, push, volume, lang, bell } = useSelector(state => state.preferenceReducer);
+    const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm2.mp3", "2": "/alarm3.mp3",}), []);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
@@ -21,6 +22,7 @@ function DetectingModal() {
     const [recorder, setRecorder] = useState(null);
     const [first, setFirst] = useState(false);
     const [speech, setSpeech] = useState(null);
+    const [detectName, setDetectName] = useState("");
     
     const dispatch = useDispatch();
 
@@ -42,7 +44,7 @@ function DetectingModal() {
 
     const clickESC = useCallback(() => {
         dispatch(setCloseDetecting());
-        setResult(false);
+        setResult({match: false, name: ""});
         setFirst(false);
         audioStop();
         setIsStart(false);        
@@ -92,7 +94,7 @@ function DetectingModal() {
                         clearTimeout(timeoutId);
                         const timeId = setTimeout(() => {
                             mediaRecorder.stop();
-                        }, 5000);
+                        }, 10000);
                         setTimeoutId(timeId); 
 
                     }, function(e) {
@@ -108,7 +110,7 @@ function DetectingModal() {
                 mediaRecorder.start();
                 const timeId = setTimeout(() => {
                     mediaRecorder.stop();
-                }, 5000);
+                }, 10000);
                 setTimeoutId(timeId);     
             }
         },
@@ -136,7 +138,7 @@ function DetectingModal() {
         const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
 
         recognition.interimResults = true;
-        recognition.lang = 'ko-KR';
+        recognition.lang = lang === 'ko' ? 'ko-KR' : 'en-US';
         setSpeech(recognition);
         recognition.start();
 
@@ -147,18 +149,18 @@ function DetectingModal() {
             for(const text of split) {
                 for(const t of textList) {
                     if(t.text === text) {
-                        dispatch(setResult(true));
+                        dispatch(setResult({match: true, name: text}));
                         recognition.stop();
                         return;
                     }
                 }
             }
         }
-    }, [textList, dispatch]);
+    }, [textList, dispatch, lang,]);
 
     const clickDetect = useCallback(() => {
         if(!detect && !first) return;
-        dispatch(setResult(false));
+        dispatch(setResult({match: false, name: ""}));
         setFirst(false);
         audioStart();
         startSTT();
@@ -167,20 +169,25 @@ function DetectingModal() {
     const testAlarm = useCallback(() => {
         if(sound){
             const sound = document.getElementById('alarm');
+            sound.src = bellTypes[bell];
             sound.volume = volume / 100;
             sound.play();
         }
 
         if(push){
             var options = {
-                body: "소리가 감지되었습니다!!!!!",
+                body: detectName + " " + trans[lang]['push'][0],
                 icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
                 dir: "ltr"
             };
             
-            new Notification("!알람!", options);
+            new Notification(trans[lang]['push'][1], options);
         }
-    }, [push, sound, volume]);
+    }, [push, sound, volume, bell, bellTypes, detectName, lang]);
+
+    const setDetected = useCallback(() => {
+        if(String(name).length > 0) setDetectName(String(name));
+    }, [name, setDetectName]);
 
     useEffect(() => {
         if(open && !isStart) {
@@ -198,6 +205,7 @@ function DetectingModal() {
             testAlarm();
             audioStop();
             stopStt();
+            setDetected();
         }
 
         if(speech !== null) {
@@ -205,7 +213,8 @@ function DetectingModal() {
                 stopStt();
             }
         }
-    }, [audioStart, audioStop, open, isStart, setIsStart, detect, testAlarm, first, setFirst, startSTT, stopStt, soundList, textList, speech]);
+    }, [audioStart, audioStop, open, isStart, setIsStart, detect, testAlarm, first, setFirst, startSTT, stopStt,
+         soundList, textList, speech, setDetected]);
 
     const renderTLI = useCallback((i, idx) => {
         return <div className='DetectTextListItem' key={idx}>{i}</div>
@@ -242,7 +251,7 @@ function DetectingModal() {
                     </div>
                     <div className='DetectingBoxBody'>
                         <div className='ProgressIcon'>{detect || first ? <MdNotificationsActive size={100}/> : (<ReactLoading type={'spinningBubbles'} color={'#383838'} width={100} />)}</div>
-                        <div className='ProgressText'>{detect || first ? trans[lang]['detecting'][1] : trans[lang]['detecting'][0] }</div>
+                        <div className='ProgressText'>{detect || first ? (detectName + " " + trans[lang]['detecting'][1]) : trans[lang]['detecting'][0] }</div>
                     </div>
                     <div className='DetectInfo'>
                         <div className='DetectInfoText'>{trans[lang]['detecting'][3]}
@@ -254,7 +263,7 @@ function DetectingModal() {
                         </div>
                     </div>
                 </div>)
-    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect, first, lang]);
+    }, [clickESC, clickDetect, renderTextList, renderSoundList, detect, first, lang, detectName]);
 
 
     return (

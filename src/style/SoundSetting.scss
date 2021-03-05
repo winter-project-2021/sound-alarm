@@ -111,8 +111,8 @@ audio::-webkit-media-controls-panel {
 
                 .Play {
                     float: right;
-                    width: 140px;
-
+                    //width: 140px;
+                    margin-right: 10px;
                     .stop {
                         margin-left: 3px;
                         margin-bottom: 3px;
@@ -166,7 +166,7 @@ audio::-webkit-media-controls-panel {
 
             .Guide1 {
                 line-height: 22px;
-                font-size: 17px;                        
+                font-size: 17px;
                 text-align: left;
             }
             .Guide2 {

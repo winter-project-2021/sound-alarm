@@ -37,7 +37,7 @@ function Modal() {
                          </button> : null}
                     </div>
                 </div>)
-    }, [clickOk, clickCancel, head, body, buttonNum, headColor, btn1Color, btn2Color, btn1Text, btn2Text, btnText]);
+    }, [clickOk, clickCancel, head, body, buttonNum, headColor, btn1Color, btn2Color, btn1Text, btn2Text, btnText, lang]);
 
     return (
         <>

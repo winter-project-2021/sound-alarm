@@ -5,17 +5,9 @@
     height: 400px;
 
     .PreferenceItem {
-        &:first-child {
-            padding-left: 50px;
-        }
-
-        &:nth-child(3) {
-            padding-left: 35px;
-        }
         height: 60px;
         line-height: 45px;
         vertical-align: middle;
-        margin-right: 50px;
         margin-top: 15px;
 
         .MButton {
@@ -26,9 +18,11 @@
             border-radius: 15px;
             outline: none;
             background: none;
+            float: right;
             cursor: pointer;
             color: white;
             font-family: 'MaplestoryLight';
+            margin-right: 170px;
 
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16),
                 0 3px 6px rgba(0, 0, 0, 0.23);
@@ -50,24 +44,30 @@
             display: inline;
             vertical-align: middle;
             font-size: 20px;
-            margin-right: 250px;
+            float: left;
+            margin-left: 170px;
         }
 
         .ItemSwitch {
-            display: inline-block;
+            margin-right: 170px;
+            float: right;
+            vertical-align: middle;
+            padding-top: 15px;
+        }
+        .ItemSwitchD {
+            float: right;
             vertical-align: middle;
             padding-top: 15px;
         }
 
         .ItemDetail {
-            display: inline-block;
             vertical-align: middle;
-            //border: 1px solid black;
+            float: right;
             width: 50px;
             height: 50px;
-            margin-left: 5px;
+            //margin-left: 5px;
             padding-top: 15px;
-
+            margin-right: 120px;
             .DetailButton {
                 width: 33px;
                 height: 33px;
@@ -82,8 +82,9 @@
         }
 
         .LogoutButton {
-            display: inline-block;
+            float: right;
             vertical-align: middle;
+            margin-right: 170px;
         }
     }
 }

@@ -65,10 +65,11 @@ function TextListItem(props) {
     const updateItem = useCallback(() => {
         // 항목 수정 후 초기화
         updateName(order, inputName);
+        setInputName(name);
         setUpdate(false);
         setChange(false);
         clickItem(-1);
-    }, [updateName, inputName, setUpdate, order, clickItem, setChange]);
+    }, [updateName, inputName, setUpdate, order, clickItem, setChange, setInputName, name]);
 
     const changeInput = useCallback((e) => {
         // 항목 이름 수정값 받아오기

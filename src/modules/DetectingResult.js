@@ -28,6 +28,7 @@ const initialState = {
     open: false,
     detect: false,
     scoreFromServer: null,
+    name: "",
     error: false,
 }
 
@@ -48,15 +49,17 @@ const setDetecting = handleActions(
 
         [SET_RESULT]: (state, action) => ({
             ...state,
-            result: action.payload,
+            result: action.payload.match,
             open: true,
-            detect: action.payload,
+            detect: action.payload.match,
+            name: action.payload.name,
             error: false,
         }),
 
         [GET_MATCH_SUCCESS]: (state, action) => ({
             ...state,
             detect: action.payload.match,
+            name: action.payload.match ? action.payload.name : state.name,
         }),
 
         [OP_FAILURE]: (state, action) => ({

@@ -19,7 +19,7 @@ function Preference() {
     const [preference, setCurPreference] = useState({...currentPreference});
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
-    const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm.mp3", "2": "/alarm.mp3", "3": "/alarm.mp3", }), []);
+    const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm2.mp3", "2": "/alarm3.mp3",}), []);
     const [recorder, setRecorder] = useState(null);
     const [isRecord, setIsRecord] = useState(false);
 
@@ -31,6 +31,7 @@ function Preference() {
     const clickPlay = useCallback(() => {
         const sound = document.getElementById('alarmTest');
         // bell소리 선택에 따라 소스 설정
+        sound.volume = preference.volume / 100;
         sound.src = bellTypes[preference.bell];
         sound.play();
 
@@ -157,19 +158,6 @@ function Preference() {
                     {trans[currentPreference.lang]['setting'][0]}
                 </div>
                 <audio id='alarmTest' style={{display: 'none'}}/>
-                <div className='ItemSwitch'>
-                    <Switch onChange={(e) => setProperty(e, 'sound')} checked={preference.sound}
-                            onColor="#86d3ff"
-                            onHandleColor="#2693e6"
-                            handleDiameter={30}
-                            uncheckedIcon={false}
-                            checkedIcon={false}
-                            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-                            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-                            height={20}
-                            width={48}/>
-                </div>  
-
                 <div className='ItemDetail'>
                     <MdMoreVert size={15} onClick={handleClick} className='DetailButton'/>
                     <Menu
@@ -226,6 +214,18 @@ function Preference() {
                         </MenuItem>
                     </Menu>
                 </div> 
+                <div className='ItemSwitchD'>
+                    <Switch onChange={(e) => setProperty(e, 'sound')} checked={preference.sound}
+                            onColor="#86d3ff"
+                            onHandleColor="#2693e6"
+                            handleDiameter={30}
+                            uncheckedIcon={false}
+                            checkedIcon={false}
+                            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                            height={20}
+                            width={48}/>
+                </div>  
             </div>
 
             <div className='PreferenceItem'>

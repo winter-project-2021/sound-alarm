@@ -14,6 +14,7 @@ export default function createRequestSaga (prefix, type, request) {
             // request를 이용해서 서버랑 통신
             const response = yield call(request, action.payload);
             // 정상적으로 성공하면 성공한 값을 redux로 넘김
+            console.log(response);
             if(response.data.result !== 'success'){
                 yield put({
                     type: FAILURE,

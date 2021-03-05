@@ -84,14 +84,15 @@ function SoundListItem(props) {
         
         setDelete(false);
         clickItem(-1);
-    }, [deleteName, order, clickItem, setUpdate, setChange, setDelete, dispatch, renderName]);
+    }, [deleteName, order, clickItem, setUpdate, setChange, setDelete, dispatch, renderName, lang]);
 
     const clickUpdate = useCallback(() => {
         // 수정 시작
         setUpdate(true);
         setChange(true);
+        setInputName(name);
         handleClose();
-    }, [setUpdate, setChange, handleClose]);
+    }, [setUpdate, setChange, handleClose, setInputName, name]);
 
     const updateItem = useCallback(() => {
         // 항목 수정 후 초기화

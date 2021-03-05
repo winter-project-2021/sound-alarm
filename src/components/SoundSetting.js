@@ -15,7 +15,7 @@ function SoundSetting() {
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const MAX_AUDIO = useMemo(() => 5, []);
     const { lang } = useSelector(state => state.preferenceReducer);
-    const DEFAULT_FILENAME = useMemo(() => trans[lang]['sound'][1], []);
+    const DEFAULT_FILENAME = useMemo(() => trans[lang]['sound'][1], [lang]);
 
     // redux로 부터 소리파일이름 리스트를 가져옴
     const soundList = useSelector(state => state.updateSoundList.soundList);
@@ -63,10 +63,29 @@ function SoundSetting() {
 
     const updateName = useCallback((i, alias, score) => {
         // 항목 업데이트 후 클릭 항목 초기화
+        for(const sound of soundList){
+            if(sound.audioid !== i && sound.name === alias) {
+                const popup = {
+                    head: trans[lang]['uploadFail'][0],
+                    body: trans[lang]['uploadFail'][1],
+                    buttonNum: 1,
+                    callback: () => {},
+                    headColor: '#ff3547',
+                    btn1Color: '#f2f3f4',
+                    btn2Color: null,
+                    btn1Text: '#000000',
+                    btn2Text: null,
+                };
+
+                // popup open
+                dispatch(setOpen(popup));
+                return;
+            }
+        }
         const newItem = {_id: USER_ID, audioid: i, sensitivity: score, name: alias};
         dispatch(updateItem(newItem));
         setItem(-1);
-    }, [dispatch, setItem, USER_ID]);
+    }, [dispatch, setItem, USER_ID, lang, soundList]);
 
     const deleteName = useCallback((i) => {
         // 항목 삭제 후 클릭 항목 초기화
@@ -97,12 +116,18 @@ function SoundSetting() {
                                                     setDelete={setDelete}/>)
     }, [soundList, item, clickItem, updateName, deleteName, setUpdate, setDelete]);
 
+    const renderName = useCallback((name, len) => {
+        // 글자 수 len + 3 이상이면 자르고 ... 로 렌더링
+        if(String(name).length < len + 3) return name;
+        return String(name).substring(0, len) + "...";
+    }, []);
+
     const uploadAudio = useCallback((e) => {
         // 로컬에서 오디오 파일 업로드
         const selectFile = e.target.files[0];
         if(selectFile === null) return;
 
-        if(selectFile.hasOwnProperty("size") && selectFile.size > FILE_LIMIT) {
+        if("size" in selectFile && selectFile.size > FILE_LIMIT) {
             const popup = {
                 head: trans[lang]['uploadFail'][0],
                 body: trans[lang]['uploadFail'][4],
@@ -117,6 +142,7 @@ function SoundSetting() {
 
             // popup open
             dispatch(setOpen(popup));
+            e.target.value = "";
             return;
         }
 
@@ -135,15 +161,16 @@ function SoundSetting() {
 
             // popup open
             dispatch(setOpen(popup));
+            e.target.value = "";
             return;
         }
 
         setBlob(selectFile);
-        setFileName(String(selectFile.name));
+        setFileName(renderName(String(selectFile.name), 10));
         setAlias(String(selectFile.name));
         e.target.value = "";
         
-    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch, soundList, MAX_AUDIO, lang]);
+    }, [setFileName, setAlias, setBlob, FILE_LIMIT, dispatch, soundList, MAX_AUDIO, lang, renderName]);
 
     const writeName = useCallback((e) => {
         // 파일 이름 변경
