@@ -178,14 +178,14 @@ function DetectingModal() {
 
         if(push){
             var options = {
-                body: detectName + " " + trans[lang]['push'][0],
+                body: name + " " + trans[lang]['push'][0],
                 icon: "/faviconcircle.png",
                 dir: "ltr"
             };
             
             new Notification("Sound Alarm!", options);
         }
-    }, [push, sound, volume, bell, bellTypes, detectName, lang]);
+    }, [push, sound, volume, bell, bellTypes, name, lang]);
 
     const setDetected = useCallback(() => {
         if(String(name).length > 0) setDetectName(String(name));
