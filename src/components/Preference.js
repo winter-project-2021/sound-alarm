@@ -188,10 +188,11 @@ function Preference() {
                                 <Grid item>
                                     <MdVolumeUp size={30}/>
                                 </Grid>
-                                
+                                {/*
                                 <Grid item>
                                     <MdPlayCircleOutline onClick={clickPlay} size={30}/>
                                 </Grid>
+                                */}
                             </Grid>
                         </MenuItem>
 

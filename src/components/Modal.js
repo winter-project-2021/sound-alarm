@@ -26,7 +26,7 @@ function Modal() {
     const renderModal = useCallback(() => {
         return (<div className='ModalBox'>
                     <div className='BoxHead' style={{backgroundColor: headColor}}>{head}</div>
-                    <div className='BoxBody'>{body}</div>
+                    <div className='BoxBody'>{typeof body === 'object' ? body[lang] : body}</div>
                     <div className={'BoxButton ' + (buttonNum > 1 ? 'DoubleBox' : '')}>
                         <button className='Button' onClick={clickOk} style={{backgroundColor: btn1Color, color: btn1Text}}>
                             {btnText.length >= 1 ? btnText[0] : trans[lang]['ok']}

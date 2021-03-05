@@ -23,6 +23,7 @@ const UPDATE_SENSITIVITY_SUCCESS = 'SoundList/UPDATE_SENSITIVITY_SUCCESS';
 const SET_LIST = 'SoundList/SET_LIST';
 // 작업에 실패했을 경우
 const OP_FAILURE = 'SoundList/FAILURE';
+const SET_ERROR = 'SoundList/SET_ERROR';
 
 // 각 action type에 대한 action 생성
 export const addItem = createAction(ADD_ITEM, item => item);
@@ -31,6 +32,7 @@ export const updateItem = createAction(UPDATE_ITEM, item => item);
 export const setList = createAction(SET_LIST, list => list);
 //export const operationFailed = createAction(OP_FAILURE, e => e);
 export const updateSensitivity = createAction(UPDATE_SENSITIVITY, sens => sens);
+export const setError = createAction(SET_ERROR, e => e);
 
 // 비동기 미들웨어 추가
 const addItemSaga = createRequestSaga('SoundList', ADD_ITEM, addSoundItem);
@@ -114,6 +116,11 @@ const updateSoundList = handleActions(
             ...state,
             ...action.payload,
             error: true,
+        }),
+
+        [SET_ERROR]: (state, action) => ({
+            ...state,
+            error: action.payload,
         })
     },
 

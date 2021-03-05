@@ -4,7 +4,6 @@ import { startLoading, finishLoading } from './loading';
 export default function createRequestSaga (prefix, type, request) {
     const SUCCESS = `${type}_SUCCESS`;
     const FAILURE = `${prefix}/FAILURE`;
-
     return function* (action) {
         // 우선 로딩중에 true를 넘김
         if(prefix !== 'DetectingResult')
@@ -13,14 +12,30 @@ export default function createRequestSaga (prefix, type, request) {
         try {
             // request를 이용해서 서버랑 통신
             const response = yield call(request, action.payload);
-            console.log(response);
             // 정상적으로 성공하면 성공한 값을 redux로 넘김
-            console.log(response);
+            //console.log(response);
             if(response.data.result !== 'success'){
                 yield put({
                     type: FAILURE,
                     payload: response.data.msg,
-                })
+                });
+
+                const popup = {
+                    head: "Error!",
+                    body: response.data,
+                    buttonNum: 1,
+                    callback: () => {},
+                    headColor: '#ff3547',
+                    btn1Color: '#f2f3f4',
+                    btn2Color: null,
+                    btn1Text: '#000000',
+                    btn2Text: null,
+                };
+                
+                yield put({
+                    type: 'ModalResult/SET_OPEN',
+                    payload: popup,
+                });
             }
             else {
                 
@@ -36,6 +51,8 @@ export default function createRequestSaga (prefix, type, request) {
                 type: FAILURE,
                 payload: e
             });
+
+
         }
         finally {
             // 로딩 종료

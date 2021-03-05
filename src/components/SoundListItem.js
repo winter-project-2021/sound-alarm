@@ -2,6 +2,7 @@ import { useCallback, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setOpen } from '../modules/ModalResult';
 import { setOpenSensitivity } from '../modules/SensitivityResult';
+import { setError } from '../modules/SoundList';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -167,6 +168,7 @@ function SoundListItem(props) {
             score: score,
         };
         // popup open
+        dispatch(setError(false));
         dispatch(setOpenSensitivity(popup));
         handleClose();
     }, [dispatch, order, renderName, handleClose, score]);

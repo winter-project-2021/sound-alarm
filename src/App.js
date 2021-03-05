@@ -10,10 +10,10 @@ function App() {
     return (
       <div className='App'>
           <Card/>
-          <Modal/>
           <SensitivityModal/>
           <DetectingModal/>
           <Loading/>
+          <Modal/>
       </div>
     );
 }

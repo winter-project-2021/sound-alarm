@@ -11,7 +11,7 @@ import '../style/SoundSetting.scss';
 
 function SoundSetting() {
 
-    const FILE_LIMIT = useMemo(() => 750 * 1024, []); // 300kb
+    const FILE_LIMIT = useMemo(() => 300 * 1024, []); // 300kb
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const MAX_AUDIO = useMemo(() => 5, []);
     const { lang } = useSelector(state => state.preferenceReducer);
@@ -42,7 +42,11 @@ function SoundSetting() {
         else{
             document.addEventListener('mouseup', clickAway);
         }
-    }, [clickAway, update, isDelete]);
+
+        if(blob === null) {
+            setFileName(DEFAULT_FILENAME);
+        }
+    }, [clickAway, update, isDelete, blob, setFileName, DEFAULT_FILENAME]);
 
     const clickItem = useCallback((i) => {
         
@@ -121,6 +125,8 @@ function SoundSetting() {
         if(String(name).length < len + 3) return name;
         return String(name).substring(0, len) + "...";
     }, []);
+
+    
 
     const uploadAudio = useCallback((e) => {
         // 로컬에서 오디오 파일 업로드

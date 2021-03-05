@@ -15,7 +15,7 @@ function SensitivityModal() {
     const { lang } = useSelector(state => state.preferenceReducer);
     const USER_ID = useSelector(state => state.updateLoginState.user._id);    
     const { loading } = useSelector(state => state.loading);
-    const soundList = useSelector(state => state.updateSoundList.soundList);
+    const { soundList, error }= useSelector(state => state.updateSoundList);
     const [curScore, setCurScore] = useState(0);
     const [recorder, setRecorder] = useState(null);
     const [isRecord, setIsRecord] = useState(false);
@@ -68,7 +68,10 @@ function SensitivityModal() {
 
     useEffect(() => {
         setCurScore(score);
-    }, [score, setCurScore]);
+        if(error) {
+            clickCancel();
+        }
+    }, [score, setCurScore, error, clickCancel]);
 
     const onChangeSlide = useCallback((e, newValue) => {
         setCurScore(newValue);
@@ -224,7 +227,7 @@ function SensitivityModal() {
 
     return (
         <>
-            {(open && (!loading || preventLoad)) ? (<div className='Sensitivity'>
+            {(open && (!loading || preventLoad) && !error) ? (<div className='Sensitivity'>
                         {renderModal()}
                        </div>) : null}
         </>
