@@ -126,7 +126,7 @@ function Login() {
         <div className='LoginComponent'>
             <div className='LoginBox'>
                 <div className='Favicon'>
-                    <img src='/faviconcircle150.png' id='loginfavicon'></img>
+                    <img src='/faviconcircle150.png' id='loginfavicon' alt=''></img>
                 </div>
                 <div className='LoginText'>
                     Sound Alarm

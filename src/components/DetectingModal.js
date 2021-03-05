@@ -10,11 +10,13 @@ import '../style/Detecting.scss';
 
 function DetectingModal() { 
 
-    const { open, detect, } = useSelector(state => state.setDetecting)
+    const { open, detect, name } = useSelector(state => state.setDetecting)
     const textList = useSelector(state => state.updateTextList.textList);
     const soundList = useSelector(state => state.updateSoundList.soundList)
     const { sound, push, volume, lang } = useSelector(state => state.preferenceReducer);
+    const detectedName = useSelector(state => state.setDetecting.name);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
+    const [detectedText, setDetText] = useState('');
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
     const [timeoutId, setTimeoutId] = useState(null);
@@ -149,12 +151,13 @@ function DetectingModal() {
                     if(t.text === text) {
                         dispatch(setResult(true));
                         recognition.stop();
+                        setDetText(text);
                         return;
                     }
                 }
             }
         }
-    }, [textList, dispatch]);
+    }, [textList, dispatch, setDetText]);
 
     const clickDetect = useCallback(() => {
         if(!detect && !first) return;
@@ -173,12 +176,13 @@ function DetectingModal() {
 
         if(push){
             var options = {
-                body: "소리가 감지되었습니다!!!!!",
-                icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                body: name + "(이)가 감지되었습니다!",
+                icon: "/faviconcircle.png",
                 dir: "ltr"
             };
             
-            new Notification("!알람!", options);
+            new Notification("Sound Alarm", options);
+            
         }
     }, [push, sound, volume]);
 
@@ -190,19 +194,19 @@ function DetectingModal() {
         }
         if(!open) {
             audioStop();
-            stopStt();
+            stopStt();            
         }
 
         if(detect && !first && open) {
             setFirst(true);
-            testAlarm();
+            testAlarm();            
             audioStop();
             stopStt();
         }
 
         if(speech !== null) {
             speech.onend = () => {
-                stopStt();
+                stopStt();                
             }
         }
     }, [audioStart, audioStop, open, isStart, setIsStart, detect, testAlarm, first, setFirst, startSTT, stopStt, soundList, textList, speech]);

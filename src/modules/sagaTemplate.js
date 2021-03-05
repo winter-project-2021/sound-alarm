@@ -13,6 +13,7 @@ export default function createRequestSaga (prefix, type, request) {
         try {
             // request를 이용해서 서버랑 통신
             const response = yield call(request, action.payload);
+            console.log(response);
             // 정상적으로 성공하면 성공한 값을 redux로 넘김
             if(response.data.result !== 'success'){
                 yield put({
@@ -21,11 +22,13 @@ export default function createRequestSaga (prefix, type, request) {
                 })
             }
             else {
+                
                 yield put({
                     type: SUCCESS,
                     payload: response.data,
                 });
             }
+            
         } catch (e){
             // 통신에 실패하여 에러가 나면 error를 리덕스로 넘김
             yield put({
