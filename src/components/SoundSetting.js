@@ -11,7 +11,7 @@ import '../style/SoundSetting.scss';
 
 function SoundSetting() {
 
-    const FILE_LIMIT = useMemo(() => 300 * 1024, []); // 300kb
+    const FILE_LIMIT = useMemo(() => 750 * 1024, []); // 300kb
     const USER_ID = useSelector(state => state.updateLoginState.user._id);
     const MAX_AUDIO = useMemo(() => 5, []);
     const { lang } = useSelector(state => state.preferenceReducer);

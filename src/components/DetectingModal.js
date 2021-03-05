@@ -16,7 +16,6 @@ function DetectingModal() {
     const { sound, push, volume, lang, bell } = useSelector(state => state.preferenceReducer);
     const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm2.mp3", "2": "/alarm3.mp3",}), []);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
-    const [detectedText, setDetText] = useState('');
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
     const [timeoutId, setTimeoutId] = useState(null);
@@ -152,7 +151,6 @@ function DetectingModal() {
                     if(t.text === text) {
                         dispatch(setResult({match: true, name: text}));
                         recognition.stop();
-                        setDetText(text);
                         return;
                     }
                 }
@@ -204,10 +202,10 @@ function DetectingModal() {
 
         if(detect && !first && open) {
             setFirst(true);
-            testAlarm();            
+            setDetected();
             audioStop();
             stopStt();
-            setDetected();
+            testAlarm();            
         }
 
         if(speech !== null) {

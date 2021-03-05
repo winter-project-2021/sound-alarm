@@ -24,7 +24,6 @@ export function* detectingSaga() {
 // Modal 열고 닫기에는 open만 사용되었음. 나머지 수정가능
 
 const initialState = {
-    name: '',
     result: false,
     open: false,
     detect: false,
@@ -59,7 +58,6 @@ const setDetecting = handleActions(
 
         [GET_MATCH_SUCCESS]: (state, action) => ({
             ...state,
-            name: action.payload.name,
             detect: action.payload.match,
             name: action.payload.match ? action.payload.name : state.name,
         }),
