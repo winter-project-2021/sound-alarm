@@ -16,6 +16,7 @@ function DetectingModal() {
     const { sound, push, volume, lang, bell } = useSelector(state => state.preferenceReducer);
     const bellTypes = useMemo(() => ({"0": "/alarm.mp3", "1": "/alarm2.mp3", "2": "/alarm3.mp3",}), []);
     const USER_ID = useSelector(state => state.updateLoginState.user._id); 
+    const [detectedText, setDetText] = useState('');
     const [isRecord, setIsRecord] = useState(false);
     const [isStart, setIsStart] = useState(false);
     const [timeoutId, setTimeoutId] = useState(null);
@@ -151,6 +152,7 @@ function DetectingModal() {
                     if(t.text === text) {
                         dispatch(setResult({match: true, name: text}));
                         recognition.stop();
+                        setDetText(text);
                         return;
                     }
                 }
@@ -177,11 +179,11 @@ function DetectingModal() {
         if(push){
             var options = {
                 body: detectName + " " + trans[lang]['push'][0],
-                icon: "https://images.pexels.com/photos/853168/pexels-photo-853168.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+                icon: "/faviconcircle.png",
                 dir: "ltr"
             };
             
-            new Notification(trans[lang]['push'][1], options);
+            new Notification("Sound Alarm!", options);
         }
     }, [push, sound, volume, bell, bellTypes, detectName, lang]);
 
@@ -197,12 +199,12 @@ function DetectingModal() {
         }
         if(!open) {
             audioStop();
-            stopStt();
+            stopStt();            
         }
 
         if(detect && !first && open) {
             setFirst(true);
-            testAlarm();
+            testAlarm();            
             audioStop();
             stopStt();
             setDetected();
@@ -210,7 +212,7 @@ function DetectingModal() {
 
         if(speech !== null) {
             speech.onend = () => {
-                stopStt();
+                stopStt();                
             }
         }
     }, [audioStart, audioStop, open, isStart, setIsStart, detect, testAlarm, first, setFirst, startSTT, stopStt,
