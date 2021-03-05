@@ -84,6 +84,8 @@ function Card() {
                         </div>                    
                 </div>
                 <div className='Language'>
+                    <div className='buttonbackground'></div>
+                    <div className={'selectedbackground' + (lang === 'ko' ? 'left' : 'right')}></div>
                     <button className={'ko' + (lang === 'ko' ? ' select' : '')} onClick={() => selectLang('ko')}>한국어</button>
                     <button className={'en' + (lang === 'en' ? ' select' : '')} onClick={() => selectLang('en')}>English</button>
                 </div>
