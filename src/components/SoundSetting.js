@@ -68,7 +68,7 @@ function SoundSetting() {
     const updateName = useCallback((i, alias, score) => {
         // 항목 업데이트 후 클릭 항목 초기화
         for(const sound of soundList){
-            if(sound.audioid !== i && sound.name === alias) {
+            if(sound.id !== i && sound.name === alias) {
                 const popup = {
                     head: trans[lang]['uploadFail'][0],
                     body: trans[lang]['uploadFail'][1],

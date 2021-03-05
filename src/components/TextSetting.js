@@ -58,7 +58,7 @@ function TextSetting() {
     const updateName = useCallback((i, alias) => {
         // 항목 업데이트 후 클릭 항목 초기화
         for(const text of textList){
-            if(text.textid !== i && text.text === alias) {
+            if(text.id !== i && text.text === alias) {
                 const popup = {
                     head: trans[lang]['uploadFail'][0],
                     body: trans[lang]['uploadFail'][1],
