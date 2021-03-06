@@ -73,7 +73,7 @@ const trans = {
                 '8. Play the recorded file to a volume as similar as it sounds, record it for at least 3 seconds, and then press the Stop button.',
                 '9. Sets the appropriate value between the current score and the existing sensitivity score.',
                 '10. After completing the sensitivity setting, start detecting and play the recorded file to set the appropriate sensitivity.'],
-        text: ['Please add new text!', 'Please enter the name', 'You can register up to 10 words.', 'You can register only English word.'],
+        text: ['Please add new text!', 'Please enter the name', 'You can register up to 10 words.', 'Only English words can be recognized.'],
         sound: ['Please add new sound files!', 'Upload file', 'Please enter the name', 'You can upload up to 5 files.', 
                 'The maximum capacity of a single file is 300 KB.'],
         setting: ['Alarm sound', 'Alarm push', 'Microphone test', 'Logout', 'Ring Tone', 'Alarm 1', 'Alarm 2', 'Alarm 3'],

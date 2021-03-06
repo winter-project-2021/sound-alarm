@@ -10,6 +10,13 @@
     background: linear-gradient(135deg, #00d6c2, #8694fc);
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
 
+    .Reference {
+        position: absolute;
+        text-align: left;
+        font-size: 12px;
+        bottom: -90px;
+        left: 0;
+    }
     .CardFavicon {
         position: absolute;
         transform: translate(-50%, -50%);
@@ -169,7 +176,6 @@
                     animation: slideright 0.3s;
                 }
 
-
                 .ko {
                     background-color: transparent;
                     left: 870px;
@@ -203,7 +209,7 @@
                     border: 2px solid #ff3547;
                     border-left: none;
                     vertical-align: middle;
-                    
+
                     border-top-right-radius: 17px;
                     border-bottom-right-radius: 17px;
                     color: #ff3547;
@@ -259,7 +265,7 @@
     100% {
         left: 870px;
     }
-    
+
     0% {
         left: 966px;
     }
@@ -269,7 +275,7 @@
     0% {
         left: 870px;
     }
-    
+
     100% {
         left: 966px;
     }
@@ -280,7 +286,7 @@
         //background-color: #ff3547;
         color: white;
     }
-    
+
     0% {
         //background-color: white;
         color: #ff3547;
@@ -292,7 +298,7 @@
         //background-color: #ff3547;
         color: white;
     }
-    
+
     100% {
         //background-color: white;
         color: #ff3547;

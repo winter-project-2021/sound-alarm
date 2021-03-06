@@ -137,6 +137,21 @@ function Card() {
             <img className='CardFavicon' src='/favicon270.png' alt='SoundAlarmIcon'></img>
             {login ? renderMainScreen() : null}
             <audio style={{display: 'none'}} src='/alarm.mp3' id='alarm'/>
+            <div className='Reference'>
+            This page contains the MapleStory fontface provided by MapleStory.
+            <br/>
+            ✔ Ice Cubes Glass Sound by Daniel Simion
+            ✔ From
+            http://soundbible.com/2182-Ice-Cubes-Glass.html
+            ✔ Distributor 
+            ‘대한민국 대표 BGM 셀바이뮤직’ https://www.sellbuymusic.com
+            <br/>
+            ✔ Analog Watch Alarm Sound by Daniel Simion
+            ✔ From
+            http://soundbible.com/2197-Analog-Watch-Alarm.html  
+            ✔ Distributor 
+            ‘대한민국 대표 BGM 셀바이뮤직’ https://www.sellbuymusic.com
+          </div>
         </div>
         {login ? null : renderLogin()}
         </>
