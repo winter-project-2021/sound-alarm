@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/sound-alarm/static/css/main.620c9b85.chunk.css",
-    "main.js": "/sound-alarm/static/js/main.27d8ec38.chunk.js",
-    "main.js.map": "/sound-alarm/static/js/main.27d8ec38.chunk.js.map",
+    "main.js": "/sound-alarm/static/js/main.b02bc465.chunk.js",
+    "main.js.map": "/sound-alarm/static/js/main.b02bc465.chunk.js.map",
     "runtime-main.js": "/sound-alarm/static/js/runtime-main.e51420a9.js",
     "runtime-main.js.map": "/sound-alarm/static/js/runtime-main.e51420a9.js.map",
     "static/js/2.f9a20f2f.chunk.js": "/sound-alarm/static/js/2.f9a20f2f.chunk.js",
@@ -19,6 +19,6 @@
     "static/js/runtime-main.e51420a9.js",
     "static/js/2.f9a20f2f.chunk.js",
     "static/css/main.620c9b85.chunk.css",
-    "static/js/main.27d8ec38.chunk.js"
+    "static/js/main.b02bc465.chunk.js"
   ]
 }
